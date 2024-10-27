@@ -4,7 +4,7 @@ namespace RE
 {
 	PlayerCamera* PlayerCamera::GetSingleton()
 	{
-		REL::Relocation<PlayerCamera**> singleton{ Offset::PlayerCamera::Singleton };
+		static REL::Relocation<PlayerCamera**> singleton{ Offset::PlayerCamera::Singleton };
 		return *singleton;
 	}
 
