@@ -7,7 +7,7 @@ namespace RE
 {
 	TESDataHandler* TESDataHandler::GetSingleton()
 	{
-		REL::Relocation<TESDataHandler**> singleton{ Offset::TESDataHandler::Singleton };
+		static REL::Relocation<TESDataHandler**> singleton{ Offset::TESDataHandler::Singleton };
 		return *singleton;
 	}
 

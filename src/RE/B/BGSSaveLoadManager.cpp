@@ -4,21 +4,21 @@ namespace RE
 {
 	BGSSaveLoadManager* BGSSaveLoadManager::GetSingleton()
 	{
-		REL::Relocation<BGSSaveLoadManager**> singleton{ Offset::BGSSaveLoadManager::Singleton };
+		static REL::Relocation<BGSSaveLoadManager**> singleton{ Offset::BGSSaveLoadManager::Singleton };
 		return *singleton;
 	}
 
 	bool BGSSaveLoadFileEntry::PopulateFileEntryData()
 	{
 		using func_t = decltype(&BGSSaveLoadFileEntry::PopulateFileEntryData);
-		REL::Relocation<func_t> func{ RELOCATION_ID(34627, 35547) };
+		static REL::Relocation<func_t> func{ RELOCATION_ID(34627, 35547) };
 		return func(this);
 	}
 
 	void BGSSaveLoadManager::GenerateCharacterID()
 	{
 		using func_t = decltype(&BGSSaveLoadManager::GenerateCharacterID);
-		REL::Relocation<func_t> func{ RELOCATION_ID(34847, 35757) };
+		static REL::Relocation<func_t> func{ RELOCATION_ID(34847, 35757) };
 		return func(this);
 	}
 
