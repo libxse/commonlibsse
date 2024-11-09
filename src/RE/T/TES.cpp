@@ -11,7 +11,7 @@ namespace RE
 {
 	TES* TES::GetSingleton()
 	{
-		REL::Relocation<TES**> singleton{ Offset::TES::Singleton };
+		static REL::Relocation<TES**> singleton{ Offset::TES::Singleton };
 		return *singleton;
 	}
 
