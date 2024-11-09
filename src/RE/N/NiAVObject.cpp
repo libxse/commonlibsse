@@ -17,7 +17,7 @@
 #include "RE/N/NiProperty.h"
 #include "RE/N/NiRTTI.h"
 #include "RE/S/State.h"
-#include "RE/h/hkpRigidBody.h"
+#include "RE/H/hkpRigidBody.h"
 
 namespace RE
 {
