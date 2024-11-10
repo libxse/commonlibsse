@@ -58,14 +58,14 @@ static_assert(
 	std::is_integral_v<std::time_t> && sizeof(std::time_t) == sizeof(std::size_t),
 	"wrap std::time_t instead");
 
+#include "REX/REX.h"
+#include "REX/W32/KERNEL32.h"
+#include "REX/W32/USER32.h"
+
 #pragma warning(push)
 #include <binary_io/file_stream.hpp>
 #include <spdlog/spdlog.h>
 #pragma warning(pop)
-
-#include "REX/REX.h"
-#include "REX/W32/KERNEL32.h"
-#include "REX/W32/USER32.h"
 
 namespace SKSE
 {
