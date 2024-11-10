@@ -11,8 +11,8 @@ set_encodings("utf-8")
 -- add rules
 add_rules("mode.debug", "mode.releasedbg")
 
--- make extras available
-includes("xmake-extra.lua")
+-- make custom rules available
+includes("xmake-rules.lua")
 
 -- define options
 option("skyrim_ae", function()
