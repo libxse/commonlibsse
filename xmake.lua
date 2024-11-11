@@ -11,21 +11,21 @@ set_encodings("utf-8")
 -- add rules
 add_rules("mode.debug", "mode.releasedbg")
 
--- make extras available
-includes("xmake-extra.lua")
+-- make custom rules available
+includes("xmake-rules.lua")
 
 -- define options
-option("skyrim_ae")
+option("skyrim_ae", function()
     set_default(false)
     set_description("Enable support for Skyrim AE")
     add_defines("SKYRIM_SUPPORT_AE=1")
-option_end()
+end)
 
-option("skse_xbyak")
+option("skse_xbyak", function()
     set_default(false)
     set_description("Enable trampoline support for Xbyak")
     add_defines("SKSE_SUPPORT_XBYAK=1")
-option_end()
+end)
 
 -- require packages
 add_requires("rsm-binary-io")
@@ -36,7 +36,7 @@ if has_config("skse_xbyak") then
 end
 
 -- define targets
-target("commonlibsse")
+target("commonlibsse", function()
     -- set target kind
     set_kind("static")
 
@@ -123,11 +123,26 @@ target("commonlibsse")
         "cl::/wd5220"  -- 'member': a non-static data member with a volatile qualified type no longer implies that compiler generated copy / move constructors and copy / move assignment operators are not trivial
     )
 
+    -- add flags (clang-cl)
+    add_cxxflags(
+        "clang_cl::-fms-compatibility",
+        "clang_cl::-fms-extensions",
+        { public = true }
+    )
+
     -- add flags (clang-cl: disable warnings)
     add_cxxflags(
         "clang_cl::-Wno-delete-non-abstract-non-virtual-dtor",
+        "clang_cl::-Wno-deprecated-volatile",
+        "clang_cl::-Wno-ignored-qualifiers",
         "clang_cl::-Wno-inconsistent-missing-override",
+        "clang_cl::-Wno-invalid-offsetof",
+        "clang_cl::-Wno-microsoft-include",
         "clang_cl::-Wno-overloaded-virtual",
-        "clang_cl::-Wno-reinterpret-base-class"
+        "clang_cl::-Wno-pragma-system-header-outside-header",
+        "clang_cl::-Wno-reinterpret-base-class",
+        "clang_cl::-Wno-switch",
+        "clang_cl::-Wno-unused-private-field",
+        { public = true }
     )
-target_end()
+end)

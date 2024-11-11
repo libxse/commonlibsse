@@ -6,6 +6,7 @@
 #include "RE/B/BSTSmartPointer.h"
 #include "RE/E/ErrorLogger.h"
 #include "RE/T/TypeInfo.h"
+#include "RE/T/TypeTraits.h"
 
 namespace RE
 {
