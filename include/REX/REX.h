@@ -270,3 +270,270 @@ namespace REX
 		Singleton& operator=(Singleton&&) = delete;
 	};
 }
+
+namespace REX
+{
+	class ISetting
+	{
+	public:
+		virtual void Load(void* a_file) = 0;
+		virtual void Save(void* a_file) = 0;
+	};
+
+	class ISettingStore
+	{
+	public:
+		virtual void Init(const char* a_file, const char* a_fileCustom) = 0;
+		virtual void Load() = 0;
+		virtual void Save() = 0;
+		virtual void Register(ISetting* a_setting) = 0;
+	};
+
+	template <class T, class Store>
+	class TSetting :
+		public ISetting
+	{
+	public:
+		TSetting() = delete;
+
+		TSetting(T a_default) :
+			m_value(a_default),
+			m_valueDefault(a_default)
+		{
+			Store::GetSingleton()->Register(this);
+		}
+
+	public:
+		T GetValue() const { return m_value; }
+
+		T GetValueDefault() const { return m_valueDefault; }
+
+		void SetValue(T a_value) const { m_value = a_value; }
+
+	protected:
+		T m_value;
+		T m_valueDefault;
+	};
+
+	template <class T>
+	class TSettingStore :
+		public ISettingStore,
+		public Singleton<T>
+	{
+	public:
+		virtual void Init(const char* a_fileBase, const char* a_fileUser) override
+		{
+			m_fileBase = a_fileBase;
+			m_fileUser = a_fileUser;
+		}
+
+		virtual void Register(ISetting* a_setting) override
+		{
+			m_settings.emplace_back(a_setting);
+		}
+
+	protected:
+		std::string_view       m_fileBase;
+		std::string_view       m_fileUser;
+		std::vector<ISetting*> m_settings;
+	};
+}
+
+#ifdef REX_OPTION_INI
+#	include <SimpleIni.h>
+
+namespace REX::INI
+{
+	class SettingStore :
+		public TSettingStore<SettingStore>
+	{
+	public:
+		virtual void Load() override
+		{
+			CSimpleIniA ini;
+			ini.SetUnicode(true);
+			ini.SetQuotes(true);
+
+			if (ini.LoadFile(m_fileBase.data()) == SI_OK) {
+				for (auto& setting : m_settings) {
+					setting->Load(&ini);
+				}
+			}
+
+			if (ini.LoadFile(m_fileUser.data()) == SI_OK) {
+				for (auto& setting : m_settings) {
+					setting->Load(&ini);
+				}
+			}
+		}
+
+		virtual void Save() override
+		{
+			CSimpleIniA ini;
+			ini.SetUnicode(true);
+			ini.SetQuotes(true);
+
+			ini.LoadFile(m_fileBase.data());
+			for (auto& setting : m_settings) {
+				setting->Save(&ini);
+			}
+
+			ini.SaveFile(m_fileBase.data(), false);
+		}
+	};
+
+	template <class T, class Store = SettingStore>
+	class Setting :
+		public TSetting<T, Store>
+	{
+	public:
+		Setting(std::string_view a_section, std::string_view a_key, T a_default) :
+			TSetting<T, Store>(a_default),
+			m_section(a_section),
+			m_key(a_key)
+		{}
+
+	public:
+		virtual void Load(void* a_file) override
+		{
+			auto file = static_cast<CSimpleIniA*>(a_file);
+			if constexpr (std::is_same_v<T, bool>) {
+				this->m_value = file->GetBoolValue(m_section.data(), m_key.data(), this->m_valueDefault);
+			} else if constexpr (std::is_floating_point_v<T>) {
+				this->m_value = static_cast<T>(file->GetDoubleValue(m_section.data(), m_key.data(), this->m_valueDefault));
+			} else if constexpr (std::is_same_v<T, std::uint8_t> || std::is_same_v<T, std::uint16_t> || std::is_same_v<T, std::uint32_t> || std::is_same_v<T, std::int8_t> || std::is_same_v<T, std::int16_t> || std::is_same_v<T, std::int32_t>) {
+				this->m_value = static_cast<T>(file->GetLongValue(m_section.data(), m_key.data(), this->m_valueDefault));
+			} else if constexpr (std::is_same_v<T, std::string>) {
+				this->m_value = file->GetValue(m_section.data(), m_key.data(), this->m_valueDefault.c_str());
+			}
+		}
+
+		virtual void Save(void* a_file) override
+		{
+			auto file = static_cast<CSimpleIniA*>(a_file);
+			if constexpr (std::is_same_v<T, bool>) {
+				file->SetBoolValue(m_section.data(), m_key.data(), this->m_value);
+			} else if constexpr (std::is_floating_point_v<T>) {
+				file->SetDoubleValue(m_section.data(), m_key.data(), static_cast<double>(this->m_value));
+			} else if constexpr (std::is_same_v<T, std::uint8_t> || std::is_same_v<T, std::uint16_t> || std::is_same_v<T, std::uint32_t> || std::is_same_v<T, std::int8_t> || std::is_same_v<T, std::int16_t> || std::is_same_v<T, std::int32_t>) {
+				file->SetLongValue(m_section.data(), m_key.data(), static_cast<long>(this->m_value));
+			} else if constexpr (std::is_same_v<T, std::string>) {
+				file->SetValue(m_section.data(), m_key.data(), this->m_value.c_str());
+			}
+		}
+
+	private:
+		std::string_view m_section;
+		std::string_view m_key;
+	};
+
+	template <class Store = SettingStore>
+	using Bool = Setting<bool, Store>;
+
+	template <class Store = SettingStore>
+	using F32 = Setting<float, Store>;
+
+	template <class Store = SettingStore>
+	using F64 = Setting<double, Store>;
+
+	template <class Store = SettingStore>
+	using I8 = Setting<std::int8_t, Store>;
+
+	template <class Store = SettingStore>
+	using I16 = Setting<std::int16_t, Store>;
+
+	template <class Store = SettingStore>
+	using I32 = Setting<std::int32_t, Store>;
+
+	template <class Store = SettingStore>
+	using U8 = Setting<std::uint8_t, Store>;
+
+	template <class Store = SettingStore>
+	using U16 = Setting<std::uint16_t, Store>;
+
+	template <class Store = SettingStore>
+	using U32 = Setting<std::uint32_t, Store>;
+
+	template <class Store = SettingStore>
+	using Str = Setting<std::string, Store>;
+}
+#endif
+
+#ifdef REX_OPTION_TOML
+#	define TOML_EXCEPTIONS 0
+#	include <toml++/toml.h>
+
+namespace REX::TOML
+{
+	class SettingStore :
+		public TSettingStore<SettingStore>
+	{
+	public:
+		virtual void Load() override
+		{
+			if (auto result = toml::parse_file(m_file)) {
+				for (auto& setting : m_settings)
+					setting->Load(&result);
+			}
+
+			if (auto result = toml::parse_file(m_fileCustom)) {
+				for (auto& setting : m_settings)
+					setting->Load(&result);
+			}
+		}
+	};
+
+	template <class T, class Store = SettingStore>
+	class Setting :
+		public TSetting<T, Store>
+	{
+	public:
+		Setting(std::string_view a_path, T a_default) :
+			TSetting<T, Store>(a_default),
+			m_path(a_path)
+		{}
+
+	public:
+		virtual void Load(void* a_file) override
+		{
+			auto file = static_cast<toml::parse_result*>(a_file);
+			if (auto node = file->at_path(m_path)) {
+				this->m_value = node.value_or(this->m_valueDefault);
+			}
+		}
+
+	private:
+		std::string_view m_path;
+	};
+
+	template <class Store = SettingStore>
+	using Bool = Setting<bool, Store>;
+
+	template <class Store = SettingStore>
+	using F32 = Setting<float, Store>;
+
+	template <class Store = SettingStore>
+	using F64 = Setting<double, Store>;
+
+	template <class Store = SettingStore>
+	using I8 = Setting<std::int8_t, Store>;
+
+	template <class Store = SettingStore>
+	using I16 = Setting<std::int16_t, Store>;
+
+	template <class Store = SettingStore>
+	using I32 = Setting<std::int32_t, Store>;
+
+	template <class Store = SettingStore>
+	using U8 = Setting<std::uint8_t, Store>;
+
+	template <class Store = SettingStore>
+	using U16 = Setting<std::uint16_t, Store>;
+
+	template <class Store = SettingStore>
+	using U32 = Setting<std::uint32_t, Store>;
+
+	template <class Store = SettingStore>
+	using Str = Setting<std::string, Store>;
+}
+#endif

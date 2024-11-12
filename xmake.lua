@@ -27,12 +27,32 @@ option("skse_xbyak", function()
     add_defines("SKSE_SUPPORT_XBYAK=1")
 end)
 
+option("rex_ini")
+    set_default(false)
+    set_description("Enable ini config support for REX")
+    add_defines("REX_OPTION_INI=1")
+option_end()
+
+option("rex_toml")
+    set_default(false)
+    set_description("Enable toml config support for REX")
+    add_defines("REX_OPTION_TOML=1")
+option_end()
+
 -- require packages
 add_requires("rsm-binary-io")
 add_requires("spdlog", { configs = { header_only = false, wchar = true, std_format = true } })
 
 if has_config("skse_xbyak") then
     add_requires("xbyak")
+end
+
+if has_config("rex_ini") then
+    add_requires("simpleini", { configs = { convert = "none" }})
+end
+
+if has_config("rex_toml") then
+    add_requires("toml++")
 end
 
 -- define targets
@@ -50,8 +70,16 @@ target("commonlibsse", function()
         add_packages("xbyak", { public = true })
     end
 
+    if has_config("rex_ini") then
+        add_packages("simpleini", { public = true })
+    end
+
+    if has_config("rex_toml") then
+        add_packages("toml++", { public = true })
+    end
+
     -- add options
-    add_options("skyrim_ae", "skse_xbyak", { public = true })
+    add_options("skyrim_ae", "skse_xbyak", "rex_ini", "rex_toml", { public = true })
 
     -- add system links
     add_syslinks("advapi32", "bcrypt", "d3d11", "d3dcompiler", "dbghelp", "dxgi", "ole32", "shell32", "user32", "version")
