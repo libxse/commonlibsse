@@ -33,6 +33,12 @@ option("rex_ini")
     add_defines("REX_OPTION_INI=1")
 option_end()
 
+option("rex_json")
+    set_default(false)
+    set_description("Enable json config support for REX")
+    add_defines("REX_OPTION_JSON=1")
+option_end()
+
 option("rex_toml")
     set_default(false)
     set_description("Enable toml config support for REX")
@@ -48,7 +54,11 @@ if has_config("skse_xbyak") then
 end
 
 if has_config("rex_ini") then
-    add_requires("simpleini", { configs = { convert = "none" }})
+    add_requires("simpleini", { configs = { convert = "none" } })
+end
+
+if has_config("rex_json") then
+    add_requires("nlohmann_json")
 end
 
 if has_config("rex_toml") then
@@ -74,12 +84,16 @@ target("commonlibsse", function()
         add_packages("simpleini", { public = true })
     end
 
+    if has_config("rex_json") then
+        add_packages("nlohmann_json", { public = true })
+    end
+
     if has_config("rex_toml") then
         add_packages("toml++", { public = true })
     end
 
     -- add options
-    add_options("skyrim_ae", "skse_xbyak", "rex_ini", "rex_toml", { public = true })
+    add_options("skyrim_ae", "skse_xbyak", "rex_ini", "rex_json", "rex_toml", { public = true })
 
     -- add system links
     add_syslinks("advapi32", "bcrypt", "d3d11", "d3dcompiler", "dbghelp", "dxgi", "ole32", "shell32", "user32", "version")
