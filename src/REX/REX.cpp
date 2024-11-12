@@ -286,8 +286,276 @@ void REX::INI::detail::SettingSaveImpl<std::string>(
 #endif
 
 #ifdef REX_OPTION_JSON
-//#	include <nlohmann_json>
+#	include <nlohmann/json.hpp>
 
+void REX::JSON::detail::StoreLoadImpl(
+	[[maybe_unused]] std::string_view&       a_fileBase,
+	[[maybe_unused]] std::string_view&       a_fileUser,
+	[[maybe_unused]] std::vector<ISetting*>& a_settings)
+{
+	if (std::filesystem::exists(a_fileBase)) {
+		std::ifstream file{ a_fileBase.data() };
+		try {
+			auto result = nlohmann::json::parse(file);
+			for (auto setting : a_settings) {
+				setting->Load(&result);
+			}
+		} catch (const std::exception& e) {
+			SKSE::log::error("{}", e.what());
+		}
+	}
+
+	if (std::filesystem::exists(a_fileUser)) {
+		std::ifstream file{ a_fileUser.data() };
+		try {
+			auto result = nlohmann::json::parse(file);
+			for (auto setting : a_settings) {
+				setting->Load(&result);
+			}
+		} catch (const std::exception& e) {
+			SKSE::log::error("{}", e.what());
+		}
+	}
+}
+
+void REX::JSON::detail::StoreSaveImpl(
+	[[maybe_unused]] std::string_view&       a_fileBase,
+	[[maybe_unused]] std::string_view&       a_fileUser,
+	[[maybe_unused]] std::vector<ISetting*>& a_settings)
+{
+	nlohmann::json output{};
+	if (std::filesystem::exists(a_fileBase)) {
+		std::ifstream file{ a_fileBase.data() };
+		output = nlohmann::json::parse(file);
+	}
+
+	for (auto& setting : a_settings) {
+		setting->Save(&output);
+	}
+
+	std::ofstream file{ a_fileBase.data(), std::ios::trunc };
+	file << output.dump(4);
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<bool>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] bool&             a_value,
+	[[maybe_unused]] bool&             a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<bool>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<bool>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] bool&             a_value,
+	[[maybe_unused]] bool&             a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<float>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] float&            a_value,
+	[[maybe_unused]] float&            a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<float>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<float>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] float&            a_value,
+	[[maybe_unused]] float&            a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<double>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] double&           a_value,
+	[[maybe_unused]] double&           a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<double>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<double>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] double&           a_value,
+	[[maybe_unused]] double&           a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<std::int8_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::int8_t&      a_value,
+	[[maybe_unused]] std::int8_t&      a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<std::int8_t>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<std::int8_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::int8_t&      a_value,
+	[[maybe_unused]] std::int8_t&      a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<std::int16_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::int16_t&     a_value,
+	[[maybe_unused]] std::int16_t&     a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<std::int16_t>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<std::int16_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::int16_t&     a_value,
+	[[maybe_unused]] std::int16_t&     a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<std::int32_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::int32_t&     a_value,
+	[[maybe_unused]] std::int32_t&     a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<std::int32_t>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<std::int32_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::int32_t&     a_value,
+	[[maybe_unused]] std::int32_t&     a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<std::uint8_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::uint8_t&     a_value,
+	[[maybe_unused]] std::uint8_t&     a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<std::uint8_t>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<std::uint8_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::uint8_t&     a_value,
+	[[maybe_unused]] std::uint8_t&     a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<std::uint16_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::uint16_t&    a_value,
+	[[maybe_unused]] std::uint16_t&    a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<std::uint16_t>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<std::uint16_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::uint16_t&    a_value,
+	[[maybe_unused]] std::uint16_t&    a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<std::uint32_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::uint32_t&    a_value,
+	[[maybe_unused]] std::uint32_t&    a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<std::uint32_t>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<std::uint32_t>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::uint32_t&    a_value,
+	[[maybe_unused]] std::uint32_t&    a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
+
+template <>
+void REX::JSON::detail::SettingLoadImpl<std::string>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::string&      a_value,
+	[[maybe_unused]] std::string&      a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	a_value = file->value<std::string>(a_path, a_valueDefault);
+}
+
+template <>
+void REX::JSON::detail::SettingSaveImpl<std::string>(
+	[[maybe_unused]] void*             a_file,
+	[[maybe_unused]] std::string&      a_value,
+	[[maybe_unused]] std::string&      a_valueDefault,
+	[[maybe_unused]] std::string_view& a_path)
+{
+	auto file = static_cast<nlohmann::json*>(a_file);
+	(*file)[a_path] = a_value;
+}
 #endif
 
 #ifdef REX_OPTION_TOML

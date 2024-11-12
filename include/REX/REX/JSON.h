@@ -10,9 +10,9 @@ namespace REX::JSON
 		void StoreLoadImpl(std::string_view& a_fileBase, std::string_view& a_fileUser, std::vector<ISetting*>& a_settings);
 		void StoreSaveImpl(std::string_view& a_fileBase, std::string_view& a_fileUser, std::vector<ISetting*>& a_settings);
 		template <class T>
-		void SettingLoadImpl(void* a_file, T& a_value, T& a_valueDefault);
+		void SettingLoadImpl(void* a_file, T& a_value, T& a_valueDefault, std::string_view& a_path);
 		template <class T>
-		void SettingSaveImpl(void* a_file, T& a_value, T& a_valueDefault);
+		void SettingSaveImpl(void* a_file, T& a_value, T& a_valueDefault, std::string_view& a_path);
 	}
 
 	class SettingStore :
@@ -35,23 +35,24 @@ namespace REX::JSON
 		public TSetting<T, Store>
 	{
 	public:
-		Setting(T a_default) :
-			TSetting<T, Store>(a_default)
+		Setting(std::string_view a_path, T a_default) :
+			TSetting<T, Store>(a_default),
+			m_path(a_path)
 		{}
 
 	public:
 		virtual void Load(void* a_file) override
 		{
-			detail::SettingLoadImpl(a_file, this->m_value, this->m_valueDefault);
+			detail::SettingLoadImpl(a_file, this->m_value, this->m_valueDefault, m_path);
 		}
 
 		virtual void Save(void* a_file) override
 		{
-			detail::SettingSaveImpl(a_file, this->m_value, this->m_valueDefault);
+			detail::SettingSaveImpl(a_file, this->m_value, this->m_valueDefault, m_path);
 		}
 
 	private:
-		// std::string_view m_path;
+		std::string_view m_path;
 	};
 
 	template <class Store = SettingStore>
