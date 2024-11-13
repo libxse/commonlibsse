@@ -10,7 +10,7 @@ namespace REX::INI
 		void StoreLoadImpl(std::string_view& a_fileBase, std::string_view& a_fileUser, std::vector<ISetting*>& a_settings);
 		void StoreSaveImpl(std::string_view& a_fileBase, std::vector<ISetting*>& a_settings);
 		template <class T>
-		void SettingLoadImpl(void* a_file, T& a_value, T& a_valueDefault, std::string_view& a_section, std::string_view& a_key);
+		void SettingLoadImpl(void* a_file, T& a_value, T& a_valueDefault, bool a_useDefault, std::string_view& a_section, std::string_view& a_key);
 		template <class T>
 		void SettingSaveImpl(void* a_file, T& a_value, std::string_view& a_section, std::string_view& a_key);
 	}
@@ -44,7 +44,12 @@ namespace REX::INI
 	public:
 		virtual void Load(void* a_file) override
 		{
-			detail::SettingLoadImpl(a_file, this->m_value, this->m_valueDefault, m_section, m_key);
+			Load(a_file, true);
+		}
+
+		virtual void Load(void* a_file, bool a_useDefault) override
+		{
+			detail::SettingLoadImpl(a_file, this->m_value, this->m_valueDefault, a_useDefault, m_section, m_key);
 		}
 
 		virtual void Save(void* a_file) override

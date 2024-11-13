@@ -8,6 +8,7 @@ namespace REX
 	{
 	public:
 		virtual void Load(void* a_file) = 0;
+		virtual void Load(void* a_file, bool a_useDefault) = 0;
 		virtual void Save(void* a_file) = 0;
 	};
 

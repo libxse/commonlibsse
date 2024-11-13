@@ -22,7 +22,7 @@ void REX::INI::detail::StoreLoadImpl(
 
 	if (ini.LoadFile(a_fileUser.data()) == SI_OK) {
 		for (auto& setting : a_settings) {
-			setting->Load(&ini);
+			setting->Load(&ini, false);
 		}
 	}
 }
@@ -48,11 +48,12 @@ void REX::INI::detail::SettingLoadImpl<bool>(
 	void*             a_file,
 	bool&             a_value,
 	bool&             a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = file->GetBoolValue(a_section.data(), a_key.data(), a_valueDefault);
+	a_value = file->GetBoolValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -71,11 +72,12 @@ void REX::INI::detail::SettingLoadImpl<float>(
 	void*             a_file,
 	float&            a_value,
 	float&            a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = static_cast<float>(file->GetDoubleValue(a_section.data(), a_key.data(), a_valueDefault));
+	a_value = static_cast<float>(file->GetDoubleValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault : a_value));
 }
 
 template <>
@@ -94,11 +96,12 @@ void REX::INI::detail::SettingLoadImpl<double>(
 	void*             a_file,
 	double&           a_value,
 	double&           a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = file->GetDoubleValue(a_section.data(), a_key.data(), a_valueDefault);
+	a_value = file->GetDoubleValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -117,11 +120,12 @@ void REX::INI::detail::SettingLoadImpl<std::int8_t>(
 	void*             a_file,
 	std::int8_t&      a_value,
 	std::int8_t&      a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = static_cast<std::int8_t>(file->GetLongValue(a_section.data(), a_key.data(), a_valueDefault));
+	a_value = static_cast<std::int8_t>(file->GetLongValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault : a_value));
 }
 
 template <>
@@ -140,11 +144,12 @@ void REX::INI::detail::SettingLoadImpl<std::int16_t>(
 	void*             a_file,
 	std::int16_t&     a_value,
 	std::int16_t&     a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = static_cast<std::int16_t>(file->GetLongValue(a_section.data(), a_key.data(), a_valueDefault));
+	a_value = static_cast<std::int16_t>(file->GetLongValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault : a_value));
 }
 
 template <>
@@ -163,11 +168,12 @@ void REX::INI::detail::SettingLoadImpl<std::int32_t>(
 	void*             a_file,
 	std::int32_t&     a_value,
 	std::int32_t&     a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = static_cast<std::int32_t>(file->GetLongValue(a_section.data(), a_key.data(), a_valueDefault));
+	a_value = static_cast<std::int32_t>(file->GetLongValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault : a_value));
 }
 
 template <>
@@ -186,11 +192,12 @@ void REX::INI::detail::SettingLoadImpl<std::uint8_t>(
 	void*             a_file,
 	std::uint8_t&     a_value,
 	std::uint8_t&     a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = static_cast<std::uint8_t>(file->GetLongValue(a_section.data(), a_key.data(), a_valueDefault));
+	a_value = static_cast<std::uint8_t>(file->GetLongValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault : a_value));
 }
 
 template <>
@@ -209,11 +216,12 @@ void REX::INI::detail::SettingLoadImpl<std::uint16_t>(
 	void*             a_file,
 	std::uint16_t&    a_value,
 	std::uint16_t&    a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = static_cast<std::uint16_t>(file->GetLongValue(a_section.data(), a_key.data(), a_valueDefault));
+	a_value = static_cast<std::uint16_t>(file->GetLongValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault : a_value));
 }
 
 template <>
@@ -232,11 +240,12 @@ void REX::INI::detail::SettingLoadImpl<std::uint32_t>(
 	void*             a_file,
 	std::uint32_t&    a_value,
 	std::uint32_t&    a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = static_cast<std::uint32_t>(file->GetLongValue(a_section.data(), a_key.data(), a_valueDefault));
+	a_value = static_cast<std::uint32_t>(file->GetLongValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault : a_value));
 }
 
 template <>
@@ -255,11 +264,12 @@ void REX::INI::detail::SettingLoadImpl<std::string>(
 	void*             a_file,
 	std::string&      a_value,
 	std::string&      a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_section,
 	std::string_view& a_key)
 {
 	auto file = static_cast<CSimpleIniA*>(a_file);
-	a_value = file->GetValue(a_section.data(), a_key.data(), a_valueDefault.c_str());
+	a_value = file->GetValue(a_section.data(), a_key.data(), a_useDefault ? a_valueDefault.c_str() : a_value.c_str());
 }
 
 template <>
@@ -299,7 +309,7 @@ void REX::JSON::detail::StoreLoadImpl(
 		try {
 			auto result = nlohmann::json::parse(file);
 			for (auto setting : a_settings) {
-				setting->Load(&result);
+				setting->Load(&result, false);
 			}
 		} catch (const std::exception& e) {
 			SKSE::log::error("{}", e.what());
@@ -330,10 +340,11 @@ void REX::JSON::detail::SettingLoadImpl<bool>(
 	void*             a_file,
 	bool&             a_value,
 	bool&             a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<bool>(a_path, a_valueDefault);
+	a_value = file->value<bool>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -351,10 +362,11 @@ void REX::JSON::detail::SettingLoadImpl<float>(
 	void*             a_file,
 	float&            a_value,
 	float&            a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<float>(a_path, a_valueDefault);
+	a_value = file->value<float>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -372,10 +384,11 @@ void REX::JSON::detail::SettingLoadImpl<double>(
 	void*             a_file,
 	double&           a_value,
 	double&           a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<double>(a_path, a_valueDefault);
+	a_value = file->value<double>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -393,10 +406,11 @@ void REX::JSON::detail::SettingLoadImpl<std::int8_t>(
 	void*             a_file,
 	std::int8_t&      a_value,
 	std::int8_t&      a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<std::int8_t>(a_path, a_valueDefault);
+	a_value = file->value<std::int8_t>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -414,10 +428,11 @@ void REX::JSON::detail::SettingLoadImpl<std::int16_t>(
 	void*             a_file,
 	std::int16_t&     a_value,
 	std::int16_t&     a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<std::int16_t>(a_path, a_valueDefault);
+	a_value = file->value<std::int16_t>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -435,10 +450,11 @@ void REX::JSON::detail::SettingLoadImpl<std::int32_t>(
 	void*             a_file,
 	std::int32_t&     a_value,
 	std::int32_t&     a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<std::int32_t>(a_path, a_valueDefault);
+	a_value = file->value<std::int32_t>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -456,10 +472,11 @@ void REX::JSON::detail::SettingLoadImpl<std::uint8_t>(
 	void*             a_file,
 	std::uint8_t&     a_value,
 	std::uint8_t&     a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<std::uint8_t>(a_path, a_valueDefault);
+	a_value = file->value<std::uint8_t>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -477,10 +494,11 @@ void REX::JSON::detail::SettingLoadImpl<std::uint16_t>(
 	void*             a_file,
 	std::uint16_t&    a_value,
 	std::uint16_t&    a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<std::uint16_t>(a_path, a_valueDefault);
+	a_value = file->value<std::uint16_t>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -498,10 +516,11 @@ void REX::JSON::detail::SettingLoadImpl<std::uint32_t>(
 	void*             a_file,
 	std::uint32_t&    a_value,
 	std::uint32_t&    a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<std::uint32_t>(a_path, a_valueDefault);
+	a_value = file->value<std::uint32_t>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -519,10 +538,11 @@ void REX::JSON::detail::SettingLoadImpl<std::string>(
 	void*             a_file,
 	std::string&      a_value,
 	std::string&      a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<nlohmann::json*>(a_file);
-	a_value = file->value<std::string>(a_path, a_valueDefault);
+	a_value = file->value<std::string>(a_path, a_useDefault ? a_valueDefault : a_value);
 }
 
 template <>
@@ -556,7 +576,7 @@ void REX::TOML::detail::StoreLoadImpl(
 	try {
 		auto result = toml::parse_file(a_fileUser);
 		for (auto& setting : a_settings) {
-			setting->Load(&result);
+			setting->Load(&result, false);
 		}
 	} catch (const std::exception& e) {
 		SKSE::log::error("{}", e.what());
@@ -587,11 +607,12 @@ void REX::TOML::detail::SettingLoadImpl<bool>(
 	void*             a_file,
 	bool&             a_value,
 	bool&             a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
@@ -610,11 +631,12 @@ void REX::TOML::detail::SettingLoadImpl<float>(
 	void*             a_file,
 	float&            a_value,
 	float&            a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
@@ -633,11 +655,12 @@ void REX::TOML::detail::SettingLoadImpl<double>(
 	void*             a_file,
 	double&           a_value,
 	double&           a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
@@ -656,11 +679,12 @@ void REX::TOML::detail::SettingLoadImpl<std::int8_t>(
 	void*             a_file,
 	std::int8_t&      a_value,
 	std::int8_t&      a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
@@ -679,11 +703,12 @@ void REX::TOML::detail::SettingLoadImpl<std::int16_t>(
 	void*             a_file,
 	std::int16_t&     a_value,
 	std::int16_t&     a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
@@ -702,11 +727,12 @@ void REX::TOML::detail::SettingLoadImpl<std::int32_t>(
 	void*             a_file,
 	std::int32_t&     a_value,
 	std::int32_t&     a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
@@ -725,11 +751,12 @@ void REX::TOML::detail::SettingLoadImpl<std::uint8_t>(
 	void*             a_file,
 	std::uint8_t&     a_value,
 	std::uint8_t&     a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
@@ -748,11 +775,12 @@ void REX::TOML::detail::SettingLoadImpl<std::uint16_t>(
 	void*             a_file,
 	std::uint16_t&    a_value,
 	std::uint16_t&    a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
@@ -771,11 +799,12 @@ void REX::TOML::detail::SettingLoadImpl<std::uint32_t>(
 	void*             a_file,
 	std::uint32_t&    a_value,
 	std::uint32_t&    a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
@@ -794,11 +823,12 @@ void REX::TOML::detail::SettingLoadImpl<std::string>(
 	void*             a_file,
 	std::string&      a_value,
 	std::string&      a_valueDefault,
+	bool              a_useDefault,
 	std::string_view& a_path)
 {
 	auto file = static_cast<toml::parse_result*>(a_file);
 	if (auto node = file->at_path(a_path)) {
-		a_value = node.value_or(a_valueDefault);
+		a_value = node.value_or(a_useDefault ? a_valueDefault : a_value);
 	}
 }
 
