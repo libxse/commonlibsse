@@ -571,8 +571,8 @@ void REX::TOML::detail::StoreLoadImpl(
 		for (auto& setting : a_settings) {
 			setting->Load(&result);
 		}
-	} catch (const toml::parse_error& e) {
-		SKSE::log::error("{}", e.description());
+	} catch (const std::exception& e) {
+		SKSE::log::error("{}", e.what());
 	}
 
 	try {
@@ -580,8 +580,8 @@ void REX::TOML::detail::StoreLoadImpl(
 		for (auto& setting : a_settings) {
 			setting->Load(&result);
 		}
-	} catch (const toml::parse_error& e) {
-		SKSE::log::error("{}", e.description());
+	} catch (const std::exception& e) {
+		SKSE::log::error("{}", e.what());
 	}
 }
 
@@ -590,27 +590,24 @@ void REX::TOML::detail::StoreSaveImpl(
 	[[maybe_unused]] std::string_view&       a_fileUser,
 	[[maybe_unused]] std::vector<ISetting*>& a_settings)
 {
-	toml::parse_result output{};
-	try {
-		output = toml::parse_file(a_fileBase);
-	} catch ([[maybe_unused]] const toml::parse_error& e) {
-		// ignore
-	}
-
-	for (auto& setting : a_settings) {
-		setting->Save(&output);
-	}
-
-	std::ofstream fileBase;
-	fileBase.open(a_fileBase, std::ios::ate | std::ios::trunc);
-	fileBase << toml::toml_formatter{ output };
-	fileBase.close();
+	//	toml::parse_result output{};
+	//	try {
+	//		output = toml::parse_file(a_fileBase);
+	//	} catch ([[maybe_unused]] const std::exception& e) {
+	//		// ignore
+	//	}
+	//
+	//	for (auto& setting : a_settings) {
+	//		setting->Save(&output);
+	//	}
+	//
+	//	std::ofstream file{ a_fileBase.data(), std::ios::trunc };
+	//	file << output;
 }
 
 template <>
 void REX::TOML::detail::SettingLoadImpl<bool>(
-	[[maybe_unused]] void* a_file,
-
+	[[maybe_unused]] void*             a_file,
 	[[maybe_unused]] bool&             a_value,
 	[[maybe_unused]] bool&             a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
@@ -628,8 +625,8 @@ void REX::TOML::detail::SettingSaveImpl<bool>(
 	[[maybe_unused]] bool&             a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 
 template <>
@@ -652,8 +649,8 @@ void REX::TOML::detail::SettingSaveImpl<float>(
 	[[maybe_unused]] float&            a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 
 template <>
@@ -676,8 +673,8 @@ void REX::TOML::detail::SettingSaveImpl<double>(
 	[[maybe_unused]] double&           a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 
 template <>
@@ -695,14 +692,13 @@ void REX::TOML::detail::SettingLoadImpl<std::int8_t>(
 
 template <>
 void REX::TOML::detail::SettingSaveImpl<std::int8_t>(
-	[[maybe_unused]] void* a_file,
-
+	[[maybe_unused]] void*             a_file,
 	[[maybe_unused]] std::int8_t&      a_value,
 	[[maybe_unused]] std::int8_t&      a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 
 template <>
@@ -725,8 +721,8 @@ void REX::TOML::detail::SettingSaveImpl<std::int16_t>(
 	[[maybe_unused]] std::int16_t&     a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 
 template <>
@@ -749,8 +745,8 @@ void REX::TOML::detail::SettingSaveImpl<std::int32_t>(
 	[[maybe_unused]] std::int32_t&     a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 
 template <>
@@ -773,8 +769,8 @@ void REX::TOML::detail::SettingSaveImpl<std::uint8_t>(
 	[[maybe_unused]] std::uint8_t&     a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 
 template <>
@@ -797,8 +793,8 @@ void REX::TOML::detail::SettingSaveImpl<std::uint16_t>(
 	[[maybe_unused]] std::uint16_t&    a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 
 template <>
@@ -821,8 +817,8 @@ void REX::TOML::detail::SettingSaveImpl<std::uint32_t>(
 	[[maybe_unused]] std::uint32_t&    a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 
 template <>
@@ -845,7 +841,7 @@ void REX::TOML::detail::SettingSaveImpl<std::string>(
 	[[maybe_unused]] std::string&      a_valueDefault,
 	[[maybe_unused]] std::string_view& a_path)
 {
-	auto file = static_cast<toml::parse_result*>(a_file);
-	file->insert_or_assign(a_path, a_value);
+	//	auto file = static_cast<toml::parse_result*>(a_file);
+	//	file->insert_or_assign(a_path, a_value);
 }
 #endif
