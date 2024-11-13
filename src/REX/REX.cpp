@@ -5,7 +5,7 @@
 #include "SKSE/Logger.h"
 
 #ifdef REX_OPTION_INI
-#include <inicpp.h>
+#	include <inicpp.h>
 
 namespace REX::INI
 {
