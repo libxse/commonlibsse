@@ -7,9 +7,8 @@ namespace REX
 	class ISetting
 	{
 	public:
-		virtual void Load(void* a_file) = 0;
-		virtual void Load(void* a_file, bool a_useDefault) = 0;
-		virtual void Save(void* a_file) = 0;
+		virtual void Load(void* a_data, bool a_isBase) = 0;
+		virtual void Save(void* a_data) = 0;
 	};
 
 	class ISettingStore
