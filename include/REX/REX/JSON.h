@@ -8,11 +8,11 @@ namespace REX::JSON
 	namespace detail
 	{
 		void StoreLoadImpl(std::string_view& a_fileBase, std::string_view& a_fileUser, std::vector<ISetting*>& a_settings);
-		void StoreSaveImpl(std::string_view& a_fileBase, std::string_view& a_fileUser, std::vector<ISetting*>& a_settings);
+		void StoreSaveImpl(std::string_view& a_fileBase, std::vector<ISetting*>& a_settings);
 		template <class T>
 		void SettingLoadImpl(void* a_file, T& a_value, T& a_valueDefault, std::string_view& a_path);
 		template <class T>
-		void SettingSaveImpl(void* a_file, T& a_value, T& a_valueDefault, std::string_view& a_path);
+		void SettingSaveImpl(void* a_file, T& a_value, std::string_view& a_path);
 	}
 
 	class SettingStore :
@@ -26,7 +26,7 @@ namespace REX::JSON
 
 		virtual void Save() override
 		{
-			detail::StoreSaveImpl(m_fileBase, m_fileUser, m_settings);
+			detail::StoreSaveImpl(m_fileBase, m_settings);
 		}
 	};
 
@@ -48,7 +48,7 @@ namespace REX::JSON
 
 		virtual void Save(void* a_file) override
 		{
-			detail::SettingSaveImpl(a_file, this->m_value, this->m_valueDefault, m_path);
+			detail::SettingSaveImpl(a_file, this->m_value, m_path);
 		}
 
 	private:
