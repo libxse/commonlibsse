@@ -5,29 +5,21 @@
 #ifdef REX_OPTION_JSON
 namespace REX::JSON
 {
-	namespace detail
+	namespace Impl
 	{
-		void StoreLoadImpl(std::string_view& a_fileBase, std::string_view& a_fileUser, std::vector<ISetting*>& a_settings);
-		void StoreSaveImpl(std::string_view& a_fileBase, std::vector<ISetting*>& a_settings);
 		template <class T>
-		void SettingLoadImpl(void* a_file, T& a_value, T& a_valueDefault, bool a_useDefault, std::string_view& a_path);
+		void SettingLoad(void* a_file, std::string_view a_path, T& a_value, T& a_valueDefault);
+
 		template <class T>
-		void SettingSaveImpl(void* a_file, T& a_value, std::string_view& a_path);
+		void SettingSave(void* a_file, std::string_view a_path, T& a_value);
 	}
 
 	class SettingStore :
 		public TSettingStore<SettingStore>
 	{
 	public:
-		virtual void Load() override
-		{
-			detail::StoreLoadImpl(m_fileBase, m_fileUser, m_settings);
-		}
-
-		virtual void Save() override
-		{
-			detail::StoreSaveImpl(m_fileBase, m_settings);
-		}
+		virtual void Load() override;
+		virtual void Save() override;
 	};
 
 	template <class T, class Store = SettingStore>
@@ -41,19 +33,19 @@ namespace REX::JSON
 		{}
 
 	public:
-		virtual void Load(void* a_file) override
+		virtual void Load(void* a_data, bool a_isBase) override
 		{
-			Load(a_file, true);
+			if (a_isBase) {
+				Impl::SettingLoad(a_data, m_path, this->m_valueDefault, this->m_valueDefault);
+				this->SetValue(this->m_valueDefault);
+			} else {
+				Impl::SettingLoad(a_data, m_path, this->m_value, this->m_valueDefault);
+			}
 		}
 
-		virtual void Load(void* a_file, bool a_useDefault) override
+		virtual void Save(void* a_data) override
 		{
-			detail::SettingLoadImpl(a_file, this->m_value, this->m_valueDefault, a_useDefault, m_path);
-		}
-
-		virtual void Save(void* a_file) override
-		{
-			detail::SettingSaveImpl(a_file, this->m_value, m_path);
+			Impl::SettingSave(a_data, m_path, this->m_value);
 		}
 
 	private:

@@ -54,7 +54,7 @@ if has_config("skse_xbyak") then
 end
 
 if has_config("rex_ini") then
-    add_requires("simpleini", { configs = { convert = "none" } })
+    add_requires("inifile-cpp")
 end
 
 if has_config("rex_json") then
@@ -81,7 +81,7 @@ target("commonlibsse", function()
     end
 
     if has_config("rex_ini") then
-        add_packages("simpleini", { public = true })
+        add_packages("inifile-cpp", { public = true })
     end
 
     if has_config("rex_json") then
