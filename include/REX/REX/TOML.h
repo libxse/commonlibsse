@@ -104,36 +104,13 @@ namespace REX::TOML
 	using Str = Setting<std::string, Store>;
 }
 
-namespace REX::TOML::Impl
+template <class T, class S, class CharT>
+struct std::formatter<REX::TOML::Setting<T, S>, CharT> : std::formatter<T, CharT>
 {
-#	ifdef __cpp_lib_format
-	template <class T, class CharT>
-	struct formatter : std::formatter<T, CharT>
+	template <class FormatContext>
+	auto format(const REX::TOML::Setting<T, S>& a_setting, FormatContext& a_ctx) const
 	{
-		template <class FormatContext>
-		auto format(REX::TOML::Setting<T> a_setting, FormatContext& a_ctx) const
-		{
-			return std::formatter<T, CharT>::format(a_setting.GetValue(), a_ctx);
-		}
-	};
-#	endif
-}
-
-#	ifdef __cpp_lib_format
-namespace std
-{
-	// clang-format off
-	template <class CharT> struct formatter<REX::TOML::Bool<>, CharT> : REX::TOML::Impl::formatter<bool, CharT> {};
-	template <class CharT> struct formatter<REX::TOML::F32<>, CharT> : REX::TOML::Impl::formatter<float, CharT> {};
-	template <class CharT> struct formatter<REX::TOML::F64<>, CharT> : REX::TOML::Impl::formatter<double, CharT> {};
-	template <class CharT> struct formatter<REX::TOML::I8<>, CharT> : REX::TOML::Impl::formatter<std::int8_t, CharT> {};
-	template <class CharT> struct formatter<REX::TOML::I16<>, CharT> : REX::TOML::Impl::formatter<std::int16_t, CharT> {};
-	template <class CharT> struct formatter<REX::TOML::I32<>, CharT> : REX::TOML::Impl::formatter<std::int32_t, CharT> {};
-	template <class CharT> struct formatter<REX::TOML::U8<>, CharT> : REX::TOML::Impl::formatter<std::uint8_t, CharT> {};
-	template <class CharT> struct formatter<REX::TOML::U16<>, CharT> : REX::TOML::Impl::formatter<std::uint16_t, CharT> {};
-	template <class CharT> struct formatter<REX::TOML::U32<>, CharT> : REX::TOML::Impl::formatter<std::uint32_t, CharT> {};
-	template <class CharT> struct formatter<REX::TOML::Str<>, CharT> : REX::TOML::Impl::formatter<std::string, CharT> {};
-	// clang-format on
-}
-#	endif
+		return std::formatter<T, CharT>::format(a_setting.GetValue(), a_ctx);
+	}
+};
 #endif
