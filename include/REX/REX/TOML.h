@@ -6,7 +6,7 @@
 namespace REX::TOML
 {
 	using sec_t = std::vector<std::string>;
-	using key_t = std::string;
+	using key_t = std::string_view;
 
 	namespace Impl
 	{
@@ -36,7 +36,7 @@ namespace REX::TOML
 			m_key(a_key)
 		{}
 
-		Setting(std::string a_section, key_t a_key, T a_default) :
+		Setting(std::string_view a_section, key_t a_key, T a_default) :
 			TSetting<T, Store>(a_default),
 			m_section(),
 			m_key(a_key)

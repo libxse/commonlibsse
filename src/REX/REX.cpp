@@ -224,7 +224,7 @@ namespace REX::TOML
 {
 	namespace Impl
 	{
-		static toml::value* recurse_table(toml::value* a_result, toml::value& a_value, std::string a_section, bool a_create)
+		static toml::value* recurse_table(toml::value* a_result, toml::value& a_value, const std::string& a_section, bool a_create)
 		{
 			if (a_result && a_result->is_table()) {
 				for (auto& value : a_result->as_table()) {
@@ -252,17 +252,17 @@ namespace REX::TOML
 
 		static bool recurse_mark_implicit(toml::value& a_value)
 		{
-			bool result{ true };
 			for (auto& kv : a_value.as_table()) {
 				if (kv.second.is_table()) {
-					if (!recurse_mark_implicit(kv.second))
+					if (!recurse_mark_implicit(kv.second)) {
 						continue;
+					}
 					kv.second.as_table_fmt().fmt = toml::table_format::implicit;
 				} else {
 					return false;
 				}
 			}
-			return result;
+			return true;
 		}
 
 		template <class T>
@@ -276,11 +276,11 @@ namespace REX::TOML
 			const auto& data = static_cast<toml::value*>(a_data);
 			if (a_section.empty()) {
 				auto& path = (*data);
-				a_value = toml::find_or<T>(path, a_key, a_valueDefault);
+				a_value = toml::find_or<T>(path, a_key.data(), a_valueDefault);
 				return;
 			} else if (a_section.size() == 1) {
 				auto& path = (*data)[a_section.front()];
-				a_value = toml::find_or<T>(path, a_key, a_valueDefault);
+				a_value = toml::find_or<T>(path, a_key.data(), a_valueDefault);
 				return;
 			} else {
 				toml::value* path{ nullptr };
@@ -288,7 +288,7 @@ namespace REX::TOML
 					path = recurse_table(path, *data, section, false);
 				}
 				if (path) {
-					a_value = toml::find_or<T>(*path, a_key, a_valueDefault);
+					a_value = toml::find_or<T>(*path, a_key.data(), a_valueDefault);
 					return;
 				}
 			}
@@ -315,16 +315,16 @@ namespace REX::TOML
 		{
 			auto& data = *static_cast<toml::value*>(a_data);
 			if (a_section.empty()) {
-				data[a_key] = a_value;
+				data[a_key.data()] = a_value;
 			} else if (a_section.size() == 1) {
-				data[a_section.front()][a_key] = a_value;
+				data[a_section.front()][a_key.data()] = a_value;
 			} else {
 				toml::value* path{ nullptr };
 				for (auto& section : a_section) {
 					path = recurse_table(path, data, section, true);
 				}
 				if (path) {
-					(*path)[a_key] = a_value;
+					(*path)[a_key.data()] = a_value;
 				}
 			}
 		}
