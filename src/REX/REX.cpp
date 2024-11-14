@@ -222,62 +222,112 @@ namespace REX::TOML
 {
 	namespace Impl
 	{
+		static toml::value recurse_table(toml::value a_value, std::string_view a_section)
+		{
+			if (a_value.is_table()) {
+				for (auto& value : a_value.as_table()) {
+					if (value.first == a_section) {
+						return value.second;
+					}
+				}
+			}
+			return nullptr;
+		}
+
+		static toml::value* expand_table(toml::value& a_value, toml::value* a_result, std::string_view a_section)
+		{
+			if (a_result && a_result->is_table()) {
+				for (auto& value : a_result->as_table()) {
+					if (value.first == a_section) {
+						return std::addressof(value.second);
+					}
+				}
+				(*a_result)[a_section.data()] = toml::table{};
+				return std::addressof((*a_result)[a_section.data()]);
+			} else if (a_value.is_table()) {
+				for (auto& value : a_value.as_table()) {
+					if (value.first == a_section) {
+						return std::addressof(value.second);
+					}
+				}
+				a_value[a_section.data()] = toml::table{};
+				return std::addressof(a_value[a_section.data()]);
+			}
+			return nullptr;
+		}
+
 		template <class T>
 		void SettingLoad<T>(
-			void*            a_data,
-			std::string_view a_section,
-			std::string_view a_key,
-			T&               a_value,
-			T&               a_valueDefault)
+			void*                       a_data,
+			std::list<std::string_view> a_section,
+			std::string_view            a_key,
+			T&                          a_value,
+			T&                          a_valueDefault)
 		{
 			const auto& data = static_cast<toml::value*>(a_data);
 			if (a_section.empty()) {
-				a_value = toml::find_or<T>((*data), a_key.data(), a_valueDefault);
+				auto& path = (*data);
+				a_value = toml::find_or<T>(path, a_key.data(), a_valueDefault);
 				return;
-			} else if (data->contains(a_section.data())) {
-				a_value = toml::find_or<T>((*data)[a_section.data()], a_key.data(), a_valueDefault);
+			} else if (a_section.size() == 1) {
+				auto& path = (*data)[a_section.front().data()];
+				a_value = toml::find_or<T>(path, a_key.data(), a_valueDefault);
+				return;
+			} else {
+				toml::value path = (*data);
+				for (auto& section : a_section) {
+					path = recurse_table(path, section);
+				}
+				a_value = toml::find_or<T>(path, a_key.data(), a_valueDefault);
 				return;
 			}
-
 			a_value = a_valueDefault;
 		}
 
-		template void SettingLoad<bool>(void*, std::string_view, std::string_view, bool&, bool&);
-		template void SettingLoad<float>(void*, std::string_view, std::string_view, float&, float&);
-		template void SettingLoad<double>(void*, std::string_view, std::string_view, double&, double&);
-		template void SettingLoad<std::uint8_t>(void*, std::string_view, std::string_view, std::uint8_t&, std::uint8_t&);
-		template void SettingLoad<std::uint16_t>(void*, std::string_view, std::string_view, std::uint16_t&, std::uint16_t&);
-		template void SettingLoad<std::uint32_t>(void*, std::string_view, std::string_view, std::uint32_t&, std::uint32_t&);
-		template void SettingLoad<std::int8_t>(void*, std::string_view, std::string_view, std::int8_t&, std::int8_t&);
-		template void SettingLoad<std::int16_t>(void*, std::string_view, std::string_view, std::int16_t&, std::int16_t&);
-		template void SettingLoad<std::int32_t>(void*, std::string_view, std::string_view, std::int32_t&, std::int32_t&);
-		template void SettingLoad<std::string>(void*, std::string_view, std::string_view, std::string&, std::string&);
+		template void SettingLoad<bool>(void*, std::list<std::string_view>, std::string_view, bool&, bool&);
+		template void SettingLoad<float>(void*, std::list<std::string_view>, std::string_view, float&, float&);
+		template void SettingLoad<double>(void*, std::list<std::string_view>, std::string_view, double&, double&);
+		template void SettingLoad<std::uint8_t>(void*, std::list<std::string_view>, std::string_view, std::uint8_t&, std::uint8_t&);
+		template void SettingLoad<std::uint16_t>(void*, std::list<std::string_view>, std::string_view, std::uint16_t&, std::uint16_t&);
+		template void SettingLoad<std::uint32_t>(void*, std::list<std::string_view>, std::string_view, std::uint32_t&, std::uint32_t&);
+		template void SettingLoad<std::int8_t>(void*, std::list<std::string_view>, std::string_view, std::int8_t&, std::int8_t&);
+		template void SettingLoad<std::int16_t>(void*, std::list<std::string_view>, std::string_view, std::int16_t&, std::int16_t&);
+		template void SettingLoad<std::int32_t>(void*, std::list<std::string_view>, std::string_view, std::int32_t&, std::int32_t&);
+		template void SettingLoad<std::string>(void*, std::list<std::string_view>, std::string_view, std::string&, std::string&);
 
 		template <class T>
 		void SettingSave<T>(
-			void*            a_data,
-			std::string_view a_section,
-			std::string_view a_key,
-			T&               a_value)
+			void*                       a_data,
+			std::list<std::string_view> a_section,
+			std::string_view            a_key,
+			T&                          a_value)
 		{
 			auto& data = *static_cast<toml::value*>(a_data);
 			if (a_section.empty()) {
 				data[a_key.data()] = a_value;
+			} else if (a_section.size() == 1) {
+				data[a_section.front().data()][a_key.data()] = a_value;
 			} else {
-				data[a_section.data()][a_key.data()] = a_value;
+				toml::value* path{ nullptr };
+				for (auto& section : a_section) {
+					path = expand_table(data, path, section);
+				}
+				if (path) {
+					(*path)[a_key.data()] = a_value;
+				}
 			}
 		}
 
-		template void SettingSave<bool>(void*, std::string_view, std::string_view, bool&);
-		template void SettingSave<float>(void*, std::string_view, std::string_view, float&);
-		template void SettingSave<double>(void*, std::string_view, std::string_view, double&);
-		template void SettingSave<std::uint8_t>(void*, std::string_view, std::string_view, std::uint8_t&);
-		template void SettingSave<std::uint16_t>(void*, std::string_view, std::string_view, std::uint16_t&);
-		template void SettingSave<std::uint32_t>(void*, std::string_view, std::string_view, std::uint32_t&);
-		template void SettingSave<std::int8_t>(void*, std::string_view, std::string_view, std::int8_t&);
-		template void SettingSave<std::int16_t>(void*, std::string_view, std::string_view, std::int16_t&);
-		template void SettingSave<std::int32_t>(void*, std::string_view, std::string_view, std::int32_t&);
-		template void SettingSave<std::string>(void*, std::string_view, std::string_view, std::string&);
+		template void SettingSave<bool>(void*, std::list<std::string_view>, std::string_view, bool&);
+		template void SettingSave<float>(void*, std::list<std::string_view>, std::string_view, float&);
+		template void SettingSave<double>(void*, std::list<std::string_view>, std::string_view, double&);
+		template void SettingSave<std::uint8_t>(void*, std::list<std::string_view>, std::string_view, std::uint8_t&);
+		template void SettingSave<std::uint16_t>(void*, std::list<std::string_view>, std::string_view, std::uint16_t&);
+		template void SettingSave<std::uint32_t>(void*, std::list<std::string_view>, std::string_view, std::uint32_t&);
+		template void SettingSave<std::int8_t>(void*, std::list<std::string_view>, std::string_view, std::int8_t&);
+		template void SettingSave<std::int16_t>(void*, std::list<std::string_view>, std::string_view, std::int16_t&);
+		template void SettingSave<std::int32_t>(void*, std::list<std::string_view>, std::string_view, std::int32_t&);
+		template void SettingSave<std::string>(void*, std::list<std::string_view>, std::string_view, std::string&);
 	}
 
 	void SettingStore::Load()

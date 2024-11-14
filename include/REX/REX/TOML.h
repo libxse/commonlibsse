@@ -8,10 +8,10 @@ namespace REX::TOML
 	namespace Impl
 	{
 		template <class T>
-		void SettingLoad(void* a_file, std::string_view a_section, std::string_view a_key, T& a_value, T& a_valueDefault);
+		void SettingLoad(void* a_file, std::list<std::string_view> a_section, std::string_view a_key, T& a_value, T& a_valueDefault);
 
 		template <class T>
-		void SettingSave(void* a_file, std::string_view a_section, std::string_view a_key, T& a_value);
+		void SettingSave(void* a_file, std::list<std::string_view> a_section, std::string_view a_key, T& a_value);
 	}
 
 	class SettingStore :
@@ -35,9 +35,20 @@ namespace REX::TOML
 
 		Setting(std::string_view a_section, std::string_view a_key, T a_default) :
 			TSetting<T, Store>(a_default),
-			m_section(a_section),
+			m_section(),
 			m_key(a_key)
-		{}
+		{
+			if (!a_section.contains(".")) {
+				m_section.push_back(a_section);
+			} else {
+				std::size_t pos{ 0 }, idx{ 0 };
+				while ((pos = a_section.find(".", idx)) != std::string_view::npos) {
+					m_section.push_back(a_section.substr(idx, pos));
+					idx = pos + 1;
+				}
+				m_section.push_back(a_section.substr(idx));
+			}
+		}
 
 	public:
 		virtual void Load(void* a_data, bool a_isBase) override
@@ -56,8 +67,8 @@ namespace REX::TOML
 		}
 
 	private:
-		std::string_view m_section;
-		std::string_view m_key;
+		std::list<std::string_view> m_section;
+		std::string_view            m_key;
 	};
 
 	template <class Store = SettingStore>
