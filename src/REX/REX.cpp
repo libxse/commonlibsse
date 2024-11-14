@@ -212,7 +212,7 @@ namespace REX::JSON
 		}
 
 		std::ofstream file{ m_fileBase.data(), std::ios::trunc };
-		file << output.dump(4);
+		file << std::setw(4) << output;
 	}
 }
 #endif
