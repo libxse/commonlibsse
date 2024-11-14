@@ -5,13 +5,15 @@
 #ifdef REX_OPTION_JSON
 namespace REX::JSON
 {
+	using path_t = std::string_view;
+
 	namespace Impl
 	{
 		template <class T>
-		void SettingLoad(void* a_file, std::string_view a_path, T& a_value, T& a_valueDefault);
+		void SettingLoad(void* a_file, path_t a_path, T& a_value, T& a_valueDefault);
 
 		template <class T>
-		void SettingSave(void* a_file, std::string_view a_path, T& a_value);
+		void SettingSave(void* a_file, path_t a_path, T& a_value);
 	}
 
 	class SettingStore :
@@ -27,7 +29,7 @@ namespace REX::JSON
 		public TSetting<T, Store>
 	{
 	public:
-		Setting(std::string_view a_path, T a_default) :
+		Setting(path_t a_path, T a_default) :
 			TSetting<T, Store>(a_default),
 			m_path(a_path)
 		{}
@@ -49,7 +51,7 @@ namespace REX::JSON
 		}
 
 	private:
-		std::string_view m_path;
+		path_t m_path;
 	};
 
 	template <class Store = SettingStore>

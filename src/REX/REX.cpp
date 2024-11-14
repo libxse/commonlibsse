@@ -16,11 +16,11 @@ namespace REX::INI
 
 		template <class T>
 		void SettingLoad<T>(
-			void*            a_data,
-			std::string_view a_section,
-			std::string_view a_key,
-			T&               a_value,
-			T&               a_valueDefault)
+			void* a_data,
+			sec_t a_section,
+			key_t a_key,
+			T&    a_value,
+			T&    a_valueDefault)
 		{
 			const auto file = static_cast<CSimpleIniA*>(a_data);
 			if constexpr (std::is_same_v<T, bool>) {
@@ -34,23 +34,23 @@ namespace REX::INI
 			}
 		}
 
-		template void SettingLoad<bool>(void*, std::string_view, std::string_view, bool&, bool&);
-		template void SettingLoad<float>(void*, std::string_view, std::string_view, float&, float&);
-		template void SettingLoad<double>(void*, std::string_view, std::string_view, double&, double&);
-		template void SettingLoad<std::uint8_t>(void*, std::string_view, std::string_view, std::uint8_t&, std::uint8_t&);
-		template void SettingLoad<std::uint16_t>(void*, std::string_view, std::string_view, std::uint16_t&, std::uint16_t&);
-		template void SettingLoad<std::uint32_t>(void*, std::string_view, std::string_view, std::uint32_t&, std::uint32_t&);
-		template void SettingLoad<std::int8_t>(void*, std::string_view, std::string_view, std::int8_t&, std::int8_t&);
-		template void SettingLoad<std::int16_t>(void*, std::string_view, std::string_view, std::int16_t&, std::int16_t&);
-		template void SettingLoad<std::int32_t>(void*, std::string_view, std::string_view, std::int32_t&, std::int32_t&);
-		template void SettingLoad<std::string>(void*, std::string_view, std::string_view, std::string&, std::string&);
+		template void SettingLoad<bool>(void*, sec_t, key_t, bool&, bool&);
+		template void SettingLoad<float>(void*, sec_t, key_t, float&, float&);
+		template void SettingLoad<double>(void*, sec_t, key_t, double&, double&);
+		template void SettingLoad<std::uint8_t>(void*, sec_t, key_t, std::uint8_t&, std::uint8_t&);
+		template void SettingLoad<std::uint16_t>(void*, sec_t, key_t, std::uint16_t&, std::uint16_t&);
+		template void SettingLoad<std::uint32_t>(void*, sec_t, key_t, std::uint32_t&, std::uint32_t&);
+		template void SettingLoad<std::int8_t>(void*, sec_t, key_t, std::int8_t&, std::int8_t&);
+		template void SettingLoad<std::int16_t>(void*, sec_t, key_t, std::int16_t&, std::int16_t&);
+		template void SettingLoad<std::int32_t>(void*, sec_t, key_t, std::int32_t&, std::int32_t&);
+		template void SettingLoad<std::string>(void*, sec_t, key_t, std::string&, std::string&);
 
 		template <class T>
 		void SettingSave<T>(
-			void*            a_data,
-			std::string_view a_section,
-			std::string_view a_key,
-			T&               a_value)
+			void* a_data,
+			sec_t a_section,
+			key_t a_key,
+			T&    a_value)
 		{
 			auto& file = *static_cast<CSimpleIniA*>(a_data);
 			if constexpr (std::is_same_v<T, bool>) {
@@ -64,16 +64,16 @@ namespace REX::INI
 			}
 		}
 
-		template void SettingSave<bool>(void*, std::string_view, std::string_view, bool&);
-		template void SettingSave<float>(void*, std::string_view, std::string_view, float&);
-		template void SettingSave<double>(void*, std::string_view, std::string_view, double&);
-		template void SettingSave<std::uint8_t>(void*, std::string_view, std::string_view, std::uint8_t&);
-		template void SettingSave<std::uint16_t>(void*, std::string_view, std::string_view, std::uint16_t&);
-		template void SettingSave<std::uint32_t>(void*, std::string_view, std::string_view, std::uint32_t&);
-		template void SettingSave<std::int8_t>(void*, std::string_view, std::string_view, std::int8_t&);
-		template void SettingSave<std::int16_t>(void*, std::string_view, std::string_view, std::int16_t&);
-		template void SettingSave<std::int32_t>(void*, std::string_view, std::string_view, std::int32_t&);
-		template void SettingSave<std::string>(void*, std::string_view, std::string_view, std::string&);
+		template void SettingSave<bool>(void*, sec_t, key_t, bool&);
+		template void SettingSave<float>(void*, sec_t, key_t, float&);
+		template void SettingSave<double>(void*, sec_t, key_t, double&);
+		template void SettingSave<std::uint8_t>(void*, sec_t, key_t, std::uint8_t&);
+		template void SettingSave<std::uint16_t>(void*, sec_t, key_t, std::uint16_t&);
+		template void SettingSave<std::uint32_t>(void*, sec_t, key_t, std::uint32_t&);
+		template void SettingSave<std::int8_t>(void*, sec_t, key_t, std::int8_t&);
+		template void SettingSave<std::int16_t>(void*, sec_t, key_t, std::int16_t&);
+		template void SettingSave<std::int32_t>(void*, sec_t, key_t, std::int32_t&);
+		template void SettingSave<std::string>(void*, sec_t, key_t, std::string&);
 	}
 
 	void SettingStore::Load()
@@ -122,52 +122,54 @@ namespace REX::JSON
 	{
 		template <class T>
 		void SettingLoad<T>(
-			void*            a_data,
-			std::string_view a_path,
-			T&               a_value,
-			T&               a_valueDefault)
+			void*  a_data,
+			path_t a_path,
+			T&     a_value,
+			T&     a_valueDefault)
 		{
 			const auto& json = *static_cast<nlohmann::json*>(a_data);
-			if (a_path[0] == '/')
+			if (a_path[0] == '/') {
 				a_value = json.value<T>(nlohmann::json::json_pointer(a_path.data()), a_valueDefault);
-			else
+			} else {
 				a_value = json.value<T>(a_path, a_valueDefault);
+			}
 		}
 
-		template void SettingLoad<bool>(void*, std::string_view, bool&, bool&);
-		template void SettingLoad<float>(void*, std::string_view, float&, float&);
-		template void SettingLoad<double>(void*, std::string_view, double&, double&);
-		template void SettingLoad<std::uint8_t>(void*, std::string_view, std::uint8_t&, std::uint8_t&);
-		template void SettingLoad<std::uint16_t>(void*, std::string_view, std::uint16_t&, std::uint16_t&);
-		template void SettingLoad<std::uint32_t>(void*, std::string_view, std::uint32_t&, std::uint32_t&);
-		template void SettingLoad<std::int8_t>(void*, std::string_view, std::int8_t&, std::int8_t&);
-		template void SettingLoad<std::int16_t>(void*, std::string_view, std::int16_t&, std::int16_t&);
-		template void SettingLoad<std::int32_t>(void*, std::string_view, std::int32_t&, std::int32_t&);
-		template void SettingLoad<std::string>(void*, std::string_view, std::string&, std::string&);
+		template void SettingLoad<bool>(void*, path_t, bool&, bool&);
+		template void SettingLoad<float>(void*, path_t, float&, float&);
+		template void SettingLoad<double>(void*, path_t, double&, double&);
+		template void SettingLoad<std::uint8_t>(void*, path_t, std::uint8_t&, std::uint8_t&);
+		template void SettingLoad<std::uint16_t>(void*, path_t, std::uint16_t&, std::uint16_t&);
+		template void SettingLoad<std::uint32_t>(void*, path_t, std::uint32_t&, std::uint32_t&);
+		template void SettingLoad<std::int8_t>(void*, path_t, std::int8_t&, std::int8_t&);
+		template void SettingLoad<std::int16_t>(void*, path_t, std::int16_t&, std::int16_t&);
+		template void SettingLoad<std::int32_t>(void*, path_t, std::int32_t&, std::int32_t&);
+		template void SettingLoad<std::string>(void*, path_t, std::string&, std::string&);
 
 		template <class T>
 		void SettingSave<T>(
-			void*            a_data,
-			std::string_view a_path,
-			T&               a_value)
+			void*  a_data,
+			path_t a_path,
+			T&     a_value)
 		{
 			auto& json = *static_cast<nlohmann::json*>(a_data);
-			if (a_path[0] == '/')
+			if (a_path[0] == '/') {
 				json[nlohmann::json::json_pointer(a_path.data())] = a_value;
-			else
+			} else {
 				json[a_path] = a_value;
+			}
 		}
 
-		template void SettingSave<bool>(void*, std::string_view, bool&);
-		template void SettingSave<float>(void*, std::string_view, float&);
-		template void SettingSave<double>(void*, std::string_view, double&);
-		template void SettingSave<std::uint8_t>(void*, std::string_view, std::uint8_t&);
-		template void SettingSave<std::uint16_t>(void*, std::string_view, std::uint16_t&);
-		template void SettingSave<std::uint32_t>(void*, std::string_view, std::uint32_t&);
-		template void SettingSave<std::int8_t>(void*, std::string_view, std::int8_t&);
-		template void SettingSave<std::int16_t>(void*, std::string_view, std::int16_t&);
-		template void SettingSave<std::int32_t>(void*, std::string_view, std::int32_t&);
-		template void SettingSave<std::string>(void*, std::string_view, std::string&);
+		template void SettingSave<bool>(void*, path_t, bool&);
+		template void SettingSave<float>(void*, path_t, float&);
+		template void SettingSave<double>(void*, path_t, double&);
+		template void SettingSave<std::uint8_t>(void*, path_t, std::uint8_t&);
+		template void SettingSave<std::uint16_t>(void*, path_t, std::uint16_t&);
+		template void SettingSave<std::uint32_t>(void*, path_t, std::uint32_t&);
+		template void SettingSave<std::int8_t>(void*, path_t, std::int8_t&);
+		template void SettingSave<std::int16_t>(void*, path_t, std::int16_t&);
+		template void SettingSave<std::int32_t>(void*, path_t, std::int32_t&);
+		template void SettingSave<std::string>(void*, path_t, std::string&);
 	}
 
 	void SettingStore::Load()

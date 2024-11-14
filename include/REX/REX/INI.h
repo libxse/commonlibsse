@@ -5,13 +5,16 @@
 #ifdef REX_OPTION_INI
 namespace REX::INI
 {
+	using sec_t = std::string_view;
+	using key_t = std::string_view;
+
 	namespace Impl
 	{
 		template <class T>
-		void SettingLoad(void* a_file, std::string_view a_section, std::string_view a_key, T& a_value, T& a_valueDefault);
+		void SettingLoad(void* a_file, sec_t a_section, key_t a_key, T& a_value, T& a_valueDefault);
 
 		template <class T>
-		void SettingSave(void* a_file, std::string_view a_section, std::string_view a_key, T& a_value);
+		void SettingSave(void* a_file, sec_t a_section, key_t a_key, T& a_value);
 	}
 
 	class SettingStore :
@@ -27,7 +30,7 @@ namespace REX::INI
 		public TSetting<T, Store>
 	{
 	public:
-		Setting(std::string_view a_section, std::string_view a_key, T a_default) :
+		Setting(sec_t a_section, key_t a_key, T a_default) :
 			TSetting<T, Store>(a_default),
 			m_section(a_section),
 			m_key(a_key)
@@ -50,8 +53,8 @@ namespace REX::INI
 		}
 
 	private:
-		std::string_view m_section;
-		std::string_view m_key;
+		sec_t m_section;
+		key_t m_key;
 	};
 
 	template <class Store = SettingStore>
