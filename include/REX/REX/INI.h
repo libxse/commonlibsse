@@ -88,36 +88,13 @@ namespace REX::INI
 	using Str = Setting<std::string, Store>;
 }
 
-namespace REX::INI::Impl
+template <class T, class S, class CharT>
+struct std::formatter<REX::INI::Setting<T, S>, CharT> : std::formatter<T, CharT>
 {
-#	ifdef __cpp_lib_format
-	template <class T, class CharT>
-	struct formatter : std::formatter<T, CharT>
+	template <class FormatContext>
+	auto format(const REX::INI::Setting<T, S>& a_setting, FormatContext& a_ctx) const
 	{
-		template <class FormatContext>
-		auto format(REX::INI::Setting<T> a_setting, FormatContext& a_ctx) const
-		{
-			return std::formatter<T, CharT>::format(a_setting.GetValue(), a_ctx);
-		}
-	};
-#	endif
-}
-
-#	ifdef __cpp_lib_format
-namespace std
-{
-	// clang-format off
-	template <class CharT> struct formatter<REX::INI::Bool<>, CharT> : REX::INI::Impl::formatter<bool, CharT> {};
-	template <class CharT> struct formatter<REX::INI::F32<>, CharT> : REX::INI::Impl::formatter<float, CharT> {};
-	template <class CharT> struct formatter<REX::INI::F64<>, CharT> : REX::INI::Impl::formatter<double, CharT> {};
-	template <class CharT> struct formatter<REX::INI::I8<>, CharT> : REX::INI::Impl::formatter<std::int8_t, CharT> {};
-	template <class CharT> struct formatter<REX::INI::I16<>, CharT> : REX::INI::Impl::formatter<std::int16_t, CharT> {};
-	template <class CharT> struct formatter<REX::INI::I32<>, CharT> : REX::INI::Impl::formatter<std::int32_t, CharT> {};
-	template <class CharT> struct formatter<REX::INI::U8<>, CharT> : REX::INI::Impl::formatter<std::uint8_t, CharT> {};
-	template <class CharT> struct formatter<REX::INI::U16<>, CharT> : REX::INI::Impl::formatter<std::uint16_t, CharT> {};
-	template <class CharT> struct formatter<REX::INI::U32<>, CharT> : REX::INI::Impl::formatter<std::uint32_t, CharT> {};
-	template <class CharT> struct formatter<REX::INI::Str<>, CharT> : REX::INI::Impl::formatter<std::string, CharT> {};
-	// clang-format on
-}
-#	endif
+		return std::formatter<T, CharT>::format(a_setting.GetValue(), a_ctx);
+	}
+};
 #endif
