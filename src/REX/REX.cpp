@@ -5,12 +5,15 @@
 #include "SKSE/Logger.h"
 
 #ifdef REX_OPTION_INI
-#	include <inicpp.h>
+#	include <SimpleIni.h>
 
 namespace REX::INI
 {
 	namespace Impl
 	{
+		template <class T>
+		constexpr bool is_long_integral_v = std::_Is_any_of_v<std::remove_cv_t<T>, std::uint8_t, std::uint16_t, std::uint32_t, std::int8_t, std::int16_t, std::int32_t>;
+
 		template <class T>
 		void SettingLoad<T>(
 			void*            a_data,
@@ -19,20 +22,16 @@ namespace REX::INI
 			T&               a_value,
 			T&               a_valueDefault)
 		{
-			const auto file = static_cast<ini::IniFileCaseInsensitive*>(a_data);
-			if (file->contains(a_section.data())) {
-				auto& section = (*file)[a_section.data()];
-				if (section.contains(a_key.data())) {
-					if constexpr (std::is_same_v<T, std::int8_t>)
-						a_value = section[a_key.data()].as<char>();
-					else
-						a_value = section[a_key.data()].as<T>();
-
-					return;
-				}
+			const auto file = static_cast<CSimpleIniA*>(a_data);
+			if constexpr (std::is_same_v<T, bool>) {
+				a_value = file->GetBoolValue(a_section.data(), a_key.data(), a_valueDefault);
+			} else if constexpr (std::is_floating_point_v<T>) {
+				a_value = static_cast<T>(file->GetDoubleValue(a_section.data(), a_key.data(), a_valueDefault));
+			} else if constexpr (is_long_integral_v<T>) {
+				a_value = static_cast<T>(file->GetLongValue(a_section.data(), a_key.data(), a_valueDefault));
+			} else if constexpr (std::is_same_v<T, std::string>) {
+				a_value = file->GetValue(a_section.data(), a_key.data(), a_valueDefault.c_str());
 			}
-
-			a_value = a_valueDefault;
 		}
 
 		template void SettingLoad<bool>(void*, std::string_view, std::string_view, bool&, bool&);
@@ -53,11 +52,16 @@ namespace REX::INI
 			std::string_view a_key,
 			T&               a_value)
 		{
-			auto& file = *static_cast<ini::IniFileCaseInsensitive*>(a_data);
-			if constexpr (std::is_same_v<T, std::int8_t>)
-				file[a_section.data()][a_key.data()] = (char)a_value;
-			else
-				file[a_section.data()][a_key.data()] = a_value;
+			auto& file = *static_cast<CSimpleIniA*>(a_data);
+			if constexpr (std::is_same_v<T, bool>) {
+				file.SetBoolValue(a_section.data(), a_key.data(), a_value);
+			} else if constexpr (std::is_floating_point_v<T>) {
+				file.SetDoubleValue(a_section.data(), a_key.data(), a_value);
+			} else if constexpr (is_long_integral_v<T>) {
+				file.SetLongValue(a_section.data(), a_key.data(), a_value);
+			} else if constexpr (std::is_same_v<T, std::string>) {
+				file.SetValue(a_section.data(), a_key.data(), a_value.c_str());
+			}
 		}
 
 		template void SettingSave<bool>(void*, std::string_view, std::string_view, bool&);
@@ -74,17 +78,19 @@ namespace REX::INI
 
 	void SettingStore::Load()
 	{
-		ini::IniFileCaseInsensitive file;
+		CSimpleIniA file;
+		file.SetUnicode(true);
+		file.SetQuotes(true);
 
 		if (std::filesystem::exists(m_fileBase)) {
-			file.load(m_fileBase.data());
+			file.LoadFile(m_fileBase.data());
 			for (auto& setting : m_settings) {
 				setting->Load(&file, true);
 			}
 		}
 
 		if (std::filesystem::exists(m_fileUser)) {
-			file.load(m_fileUser.data());
+			file.LoadFile(m_fileUser.data());
 			for (auto& setting : m_settings) {
 				setting->Load(&file, false);
 			}
@@ -93,14 +99,16 @@ namespace REX::INI
 
 	void SettingStore::Save()
 	{
-		ini::IniFileCaseInsensitive file;
+		CSimpleIniA file;
+		file.SetUnicode(true);
+		file.SetQuotes(true);
 
-		file.load(m_fileBase.data());
+		file.LoadFile(m_fileBase.data());
 		for (auto& setting : m_settings) {
 			setting->Save(&file);
 		}
 
-		file.save(m_fileBase.data());
+		file.SaveFile(m_fileBase.data());
 	}
 }
 #endif
