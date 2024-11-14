@@ -62,7 +62,7 @@ if has_config("rex_json") then
 end
 
 if has_config("rex_toml") then
-    add_requires("toml++")
+    add_requires("toml11")
 end
 
 -- define targets
@@ -89,7 +89,7 @@ target("commonlibsse", function()
     end
 
     if has_config("rex_toml") then
-        add_packages("toml++", { public = true })
+        add_packages("toml11", { public = true })
     end
 
     -- add options

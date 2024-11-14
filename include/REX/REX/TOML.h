@@ -8,10 +8,10 @@ namespace REX::TOML
 	namespace Impl
 	{
 		template <class T>
-		void SettingLoad(void* a_file, std::string_view a_path, T& a_value, T& a_valueDefault);
+		void SettingLoad(void* a_file, std::string_view a_section, std::string_view a_key, T& a_value, T& a_valueDefault);
 
 		template <class T>
-		void SettingSave(void* a_file, std::string_view a_path, T& a_value);
+		void SettingSave(void* a_file, std::string_view a_section, std::string_view a_key, T& a_value);
 	}
 
 	class SettingStore :
@@ -29,27 +29,35 @@ namespace REX::TOML
 	public:
 		Setting(std::string_view a_path, T a_default) :
 			TSetting<T, Store>(a_default),
-			m_path(a_path)
+			m_section(),
+			m_key(a_path)
+		{}
+
+		Setting(std::string_view a_section, std::string_view a_key, T a_default) :
+			TSetting<T, Store>(a_default),
+			m_section(a_section),
+			m_key(a_key)
 		{}
 
 	public:
 		virtual void Load(void* a_data, bool a_isBase) override
 		{
 			if (a_isBase) {
-				Impl::SettingLoad(a_data, m_path, this->m_valueDefault, this->m_valueDefault);
+				Impl::SettingLoad(a_data, m_section, m_key, this->m_valueDefault, this->m_valueDefault);
 				this->SetValue(this->m_valueDefault);
 			} else {
-				Impl::SettingLoad(a_data, m_path, this->m_value, this->m_valueDefault);
+				Impl::SettingLoad(a_data, m_section, m_key, this->m_value, this->m_valueDefault);
 			}
 		}
 
 		virtual void Save(void* a_data) override
 		{
-			Impl::SettingSave(a_data, m_path, this->m_value);
+			Impl::SettingSave(a_data, m_section, m_key, this->m_value);
 		}
 
 	private:
-		std::string_view m_path;
+		std::string_view m_section;
+		std::string_view m_key;
 	};
 
 	template <class Store = SettingStore>

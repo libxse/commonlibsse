@@ -216,8 +216,7 @@ namespace REX::JSON
 #endif
 
 #ifdef REX_OPTION_TOML
-#	define TOML_EXCEPTIONS 0
-#	include <toml++/toml.h>
+#	include <toml.hpp>
 
 namespace REX::TOML
 {
@@ -226,63 +225,89 @@ namespace REX::TOML
 		template <class T>
 		void SettingLoad<T>(
 			void*            a_data,
-			std::string_view a_path,
+			std::string_view a_section,
+			std::string_view a_key,
 			T&               a_value,
 			T&               a_valueDefault)
 		{
-			const auto& table = *static_cast<toml::table*>(a_data);
-			if (const auto node = table[toml::path(a_path)])
-				a_value = node.value_or(a_valueDefault);
+			const auto& data = static_cast<toml::value*>(a_data);
+			if (a_section.empty()) {
+				a_value = toml::find_or<T>((*data), a_key.data(), a_valueDefault);
+				return;
+			} else if (data->contains(a_section.data())) {
+				a_value = toml::find_or<T>((*data)[a_section.data()], a_key.data(), a_valueDefault);
+				return;
+			}
+
+			a_value = a_valueDefault;
 		}
 
-		template void SettingLoad<bool>(void*, std::string_view, bool&, bool&);
-		template void SettingLoad<float>(void*, std::string_view, float&, float&);
-		template void SettingLoad<double>(void*, std::string_view, double&, double&);
-		template void SettingLoad<std::uint8_t>(void*, std::string_view, std::uint8_t&, std::uint8_t&);
-		template void SettingLoad<std::uint16_t>(void*, std::string_view, std::uint16_t&, std::uint16_t&);
-		template void SettingLoad<std::uint32_t>(void*, std::string_view, std::uint32_t&, std::uint32_t&);
-		template void SettingLoad<std::int8_t>(void*, std::string_view, std::int8_t&, std::int8_t&);
-		template void SettingLoad<std::int16_t>(void*, std::string_view, std::int16_t&, std::int16_t&);
-		template void SettingLoad<std::int32_t>(void*, std::string_view, std::int32_t&, std::int32_t&);
-		template void SettingLoad<std::string>(void*, std::string_view, std::string&, std::string&);
+		template void SettingLoad<bool>(void*, std::string_view, std::string_view, bool&, bool&);
+		template void SettingLoad<float>(void*, std::string_view, std::string_view, float&, float&);
+		template void SettingLoad<double>(void*, std::string_view, std::string_view, double&, double&);
+		template void SettingLoad<std::uint8_t>(void*, std::string_view, std::string_view, std::uint8_t&, std::uint8_t&);
+		template void SettingLoad<std::uint16_t>(void*, std::string_view, std::string_view, std::uint16_t&, std::uint16_t&);
+		template void SettingLoad<std::uint32_t>(void*, std::string_view, std::string_view, std::uint32_t&, std::uint32_t&);
+		template void SettingLoad<std::int8_t>(void*, std::string_view, std::string_view, std::int8_t&, std::int8_t&);
+		template void SettingLoad<std::int16_t>(void*, std::string_view, std::string_view, std::int16_t&, std::int16_t&);
+		template void SettingLoad<std::int32_t>(void*, std::string_view, std::string_view, std::int32_t&, std::int32_t&);
+		template void SettingLoad<std::string>(void*, std::string_view, std::string_view, std::string&, std::string&);
 
 		template <class T>
 		void SettingSave<T>(
 			void*            a_data,
-			std::string_view a_path,
+			std::string_view a_section,
+			std::string_view a_key,
 			T&               a_value)
 		{
-			// TODO
+			auto& data = *static_cast<toml::value*>(a_data);
+			if (a_section.empty()) {
+				data[a_key.data()] = a_value;
+			} else {
+				data[a_section.data()][a_key.data()] = a_value;
+			}
 		}
 
-		template void SettingSave<bool>(void*, std::string_view, bool&);
-		template void SettingSave<float>(void*, std::string_view, float&);
-		template void SettingSave<double>(void*, std::string_view, double&);
-		template void SettingSave<std::uint8_t>(void*, std::string_view, std::uint8_t&);
-		template void SettingSave<std::uint16_t>(void*, std::string_view, std::uint16_t&);
-		template void SettingSave<std::uint32_t>(void*, std::string_view, std::uint32_t&);
-		template void SettingSave<std::int8_t>(void*, std::string_view, std::int8_t&);
-		template void SettingSave<std::int16_t>(void*, std::string_view, std::int16_t&);
-		template void SettingSave<std::int32_t>(void*, std::string_view, std::int32_t&);
-		template void SettingSave<std::string>(void*, std::string_view, std::string&);
+		template void SettingSave<bool>(void*, std::string_view, std::string_view, bool&);
+		template void SettingSave<float>(void*, std::string_view, std::string_view, float&);
+		template void SettingSave<double>(void*, std::string_view, std::string_view, double&);
+		template void SettingSave<std::uint8_t>(void*, std::string_view, std::string_view, std::uint8_t&);
+		template void SettingSave<std::uint16_t>(void*, std::string_view, std::string_view, std::uint16_t&);
+		template void SettingSave<std::uint32_t>(void*, std::string_view, std::string_view, std::uint32_t&);
+		template void SettingSave<std::int8_t>(void*, std::string_view, std::string_view, std::int8_t&);
+		template void SettingSave<std::int16_t>(void*, std::string_view, std::string_view, std::int16_t&);
+		template void SettingSave<std::int32_t>(void*, std::string_view, std::string_view, std::int32_t&);
+		template void SettingSave<std::string>(void*, std::string_view, std::string_view, std::string&);
 	}
 
 	void SettingStore::Load()
 	{
-		if (auto result = toml::parse_file(m_fileBase)) {
-			for (auto& setting : m_settings)
-				setting->Load(&result.table(), true);
+		if (auto result = toml::try_parse(m_fileBase.data()); result.is_ok()) {
+			for (auto& setting : m_settings) {
+				setting->Load(&result.unwrap(), true);
+			}
 		}
 
-		if (auto result = toml::parse_file(m_fileUser)) {
-			for (auto& setting : m_settings)
-				setting->Load(&result.table(), false);
+		if (auto result = toml::try_parse(m_fileUser.data()); result.is_ok()) {
+			for (auto& setting : m_settings) {
+				setting->Load(&result.unwrap(), false);
+			}
 		}
 	}
 
 	void SettingStore::Save()
 	{
-		// TODO
+		toml::value output{};
+		if (auto result = toml::try_parse(m_fileBase.data()); result.is_ok()) {
+			output = result.unwrap();
+		}
+
+		for (auto setting : m_settings) {
+			setting->Save(&output);
+		}
+
+		std::ofstream file{ m_fileBase.data(), std::ios::trunc };
+		file << toml::format(output);
 	}
 }
 #endif
