@@ -43,12 +43,18 @@ namespace REX::TOML
 			} else {
 				std::size_t pos{ 0 }, idx{ 0 };
 				while ((pos = a_section.find(".", idx)) != std::string_view::npos) {
-					m_section.push_back(a_section.substr(idx, pos));
+					m_section.push_back(a_section.substr(idx, pos - idx));
 					idx = pos + 1;
 				}
 				m_section.push_back(a_section.substr(idx));
 			}
 		}
+
+		Setting(std::initializer_list<std::string_view> a_section, std::string_view a_key, T a_default) :
+			TSetting<T, Store>(a_default),
+			m_section(a_section),
+			m_key(a_key)
+		{}
 
 	public:
 		virtual void Load(void* a_data, bool a_isBase) override
