@@ -41,7 +41,7 @@ namespace REX::TOML
 			m_section(),
 			m_key(a_key)
 		{
-			for (const auto token : std::ranges::split_view { a_section, std::string_view{ "." } }) {
+			for (const auto token : std::ranges::split_view{ a_section, std::string_view{ "." } }) {
 				m_section.emplace_back(token.data(), token.size());
 			}
 		}
