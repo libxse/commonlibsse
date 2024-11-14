@@ -36,6 +36,7 @@
 #include <numeric>
 #include <optional>
 #include <random>
+#include <ranges>
 #include <regex>
 #include <set>
 #include <source_location>

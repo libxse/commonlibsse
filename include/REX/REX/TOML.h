@@ -5,13 +5,16 @@
 #ifdef REX_OPTION_TOML
 namespace REX::TOML
 {
+	using sec_t = std::vector<std::string>;
+	using key_t = std::string;
+
 	namespace Impl
 	{
 		template <class T>
-		void SettingLoad(void* a_file, std::list<std::string_view> a_section, std::string_view a_key, T& a_value, T& a_valueDefault);
+		void SettingLoad(void* a_file, sec_t a_section, key_t a_key, T& a_value, T& a_valueDefault);
 
 		template <class T>
-		void SettingSave(void* a_file, std::list<std::string_view> a_section, std::string_view a_key, T& a_value);
+		void SettingSave(void* a_file, sec_t a_section, key_t a_key, T& a_value);
 	}
 
 	class SettingStore :
@@ -27,30 +30,23 @@ namespace REX::TOML
 		public TSetting<T, Store>
 	{
 	public:
-		Setting(std::string_view a_key, T a_default) :
+		Setting(key_t a_key, T a_default) :
 			TSetting<T, Store>(a_default),
 			m_section(),
 			m_key(a_key)
 		{}
 
-		Setting(std::string_view a_section, std::string_view a_key, T a_default) :
+		Setting(std::string a_section, key_t a_key, T a_default) :
 			TSetting<T, Store>(a_default),
 			m_section(),
 			m_key(a_key)
 		{
-			if (!a_section.contains(".")) {
-				m_section.push_back(a_section);
-			} else {
-				std::size_t pos{ 0 }, idx{ 0 };
-				while ((pos = a_section.find(".", idx)) != std::string_view::npos) {
-					m_section.push_back(a_section.substr(idx, pos - idx));
-					idx = pos + 1;
-				}
-				m_section.push_back(a_section.substr(idx));
+			for (const auto token : std::ranges::split_view { a_section, std::string_view{ "." } }) {
+				m_section.emplace_back(token.data(), token.size());
 			}
 		}
 
-		Setting(std::initializer_list<std::string_view> a_section, std::string_view a_key, T a_default) :
+		Setting(std::initializer_list<std::string> a_section, key_t a_key, T a_default) :
 			TSetting<T, Store>(a_default),
 			m_section(a_section),
 			m_key(a_key)
@@ -73,8 +69,8 @@ namespace REX::TOML
 		}
 
 	private:
-		std::list<std::string_view> m_section;
-		std::string_view            m_key;
+		sec_t m_section;
+		key_t m_key;
 	};
 
 	template <class Store = SettingStore>
