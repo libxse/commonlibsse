@@ -82,4 +82,37 @@ namespace REX::JSON
 	template <class Store = SettingStore>
 	using Str = Setting<std::string, Store>;
 }
+
+namespace REX::JSON::Impl
+{
+#	ifdef __cpp_lib_format
+	template <class T, class CharT>
+	struct formatter : std::formatter<T, CharT>
+	{
+		template <class FormatContext>
+		auto format(REX::JSON::Setting<T> a_setting, FormatContext& a_ctx) const
+		{
+			return std::formatter<T, CharT>::format(a_setting.GetValue(), a_ctx);
+		}
+	};
+#	endif
+}
+
+#	ifdef __cpp_lib_format
+namespace std
+{
+	// clang-format off
+	template <class CharT> struct formatter<REX::JSON::Bool<>, CharT> : REX::JSON::Impl::formatter<bool, CharT> {};
+	template <class CharT> struct formatter<REX::JSON::F32<>, CharT> : REX::JSON::Impl::formatter<float, CharT> {};
+	template <class CharT> struct formatter<REX::JSON::F64<>, CharT> : REX::JSON::Impl::formatter<double, CharT> {};
+	template <class CharT> struct formatter<REX::JSON::I8<>, CharT> : REX::JSON::Impl::formatter<std::int8_t, CharT> {};
+	template <class CharT> struct formatter<REX::JSON::I16<>, CharT> : REX::JSON::Impl::formatter<std::int16_t, CharT> {};
+	template <class CharT> struct formatter<REX::JSON::I32<>, CharT> : REX::JSON::Impl::formatter<std::int32_t, CharT> {};
+	template <class CharT> struct formatter<REX::JSON::U8<>, CharT> : REX::JSON::Impl::formatter<std::uint8_t, CharT> {};
+	template <class CharT> struct formatter<REX::JSON::U16<>, CharT> : REX::JSON::Impl::formatter<std::uint16_t, CharT> {};
+	template <class CharT> struct formatter<REX::JSON::U32<>, CharT> : REX::JSON::Impl::formatter<std::uint32_t, CharT> {};
+	template <class CharT> struct formatter<REX::JSON::Str<>, CharT> : REX::JSON::Impl::formatter<std::string, CharT> {};
+	// clang-format on
+}
+#	endif
 #endif
