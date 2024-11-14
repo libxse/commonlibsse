@@ -266,7 +266,6 @@ namespace REX::TOML
 				a_value = toml::find_or<T>(path, a_key.data(), a_valueDefault);
 				return;
 			} else {
-				SKSE::log::debug("{}", a_section);
 				toml::value* path{ nullptr };
 				for (auto& section : a_section) {
 					path = recurse_table(*data, path, section);
