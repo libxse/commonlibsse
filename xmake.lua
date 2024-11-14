@@ -15,18 +15,6 @@ add_rules("mode.debug", "mode.releasedbg")
 includes("xmake-rules.lua")
 
 -- define options
-option("skyrim_ae", function()
-    set_default(false)
-    set_description("Enable support for Skyrim AE")
-    add_defines("SKYRIM_SUPPORT_AE=1")
-end)
-
-option("skse_xbyak", function()
-    set_default(false)
-    set_description("Enable trampoline support for Xbyak")
-    add_defines("SKSE_SUPPORT_XBYAK=1")
-end)
-
 option("rex_ini")
     set_default(false)
     set_description("Enable ini config support for REX")
@@ -45,13 +33,21 @@ option("rex_toml")
     add_defines("REX_OPTION_TOML=1")
 option_end()
 
+option("skyrim_ae", function()
+    set_default(false)
+    set_description("Enable support for Skyrim AE")
+    add_defines("SKYRIM_SUPPORT_AE=1")
+end)
+
+option("skse_xbyak", function()
+    set_default(false)
+    set_description("Enable trampoline support for Xbyak")
+    add_defines("SKSE_SUPPORT_XBYAK=1")
+end)
+
 -- require packages
 add_requires("rsm-binary-io")
 add_requires("spdlog", { configs = { header_only = false, wchar = true, std_format = true } })
-
-if has_config("skse_xbyak") then
-    add_requires("xbyak")
-end
 
 if has_config("rex_ini") then
     add_requires("simpleini")
@@ -65,6 +61,10 @@ if has_config("rex_toml") then
     add_requires("toml11")
 end
 
+if has_config("skse_xbyak") then
+    add_requires("xbyak")
+end
+
 -- define targets
 target("commonlibsse", function()
     -- set target kind
@@ -75,10 +75,6 @@ target("commonlibsse", function()
 
     -- add packages
     add_packages("rsm-binary-io", "spdlog", { public = true })
-
-    if has_config("skse_xbyak") then
-        add_packages("xbyak", { public = true })
-    end
 
     if has_config("rex_ini") then
         add_packages("simpleini", { public = true })
@@ -92,8 +88,12 @@ target("commonlibsse", function()
         add_packages("toml11", { public = true })
     end
 
+    if has_config("skse_xbyak") then
+        add_packages("xbyak", { public = true })
+    end
+
     -- add options
-    add_options("skyrim_ae", "skse_xbyak", "rex_ini", "rex_json", "rex_toml", { public = true })
+    add_options("rex_ini", "rex_json", "rex_toml", "skyrim_ae", "skse_xbyak", { public = true })
 
     -- add system links
     add_syslinks("advapi32", "bcrypt", "d3d11", "d3dcompiler", "dbghelp", "dxgi", "ole32", "shell32", "user32", "version")
