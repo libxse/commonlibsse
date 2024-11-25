@@ -1653,6 +1653,7 @@
 #include "RE/V/VirtualMachine.h"
 #include "RE/V/VoiceSpellFireHandler.h"
 #include "RE/W/WeaponAnimationGraphManagerHolder.h"
+#include "RE/W/WeaponEnchantmentController.h"
 #include "RE/W/WeatherType.h"
 #include "RE/W/WerewolfEffect.h"
 #include "RE/W/WerewolfFeedEffect.h"
