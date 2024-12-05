@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RE/I/IMenu.h"
+#include "RE/I/IMessageBoxCallback.h"
 
 namespace RE
 {
@@ -13,6 +14,21 @@ namespace RE
 	public:
 		inline static constexpr auto      RTTI = RTTI_LevelUpMenu;
 		constexpr static std::string_view MENU_NAME = "LevelUp Menu";
+
+		class ConfirmLevelUpAttributeCallback : public IMessageBoxCallback
+		{
+			inline static constexpr auto RTTI = RTTI___ConfirmLevelUpAttributeCallback;
+
+			~ConfirmLevelUpAttributeCallback() override;  // 00
+
+			// override (IMessageBoxCallback)
+			void Run(Message a_msg) override;  // 01
+
+			// members
+			LevelUpMenu*         menu;  // 10
+			RE::ActorValue actorValue;  // 18
+		}
+		static_assert(sizeof(ConfirmLevelUpAttributeCallback) == 0x20)
 
 		~LevelUpMenu() override;  // 00
 
