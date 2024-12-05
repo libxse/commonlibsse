@@ -19,6 +19,7 @@ namespace RE
 		{
 		public:
 			inline static constexpr auto RTTI = RTTI___ConfirmLevelUpAttributeCallback;
+			inline static constexpr auto VTABLE = VTABLE___ConfirmLevelUpAttributeCallback;
 
 			~ConfirmLevelUpAttributeCallback() override;  // 00
 
