@@ -17,6 +17,7 @@ namespace RE
 
 		class ConfirmLevelUpAttributeCallback : public IMessageBoxCallback
 		{
+		public:
 			inline static constexpr auto RTTI = RTTI___ConfirmLevelUpAttributeCallback;
 
 			~ConfirmLevelUpAttributeCallback() override;  // 00
@@ -25,10 +26,10 @@ namespace RE
 			void Run(Message a_msg) override;  // 01
 
 			// members
-			LevelUpMenu*         menu;  // 10
+			LevelUpMenu*   menu;        // 10
 			RE::ActorValue actorValue;  // 18
-		}
-		static_assert(sizeof(ConfirmLevelUpAttributeCallback) == 0x20)
+		};
+		static_assert(sizeof(ConfirmLevelUpAttributeCallback) == 0x20);
 
 		~LevelUpMenu() override;  // 00
 
