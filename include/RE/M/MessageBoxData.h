@@ -31,7 +31,7 @@ namespace RE
 		std::int32_t                         cancelOptionIndex;  // 3C
 		BSTSmartPointer<IMessageBoxCallback> callback;    		 // 40
 		std::uint32_t                        menuDepth;       	 // 48
-		std::uint8_t                         optionOffset;       // 4C
+		std::uint8_t                         optionIndexOffset;  // 4C
 		bool                         		 useHtml;       	 // 4D
 		bool                         		 verticalButtons;    // 4E
 		bool                         		 isCancellable;      // 4F
