@@ -35,6 +35,7 @@ set(SOURCES
 	include/RE/A/AnimationFileManagerSingleton.h
 	include/RE/A/AnimationObjects.h
 	include/RE/A/Archive.h
+	include/RE/A/ArchiveStream.h
 	include/RE/A/ArmorRatingVisitor.h
 	include/RE/A/ArmorRatingVisitorBase.h
 	include/RE/A/Array.h
@@ -503,6 +504,7 @@ set(SOURCES
 	include/RE/C/CommonTypeTraits.h
 	include/RE/C/CompactingStore.h
 	include/RE/C/CompiledScriptLoader.h
+	include/RE/C/CompressedArchiveStream.h
 	include/RE/C/ConcreteFormFactory.h
 	include/RE/C/ConcreteObjectFormFactory.h
 	include/RE/C/ConcussionEffect.h
