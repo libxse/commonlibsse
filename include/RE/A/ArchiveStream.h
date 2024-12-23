@@ -29,10 +29,10 @@ namespace RE
 			virtual std::uint32_t DoGetSize() const;  // 0C
 
 			// members
-			BSTSmartPointer<Stream> source;         // 10
-			std::uint32_t           startOffset;    // 18
-			std::uint32_t           currentOffset;  // 1C
-			BSFixedString           name;           // 20
+			void*         source;         // 10
+			std::uint32_t startOffset;    // 18
+			std::uint32_t currentOffset;  // 1C
+			BSFixedString name;           // 20
 		};
 #ifdef SKYRIM_SUPPORT_AE
 		static_assert(sizeof(ArchiveStream) == 0x30);
