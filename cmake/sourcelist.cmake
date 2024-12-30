@@ -92,6 +92,7 @@ set(SOURCES
 	include/RE/B/BGSDirectionalAmbientLightingColors.h
 	include/RE/B/BGSDistantTreeBlock.h
 	include/RE/B/BGSDualCastData.h
+	include/RE/B/BGSDynamicPersistenceManager.h
 	include/RE/B/BGSEncounterZone.h
 	include/RE/B/BGSEntryPoint.h
 	include/RE/B/BGSEntryPointFunctionData.h
