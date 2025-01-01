@@ -575,6 +575,9 @@ namespace RE
 		inline void insert(const_iterator position, const value_type& a_value) { emplace(position, a_value); }
 		inline void insert(const_iterator position, value_type&& a_value) { emplace(position, std::move(a_value)); }
 
+		inline void push_front(const value_type& a_value) { emplace(cbegin(), a_value); }
+		inline void push_front(value_type&& a_value) { emplace(cbegin(), std::move(a_value)); }
+
 		template <class... Args>
 		inline reference emplace(const_iterator position, Args&&... a_args)
 		{			
@@ -693,11 +696,12 @@ namespace RE
 
 		/// Calculates the next value for the array capacity. 
 		/// Capacity grows exponentially: hint * 2^level, where level is the number of times the capacity has grown.
-		[[nodiscard]] inline size_type next_capacity() const { return next_capacity(capacity()); }
+		[[nodiscard]]
+		inline size_type next_capacity() const { return next_capacity(capacity()); }
 
 		/// Calculates the next value for the array capacity.
 		/// Capacity grows exponentially: hint * 2^level, where level is the number of times the capacity has grown.
-		[[nodiscard]] inline size_type next_capacity(size_type a_hint) const
+		inline size_type next_capacity(size_type a_hint) const
 		{
 			auto cap = a_hint;
 			cap = cap > 0 ? static_cast<size_type>(std::ceil(static_cast<float>(cap) * GROWTH_FACTOR)) : DF_CAP;

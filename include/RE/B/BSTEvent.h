@@ -83,11 +83,11 @@ namespace RE
 
 			if (notifying) {
 				if (std::find(pendingRegisters.begin(), pendingRegisters.end(), a_eventSink) == pendingRegisters.end()) {
-					pendingRegisters.insert(pendingRegisters.begin(), a_eventSink);
+					pendingRegisters.push_front(a_eventSink);
 				}
 			} else {
 				if (std::find(sinks.begin(), sinks.end(), a_eventSink) == sinks.end()) {
-					sinks.insert(sinks.begin(), a_eventSink);
+					sinks.push_front(a_eventSink);
 				}
 			}
 
