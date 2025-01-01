@@ -68,12 +68,12 @@ namespace RE
 		/// Sinks: A, B
 		/// Pending: E, D, C
 		/// Result: A, B, E, D, C
-		/// 
+		///
 		/// However without notifying the same chain of calls will look like this:
 		/// Sinks: E, D, A, B, C
-		/// 
+		///
 		/// The relative order of C, D, and E is guaranteed in both cases, but, previous sinks may appear both before and after the new sinks.
-		void PrependEventSink(Sink* a_eventSink) 
+		void PrependEventSink(Sink* a_eventSink)
 		{
 			if (!a_eventSink) {
 				return;

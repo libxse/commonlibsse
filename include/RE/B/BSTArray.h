@@ -580,20 +580,20 @@ namespace RE
 
 		template <class... Args>
 		inline reference emplace(const_iterator position, Args&&... a_args)
-		{			
+		{
 			assert(position >= cbegin() && position <= cend());
 
 			if (position == cend()) {
 				return emplace_back(std::forward<Args>(a_args)...);
 			}
 
-			pointer oldData;
-			pointer newData;
+			pointer   oldData;
+			pointer   newData;
 			size_type newCapacity;
 
 			if (size() == capacity()) {
 				newCapacity = next_capacity();
-				newData = allocate(newCapacity); // manually grow capacity to avoid unnecessary memcpy from change_capacity
+				newData = allocate(newCapacity);  // manually grow capacity to avoid unnecessary memcpy from change_capacity
 				oldData = data();
 			} else {
 				newData = data();
@@ -694,10 +694,9 @@ namespace RE
 			set_size(a_newSize);
 		}
 
-		/// Calculates the next value for the array capacity. 
+		/// Calculates the next value for the array capacity.
 		/// Capacity grows exponentially: hint * 2^level, where level is the number of times the capacity has grown.
-		[[nodiscard]]
-		inline size_type next_capacity() const { return next_capacity(capacity()); }
+		[[nodiscard]] inline size_type next_capacity() const { return next_capacity(capacity()); }
 
 		/// Calculates the next value for the array capacity.
 		/// Capacity grows exponentially: hint * 2^level, where level is the number of times the capacity has grown.
