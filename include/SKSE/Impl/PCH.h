@@ -150,7 +150,8 @@ namespace SKSE
 		}
 
 		template <class EF>
-		requires(std::invocable<std::remove_reference_t<EF>>) class scope_exit
+			requires(std::invocable<std::remove_reference_t<EF>>)
+		class scope_exit
 		{
 		public:
 			// 1)
@@ -322,7 +323,7 @@ namespace SKSE
 
 		template <class... Args>
 		[[nodiscard]] inline auto pun_bits(Args... a_args)  //
-			requires(std::same_as<std::remove_cv_t<Args>, bool>&&...)
+			requires(std::same_as<std::remove_cv_t<Args>, bool> && ...)
 		{
 			constexpr auto ARGC = sizeof...(Args);
 
