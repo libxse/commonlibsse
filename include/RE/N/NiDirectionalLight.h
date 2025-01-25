@@ -33,7 +33,7 @@ namespace RE
 		}
 
 		// members
-		NiPoint3 worldDir;      // 140
+		NiPoint3 worldDir;     // 140
 		NiColor  effectColor;  // 14C
 
 	private:
