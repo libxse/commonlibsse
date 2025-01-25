@@ -1165,6 +1165,7 @@ set(SOURCES
 	include/RE/I/ItemCrafted.h
 	include/RE/I/ItemHarvested.h
 	include/RE/I/ItemList.h
+	include/RE/I/ItemRemoveReason.h
 	include/RE/I/ItemsPickpocketed.h
 	include/RE/J/JournalMenu.h
 	include/RE/J/JournalTab.h
@@ -1272,6 +1273,7 @@ set(SOURCES
 	include/RE/N/NiControllerManager.h
 	include/RE/N/NiControllerSequence.h
 	include/RE/N/NiCullingProcess.h
+	include/RE/N/NiDirectionalLight.h
 	include/RE/N/NiExtraData.h
 	include/RE/N/NiFile.h
 	include/RE/N/NiFloatData.h
@@ -1322,6 +1324,7 @@ set(SOURCES
 	include/RE/N/NiStream.h
 	include/RE/N/NiStringExtraData.h
 	include/RE/N/NiStringsExtraData.h
+	include/RE/N/NiSwitchNode.h
 	include/RE/N/NiSystem.h
 	include/RE/N/NiTArray.h
 	include/RE/N/NiTCollection.h

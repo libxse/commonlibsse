@@ -79,6 +79,13 @@ namespace RE
 			return func(this, a_form, a_changes);
 		}
 
+		bool IsFormIDInUse(FormID a_formID)
+		{
+			using func_t = decltype(&BGSSaveLoadGame::IsFormIDInUse);
+			static REL::Relocation<func_t> func{ RELOCATION_ID(34670, 35593) };
+			return func(this, a_formID);
+		}
+
 		// members
 		BSTArray<TESFile*>                 pluginList;           // 000
 		BSTArray<void*>                    unk18;                // 018
