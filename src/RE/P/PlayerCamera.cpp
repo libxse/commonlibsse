@@ -61,6 +61,13 @@ namespace RE
 		return func(this, a_freezeTime);
 	}
 
+	void PlayerCamera::Update()
+	{
+		using func_t = decltype(&PlayerCamera::Update);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(49852, 50784) };
+		return func(this);
+	}
+
 	void PlayerCamera::UpdateThirdPerson(bool a_weaponDrawn)
 	{
 		using func_t = decltype(&PlayerCamera::UpdateThirdPerson);
