@@ -1640,6 +1640,7 @@
 #include "RE/T/TurnUndeadEffect.h"
 #include "RE/T/TutorialMenu.h"
 #include "RE/T/TweenMenu.h"
+#include "RE/T/TweenMenuCameraState.h"
 #include "RE/T/TypeInfo.h"
 #include "RE/T/TypeTraits.h"
 #include "RE/U/UI.h"
