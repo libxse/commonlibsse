@@ -75,6 +75,13 @@ namespace RE
 		func(this, a_weather, a_override);
 	}
 
+	bool Sky::IsDaytime()
+	{
+		using func_t = decltype(&Sky::IsDaytime);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(25678, 26221) };
+		return func(this);
+	}
+
 	bool Sky::IsRaining() const
 	{
 		return (currentWeather && currentWeather->data.flags.any(TESWeather::WeatherDataFlag::kRainy) && (currentWeather->data.precipitationBeginFadeIn * (1.0f / 255.0f) < currentWeatherPct)) ||

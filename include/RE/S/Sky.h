@@ -73,6 +73,7 @@ namespace RE
 		[[nodiscard]] float GetSunsetBegin();
 		[[nodiscard]] float GetSunsetEnd();
 		void                ForceWeather(TESWeather* a_weather, bool a_override);
+		[[nodiscard]] bool  IsDaytime();
 		[[nodiscard]] bool  IsRaining() const;
 		[[nodiscard]] bool  IsSnowing() const;
 		void                ReleaseWeatherOverride();
