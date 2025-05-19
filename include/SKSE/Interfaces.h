@@ -25,6 +25,11 @@ namespace SKSE
 
 	struct PluginInfo
 	{
+		enum
+		{
+			kVersion = 1
+		};
+
 		std::uint32_t infoVersion;
 		const char*   name;
 		std::uint32_t version;
@@ -500,18 +505,6 @@ namespace SKSE
 		[[nodiscard]] std::uint32_t Version() const noexcept { return GetProxy().interfaceVersion; }
 		[[nodiscard]] void*         AllocateFromBranchPool(std::size_t a_size) const;
 		[[nodiscard]] void*         AllocateFromLocalPool(std::size_t a_size) const;
-	};
-
-	struct PluginInfo
-	{
-		enum
-		{
-			kVersion = 1
-		};
-
-		std::uint32_t infoVersion;
-		const char*   name;
-		std::uint32_t version;
 	};
 
 	struct PluginVersionData
