@@ -1,10 +1,10 @@
 #include "SKSE/API.h"
 
-#include "SKSE/Interfaces.h"
-#include "SKSE/Logger.h"
 #include "REL/Hook.h"
 #include "REL/Trampoline.h"
 #include "REX/REX/Singleton.h"
+#include "SKSE/Interfaces.h"
+#include "SKSE/Logger.h"
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/msvc_sink.h>
@@ -33,13 +33,13 @@ namespace SKSE
 			std::uint32_t                                    releaseIndex{ 0 };
 			std::function<const void*(SKSEAPI)(const char*)> pluginInfoAccessor;
 
-			ScaleformInterface*          scaleformInterface{ nullptr };
-			PapyrusInterface*            papyrusInterface{ nullptr };
-			SerializationInterface*      serializationInterface{ nullptr };
-			TaskInterface*               taskInterface{ nullptr };
-			MessagingInterface*          messagingInterface{ nullptr };
-			ObjectInterface*             objectInterface{ nullptr };
-			TrampolineInterface*         trampolineInterface{ nullptr };
+			ScaleformInterface*     scaleformInterface{ nullptr };
+			PapyrusInterface*       papyrusInterface{ nullptr };
+			SerializationInterface* serializationInterface{ nullptr };
+			TaskInterface*          taskInterface{ nullptr };
+			MessagingInterface*     messagingInterface{ nullptr };
+			ObjectInterface*        objectInterface{ nullptr };
+			TrampolineInterface*    trampolineInterface{ nullptr };
 
 			SKSEDelayFunctorManager*     delayFunctorManager{ nullptr };
 			SKSEObjectRegistry*          objectRegistry{ nullptr };
@@ -66,7 +66,7 @@ namespace SKSE
 		void API::Init(InitInfo a_info, const SKSE::QueryInterface* a_intfc)
 		{
 			info = a_info;
-			
+
 			static std::once_flag once;
 			std::call_once(once, [&]() {
 				const auto iddb = REL::IDDB::GetSingleton();
@@ -208,7 +208,7 @@ namespace SKSE
 
 	void RegisterForAPIInitEvent(std::function<void()> a_fn)
 	{
-		auto api = Impl::API::GetSingleton();
+		auto                   api = Impl::API::GetSingleton();
 		const std::scoped_lock lock{ api->apiLock };
 		if (!api->apiInit) {
 			api->apiInitRegs.push_back(a_fn);

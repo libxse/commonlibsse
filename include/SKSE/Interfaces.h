@@ -147,13 +147,13 @@ namespace SKSE
 		}
 
 	public:
-		[[nodiscard]] std::uint32_t    EditorVersion() const noexcept { return GetProxy().editorVersion; }
-		[[nodiscard]] std::uint32_t    SKSEVersion() const noexcept { return GetProxy().skseVersion; }
-		[[nodiscard]] PluginHandle     GetPluginHandle() const { return GetProxy().GetPluginHandle(); }
-		const PluginInfo*              GetPluginInfo(const char* a_name) const { return static_cast<const PluginInfo*>(GetProxy().GetPluginInfo(a_name)); }
-		[[nodiscard]] std::uint32_t    GetReleaseIndex() const { return GetProxy().GetReleaseIndex(); }
-		[[nodiscard]] bool             IsEditor() const noexcept { return GetProxy().isEditor != 0; }
-		[[nodiscard]] REL::Version     RuntimeVersion() const noexcept { return MakeVersion(GetProxy().runtimeVersion); }
+		[[nodiscard]] std::uint32_t EditorVersion() const noexcept { return GetProxy().editorVersion; }
+		[[nodiscard]] std::uint32_t SKSEVersion() const noexcept { return GetProxy().skseVersion; }
+		[[nodiscard]] PluginHandle  GetPluginHandle() const { return GetProxy().GetPluginHandle(); }
+		const PluginInfo*           GetPluginInfo(const char* a_name) const { return static_cast<const PluginInfo*>(GetProxy().GetPluginInfo(a_name)); }
+		[[nodiscard]] std::uint32_t GetReleaseIndex() const { return GetProxy().GetReleaseIndex(); }
+		[[nodiscard]] bool          IsEditor() const noexcept { return GetProxy().isEditor != 0; }
+		[[nodiscard]] REL::Version  RuntimeVersion() const noexcept { return MakeVersion(GetProxy().runtimeVersion); }
 	};
 
 	class LoadInterface :
