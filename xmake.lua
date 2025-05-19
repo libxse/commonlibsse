@@ -8,6 +8,9 @@ set_languages("c++23")
 set_warnings("allextra")
 set_encodings("utf-8")
 
+-- add repositories
+add_repositories("libxse-xrepo https://github.com/libxse/libxse-xrepo")
+
 -- add rules
 add_rules("mode.debug", "mode.releasedbg")
 
@@ -17,53 +20,38 @@ includes("xmake-rules.lua")
 -- define options
 option("rex_ini", function()
     set_default(false)
-    set_description("Enable ini config support for REX")
-    add_defines("REX_OPTION_INI=1")
+    set_description("enable REX::INI settings support")
 end)
 
 option("rex_json", function()
     set_default(false)
-    set_description("Enable json config support for REX")
-    add_defines("REX_OPTION_JSON=1")
+    set_description("enable REX::JSON settings support")
 end)
 
 option("rex_toml", function()
     set_default(false)
-    set_description("Enable toml config support for REX")
-    add_defines("REX_OPTION_TOML=1")
+    set_description("enable REX::TOML settings support")
 end)
 
 option("skyrim_ae", function()
     set_default(false)
-    set_description("Enable support for Skyrim AE")
+    set_description("enable support for Skyrim AE")
     add_defines("SKYRIM_SUPPORT_AE=1")
 end)
 
 option("skse_xbyak", function()
     set_default(false)
-    set_description("Enable trampoline support for Xbyak")
+    set_description("enable xbyak support for trampoline")
     add_defines("SKSE_SUPPORT_XBYAK=1")
 end)
 
 -- require packages
-add_requires("rsm-binary-io")
-add_requires("spdlog", { configs = { header_only = false, wchar = true, std_format = true } })
-
-if has_config("rex_ini") then
-    add_requires("simpleini")
-end
-
-if has_config("rex_json") then
-    add_requires("nlohmann_json")
-end
-
-if has_config("rex_toml") then
-    add_requires("toml11")
-end
-
-if has_config("skse_xbyak") then
-    add_requires("xbyak")
-end
+add_requires("commonlib-shared e9e8619678cc166de00a9e96dc465b696f7bd831", { configs = {
+    rex_ini = has_config("rex_ini"),
+    rex_json = has_config("rex_json"),
+    rex_toml = has_config("rex_toml"),
+    xse_xbyak = has_config("skse_xbyak")
+} })
 
 -- define targets
 target("commonlibsse", function()
@@ -74,29 +62,10 @@ target("commonlibsse", function()
     set_default(os.scriptdir() == os.projectdir())
 
     -- add packages
-    add_packages("rsm-binary-io", "spdlog", { public = true })
-
-    if has_config("rex_ini") then
-        add_packages("simpleini", { public = true })
-    end
-
-    if has_config("rex_json") then
-        add_packages("nlohmann_json", { public = true })
-    end
-
-    if has_config("rex_toml") then
-        add_packages("toml11", { public = true })
-    end
-
-    if has_config("skse_xbyak") then
-        add_packages("xbyak", { public = true })
-    end
+    add_packages("commonlib-shared", { public = true })
 
     -- add options
     add_options("rex_ini", "rex_json", "rex_toml", "skyrim_ae", "skse_xbyak", { public = true })
-
-    -- add system links
-    add_syslinks("advapi32", "bcrypt", "d3d11", "d3dcompiler", "dbghelp", "dxgi", "ole32", "shell32", "user32", "version")
 
     -- add source files
     add_files("src/**.cpp")
@@ -105,10 +74,11 @@ target("commonlibsse", function()
     add_includedirs("include", { public = true })
     add_headerfiles(
         "include/(RE/**.h)",
-        "include/(REL/**.h)",
-        "include/(REX/**.h)",
         "include/(SKSE/**.h)"
     )
+
+    -- add extra files
+    add_extrafiles("res/commonlibsse.natvis")
 
     -- set precompiled header
     set_pcxxheader("include/SKSE/Impl/PCH.h")

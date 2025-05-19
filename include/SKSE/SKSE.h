@@ -4,7 +4,6 @@
 
 #include "SKSE/API.h"
 #include "SKSE/Events.h"
-#include "SKSE/IAT.h"
 #include "SKSE/InputMap.h"
 #include "SKSE/Interfaces.h"
 #include "SKSE/Logger.h"
