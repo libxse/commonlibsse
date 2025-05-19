@@ -23,7 +23,12 @@ namespace SKSE
 {
 	using PluginHandle = std::uint32_t;
 
-	struct PluginInfo;
+	struct PluginInfo
+	{
+		std::uint32_t infoVersion;
+		const char*   name;
+		std::uint32_t version;
+	};
 
 	class SKSEDelayFunctorManager;
 	class SKSEObjectRegistry;
@@ -33,13 +38,6 @@ namespace SKSE
 
 	namespace Impl
 	{
-		struct PluginInfo
-		{
-			std::uint32_t infoVersion;
-			const char*   name;
-			std::uint32_t version;
-		};
-
 		struct SKSEInterface
 		{
 			std::uint32_t skseVersion;

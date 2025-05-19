@@ -249,7 +249,6 @@ namespace SKSE
 		}
 
 		REX::ERROR("failed to get plugin info for {}", a_plugin);
-
 		return nullptr;
 	}
 
