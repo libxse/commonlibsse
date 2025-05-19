@@ -1,8 +1,5 @@
 #include "SKSE/API.h"
 
-#include "REL/Hook.h"
-#include "REL/Trampoline.h"
-#include "REX/REX/Singleton.h"
 #include "SKSE/Interfaces.h"
 #include "SKSE/Logger.h"
 
@@ -73,7 +70,7 @@ namespace SKSE
 #ifdef SKYRIM_SUPPORT_AE
 				iddb->load(L"Data/SKSE/plugins/versionlib-{}.bin"sv);
 #else
-				iddb->load(L"Data/SKSE/plugins/version-{}.bin"sv);
+				iddb->load(L"Data/SKSE/plugins/version-{}.bin"sv, REL::IDDB::kOriginal);
 #endif
 
 				if (const auto data = PluginVersionData::GetSingleton()) {
