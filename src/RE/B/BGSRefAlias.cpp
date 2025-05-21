@@ -24,4 +24,15 @@ namespace RE
 		const auto ref = GetReference();
 		return ref ? ref->As<Actor>() : nullptr;
 	}
+
+	void BGSRefAlias::ForceRefTo(TESObjectREFR* a_ref)
+	{
+		if (!a_ref)
+			return;
+
+		const auto owner = owningQuest;
+		if (owner) {
+			owner->SetReferenceByAliasID(aliasID, a_ref);
+		}
+	}
 }
