@@ -3,6 +3,7 @@
 #include "SKSE/Interfaces.h"
 #include "SKSE/Logger.h"
 
+#include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/msvc_sink.h>
 
@@ -66,13 +67,6 @@ namespace SKSE
 
 			static std::once_flag once;
 			std::call_once(once, [&]() {
-				const auto iddb = REL::IDDB::GetSingleton();
-#ifdef SKYRIM_SUPPORT_AE
-				iddb->load(L"Data/SKSE/plugins/versionlib-{}.bin"sv);
-#else
-				iddb->load(L"Data/SKSE/plugins/version-{}.bin"sv, REL::IDDB::kOriginal);
-#endif
-
 				if (const auto data = PluginVersionData::GetSingleton()) {
 					pluginName = data->GetPluginName();
 					pluginAuthor = data->GetAuthorName();

@@ -50,7 +50,7 @@ namespace RE
 				std::memset((void*)material, 0, sizeof(BSLightingShaderMaterial));
 				if (material) {
 					material->Ctor();
-					stl::emplace_vtable<BSLightingShaderMaterial>(material);
+					REX::EMPLACE_VTABLE<BSLightingShaderMaterial>(material);
 				}
 				return material;
 			}

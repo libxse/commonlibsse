@@ -18,19 +18,24 @@ add_rules("mode.debug", "mode.releasedbg")
 includes("xmake-rules.lua")
 
 -- define options
-option("rex_ini", function()
+option("commonlib_ini", function()
     set_default(false)
     set_description("enable REX::INI settings support")
 end)
 
-option("rex_json", function()
+option("commonlib_json", function()
     set_default(false)
     set_description("enable REX::JSON settings support")
 end)
 
-option("rex_toml", function()
+option("commonlib_toml", function()
     set_default(false)
     set_description("enable REX::TOML settings support")
+end)
+
+option("commonlib_xbyak", function()
+    set_default(false)
+    set_description("enable xbyak support for trampoline")
 end)
 
 option("skyrim_ae", function()
@@ -39,18 +44,12 @@ option("skyrim_ae", function()
     add_defines("SKYRIM_SUPPORT_AE=1")
 end)
 
-option("skse_xbyak", function()
-    set_default(false)
-    set_description("enable xbyak support for trampoline")
-    add_defines("SKSE_SUPPORT_XBYAK=1")
-end)
-
 -- require packages
-add_requires("commonlib-shared e9e8619678cc166de00a9e96dc465b696f7bd831", { configs = {
-    rex_ini = has_config("rex_ini"),
-    rex_json = has_config("rex_json"),
-    rex_toml = has_config("rex_toml"),
-    xse_xbyak = has_config("skse_xbyak")
+add_requires("commonlib-shared 9f05bd7de2c8cdbbc3f15128f17e5f7b1c72bce0", { configs = {
+    commonlib_ini = has_config("commonlib_ini"),
+    commonlib_json = has_config("commonlib_json"),
+    commonlib_toml = has_config("commonlib_toml"),
+    commonlib_xbyak = has_config("commonlib_xbyak")
 } })
 
 -- define targets
@@ -65,7 +64,7 @@ target("commonlibsse", function()
     add_packages("commonlib-shared", { public = true })
 
     -- add options
-    add_options("rex_ini", "rex_json", "rex_toml", "skyrim_ae", "skse_xbyak", { public = true })
+    add_options("skyrim_ae", { public = true })
 
     -- add source files
     add_files("src/**.cpp")

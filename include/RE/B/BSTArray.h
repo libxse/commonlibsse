@@ -121,7 +121,7 @@ namespace RE
 		{
 			const auto mem = malloc(a_size);
 			if (!mem) {
-				stl::report_and_fail("out of memory"sv);
+				REX::FAIL("out of memory"sv);
 			} else {
 				std::memset(mem, 0, a_size);
 				return mem;
@@ -199,7 +199,7 @@ namespace RE
 			if (a_size > N) {
 				const auto mem = malloc(a_size);
 				if (!mem) {
-					stl::report_and_fail("out of memory"sv);
+					REX::FAIL("out of memory"sv);
 				} else {
 					std::memset(mem, 0, a_size);
 					return mem;
@@ -242,7 +242,7 @@ namespace RE
 			if (!local()) {
 				const auto mem = malloc(capacity());
 				if (!mem) {
-					stl::report_and_fail("out of memory"sv);
+					REX::FAIL("out of memory"sv);
 				} else {
 					_data.heap = mem;
 				}

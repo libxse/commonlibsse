@@ -11,7 +11,7 @@ namespace SKSE
 	{
 		auto result = GetProxy().Register(a_name, reinterpret_cast<void*>(a_callback));
 		if (!result) {
-			log::error("Failed to register {} for scaleform interface callback", a_name);
+			REX::ERROR("Failed to register {} for scaleform interface callback", a_name);
 		}
 		return result;
 	}
@@ -94,7 +94,7 @@ namespace SKSE
 		} else {
 			auto result = GetProxy().Register(reinterpret_cast<void*>(a_fn));
 			if (!result) {
-				log::error("Failed to register for papyrus interface");
+				REX::ERROR("Failed to register for papyrus interface");
 			}
 			return result;
 		}
@@ -110,7 +110,7 @@ namespace SKSE
 		} else {
 			auto result = GetProxy().Register(reinterpret_cast<void*>(a_fn));
 			if (!result) {
-				log::error("Failed to register for papyrus interface");
+				REX::ERROR("Failed to register for papyrus interface");
 			}
 			return result;
 		}
@@ -120,7 +120,7 @@ namespace SKSE
 	{
 		auto result = GetProxy().Dispatch(GetPluginHandle(), a_messageType, a_data, a_dataLen, a_receiver);
 		if (!result) {
-			log::warn("Failed to dispatch message to {}", (a_receiver ? a_receiver : "all listeners"));
+			REX::WARN("Failed to dispatch message to {}", (a_receiver ? a_receiver : "all listeners"));
 		}
 		return result;
 	}
@@ -129,7 +129,7 @@ namespace SKSE
 	{
 		auto result = GetProxy().RegisterListener(GetPluginHandle(), a_sender, reinterpret_cast<void*>(a_callback));
 		if (!result) {
-			log::error("Failed to register messaging listener for {}", a_sender);
+			REX::ERROR("Failed to register messaging listener for {}", a_sender);
 		}
 		return result;
 	}
