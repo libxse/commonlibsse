@@ -208,7 +208,7 @@ namespace RE
 		if (mem) {                                                                                                      \
 			return mem;                                                                                                 \
 		} else {                                                                                                        \
-			REX::FAIL("out of memory"sv);                                                                    \
+			REX::FAIL("out of memory"sv);                                                                               \
 		}                                                                                                               \
 	}                                                                                                                   \
                                                                                                                         \
@@ -218,7 +218,7 @@ namespace RE
 		if (mem) {                                                                                                      \
 			return mem;                                                                                                 \
 		} else {                                                                                                        \
-			REX::FAIL("out of memory"sv);                                                                    \
+			REX::FAIL("out of memory"sv);                                                                               \
 		}                                                                                                               \
 	}                                                                                                                   \
                                                                                                                         \
