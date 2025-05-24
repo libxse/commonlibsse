@@ -46,10 +46,10 @@ end)
 
 -- require packages
 add_requires("commonlib-shared 9f05bd7de2c8cdbbc3f15128f17e5f7b1c72bce0", { configs = {
-    commonlib_ini = has_config("commonlib_ini"),
-    commonlib_json = has_config("commonlib_json"),
-    commonlib_toml = has_config("commonlib_toml"),
-    commonlib_xbyak = has_config("commonlib_xbyak")
+    ini = has_config("commonlib_ini"),
+    json = has_config("commonlib_json"),
+    toml = has_config("commonlib_toml"),
+    xbyak = has_config("commonlib_xbyak")
 } })
 
 -- define targets
