@@ -400,7 +400,7 @@ namespace RE
 		[[nodiscard]] constexpr float           GetPositionY() const noexcept { return data.location.y; }
 		[[nodiscard]] constexpr float           GetPositionZ() const noexcept { return data.location.z; }
 		[[nodiscard]] float                     GetScale() const;
-		NiControllerSequence*                   GetSequence(stl::zstring a_name) const;
+		NiControllerSequence*                   GetSequence(std::string_view a_name) const;
 		std::uint32_t                           GetStealValue(const InventoryEntryData* a_entryData, std::uint32_t a_numItems, bool a_useMult) const;
 		float                                   GetSubmergeLevel(float a_zPos, TESObjectCELL* a_cell) const;
 		void                                    GetTransform(NiTransform& a_transform) const;
@@ -441,7 +441,7 @@ namespace RE
 		bool                                    NameIncludes(std::string_view a_word) const;
 		void                                    OpenContainer(std::int32_t a_openType) const;
 		NiPointer<TESObjectREFR>                PlaceObjectAtMe(TESBoundObject* a_baseToPlace, bool a_forcePersist) const;
-		void                                    PlayAnimation(stl::zstring a_from, stl::zstring a_to);
+		void                                    PlayAnimation(std::string_view a_from, std::string_view a_to);
 		void                                    PlayAnimation(NiControllerManager* a_manager, NiControllerSequence* a_toSeq, NiControllerSequence* a_fromSeq);
 		void                                    SetActivationBlocked(bool a_blocked);
 		void                                    SetAngle(const NiPoint3& a_angle);

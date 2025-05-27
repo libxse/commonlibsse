@@ -32,7 +32,7 @@ namespace RE
 			auto buttonEvent = malloc<ButtonEvent>(sizeof(ButtonEvent));
 			std::memset((void*)buttonEvent, 0, sizeof(ButtonEvent));
 			if (buttonEvent) {
-				stl::emplace_vtable<ButtonEvent>(buttonEvent);
+				REX::EMPLACE_VTABLE<ButtonEvent>(buttonEvent);
 				buttonEvent->device = a_inputDevice;
 				buttonEvent->eventType = INPUT_EVENT_TYPE::kButton;
 				buttonEvent->next = nullptr;

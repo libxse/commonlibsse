@@ -17,7 +17,7 @@ jobs:
       run: find -type f \( -name *.h -o -name *.cpp \) | xargs clang-format-16 -style=file -i
 
     - name: Glob files
-      run: python ${{ github.workspace }}/scripts/cmake_generate.py
+      run: python ${{ github.workspace }}/res/scripts/generate_headers.py
 
     - uses: stefanzweifel/git-auto-commit-action@v5
       with:
