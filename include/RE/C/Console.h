@@ -31,9 +31,9 @@ namespace RE
 		void SetSelectedRef(ObjectRefHandle a_handle);
 
 		// members
-		void*         opcode;  // 30
-		std::uint64_t unk38;   // 38
-		std::uint64_t unk40;   // 40
+		void*         opcode;                  // 30
+		std::uint64_t unk38;                   // 38
+		std::uint64_t unk40;                   // 40
 		std::uint32_t unk48;                   // 48
 		std::uint8_t  unk4c;                   // 4c
 		bool          showAchievementWarning;  // 4d -- only used in ctor

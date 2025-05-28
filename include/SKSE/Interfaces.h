@@ -595,7 +595,6 @@ namespace SKSE
 	static_assert(sizeof(PluginVersionData) == 0x350);
 }
 
-
 #define SKSE_EXPORT extern "C" [[maybe_unused]] __declspec(dllexport)
 #define SKSE_PLUGIN_LOAD(...) SKSE_EXPORT bool SKSEPlugin_Load(__VA_ARGS__)
 #define SKSE_PLUGIN_VERSION SKSE_EXPORT constinit SKSE::PluginVersionData SKSEPlugin_Version

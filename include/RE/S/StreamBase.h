@@ -42,8 +42,8 @@ namespace RE
 
 			// members
 			std::uint32_t totalSize;  // 08
-			std::uint32_t unk0C;  // 0C
-			std::uint32_t flags;  // 10
+			std::uint32_t unk0C;      // 0C
+			std::uint32_t flags;      // 10
 		};
 		static_assert(sizeof(StreamBase) == 0x18);
 	}
