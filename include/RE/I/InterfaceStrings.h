@@ -65,9 +65,7 @@ namespace RE
 		BSFixedString creditsMenu;             // 188 - "Credits Menu"
 		BSFixedString modManagerMenu;          // 190 - "Mod Manager Menu"
 		BSFixedString creationClubMenu;        // 198 - "Creation Club Menu"
-#ifdef SKYRIM_SUPPORT_AE
 		BSFixedString marketplaceMenu;  // 1A0 - "Marketplace Menu"
-#endif
 		BSFixedString titleSequenceMenu;        // 1A8 - "TitleSequence Menu"
 		BSFixedString consoleNativeUIMenu;      // 1B0 - "Console Native UI Menu"
 		BSFixedString kinectMenu;               // 1B8 - "Kinect Menu"
@@ -91,15 +89,9 @@ namespace RE
 		BSFixedString refreshMenu;              // 248 - "RefreshMenu"
 		BSFixedString cancelLoading;            // 250 - "CancelLoading"
 		BSFixedString menuTextureDegradeEvent;  // 258 - "Menu Texture Degrade Event"
-#ifdef SKYRIM_SUPPORT_AE
 		BSFixedString userSettingsLoaded;  // 260 - "UserSettingsLoaded"
 		BSFixedString activityStarted;     // 268 - "ActivityStarted"
-#endif
 		BSFixedString diamondMarker;  // 270 - "<img src='DiamondMarker' width='10' height='15' align='baseline' vspace='5'>"
 	};
-#ifdef SKYRIM_SUPPORT_AE
 	static_assert(sizeof(InterfaceStrings) == 0x278);
-#else
-	static_assert(sizeof(InterfaceStrings) == 0x260);
-#endif
 }

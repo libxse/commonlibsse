@@ -29,21 +29,13 @@ namespace RE
 		};
 		static_assert(sizeof(PresenceBitfield) == 0x18);
 
-#ifndef SKYRIM_SUPPORT_AE
-		~BaseExtraList();  // 00
-#else
 		virtual ~BaseExtraList();  // 00
-#endif
 
 		// members
 		BSExtraData*      data = nullptr;      // 08
 		PresenceBitfield* presence = nullptr;  // 10
 	};
-#ifndef SKYRIM_SUPPORT_AE
-	static_assert(sizeof(BaseExtraList) == 0x10);
-#else
 	static_assert(sizeof(BaseExtraList) == 0x18);
-#endif
 
 	class ExtraDataList
 	{
@@ -200,9 +192,5 @@ namespace RE
 		BaseExtraList           _extraData;  // 00
 		mutable BSReadWriteLock _lock;       // 18
 	};
-#ifndef SKYRIM_SUPPORT_AE
-	static_assert(sizeof(ExtraDataList) == 0x18);
-#else
 	static_assert(sizeof(ExtraDataList) == 0x20);
-#endif
 }

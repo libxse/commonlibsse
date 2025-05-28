@@ -130,8 +130,7 @@ namespace SKSE
 					}
 
 					auto& trampoline = REL::GetTrampoline();
-					if (const auto intfc = GetTrampolineInterface();
-						intfc && info.trampolineSKSE) {
+					if (const auto intfc = GetTrampolineInterface()) {
 						if (const auto mem = intfc->AllocateFromBranchPool(info.trampolineSize))
 							trampoline.set_trampoline(mem, info.trampolineSize);
 						else
@@ -334,12 +333,11 @@ namespace SKSE
 		Init(a_intfc, { .log = a_log });
 	}
 
-	void AllocTrampoline(std::size_t a_size, bool a_trySKSEReserve) noexcept
+	void AllocTrampoline(std::size_t a_size, bool) noexcept
 	{
 		auto api = Impl::API::GetSingleton();
 		api->info.trampoline = true;
 		api->info.trampolineSize = a_size;
-		api->info.trampolineSKSE = a_trySKSEReserve;
 		api->InitTrampoline();
 	}
 }

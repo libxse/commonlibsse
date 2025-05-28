@@ -39,11 +39,9 @@ namespace RE
 			bool                       compiledShaderThisFrame;            // 053
 			bool                       useEarlyZ;                          // 054
 			bool                       unk055;                             // 055
-#ifdef SKYRIM_SUPPORT_AE
 			bool unk56;                                       // 056
 			bool doubleDynamicResolutionAdjustmentFrequency;  // 057
 			bool unk58;                                       // 058
-#endif
 			NiPointer<NiSourceTexture> defaultTextureBlack;                   // 060
 			NiPointer<NiSourceTexture> defaultTextureWhite;                   // 068
 			NiPointer<NiSourceTexture> defaultTextureGrey;                    // 070
@@ -66,10 +64,6 @@ namespace RE
 			bool                       canDecreaseDynamicResolution;          // 11D
 			bool                       canChangeDynamicResolution;            // 11E
 		};
-#ifdef SKYRIM_SUPPORT_AE
 		static_assert(sizeof(State) == 0x120);
-#else
-		static_assert(sizeof(State) == 0x118);
-#endif
 	}
 }

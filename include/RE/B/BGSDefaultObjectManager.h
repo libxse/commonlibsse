@@ -373,15 +373,10 @@ namespace RE
 			kKeywordArmorMaterialHeavyStalhrim = 360,
 			kKeywordWeaponMaterialNordic = 361,
 			kKeywordWeaponMaterialStalhrim = 362,
-#ifndef SKYRIM_SUPPORT_AE
-			kModsHelpFormList = 363,
-			kTotal = 364
-#else
 			kHelpManualInstalledContent = 363,
 			kHelpManualInstalledContentAE = 364,
 			kModsHelpFormList = 365,
 			kTotal = 366
-#endif
 		};
 	};
 	using DEFAULT_OBJECT = DEFAULT_OBJECTS::DEFAULT_OBJECT;
@@ -466,13 +461,6 @@ namespace RE
 		// members
 		TESForm* objects[DEFAULT_OBJECTS::kTotal];     // 020 - DNAM
 		bool     objectInit[DEFAULT_OBJECTS::kTotal];  // B80
-#ifndef SKYRIM_SUPPORT_AE
-		std::uint32_t padCEC;  // CEC
-#endif
 	};
-#ifndef SKYRIM_SUPPORT_AE
-	static_assert(sizeof(BGSDefaultObjectManager) == 0xCF0);
-#else
 	static_assert(sizeof(BGSDefaultObjectManager) == 0xD00);
-#endif
 }

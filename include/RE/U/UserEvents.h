@@ -28,9 +28,7 @@ namespace RE
 				kTFCMode,
 				kMapDebug,
 				kLockpicking,
-#ifdef SKYRIM_SUPPORT_AE
 				kMarketplace,
-#endif
 				kFavor,
 
 				kTotal,

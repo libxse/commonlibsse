@@ -8,16 +8,10 @@ namespace RE
 	{
 		class Location;
 
-		//void RegisterPrefix(const char*, const char*, Location*)
-		//{
 		class Traverser : public LocationTraverser
 		{
 		public:
-#ifdef SKYRIM_SUPPORT_AE
 			inline static constexpr auto RTTI = RTTI_BSResource__RegisterPrefix__2__Traverser;
-#else
-			inline static constexpr auto RTTI = RTTI__void___cdecl_BSResource__RegisterPrefix_char_const_____ptr64_char_const_____ptr64_BSResource__Location_____ptr64_____2___Traverser;
-#endif
 
 			// override (LocationTraverser)
 			void ProcessName(const char* a_name, Location& a_location) override;  // 00
@@ -57,6 +51,5 @@ namespace RE
 			std::uint64_t unkE8;  // E8
 		};
 		static_assert(sizeof(Traverser) == 0xF0);
-		//}
 	}
 }

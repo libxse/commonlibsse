@@ -60,9 +60,5 @@ namespace RE
 		BSSoundHandle                      sound;           // C8
 		REX::EnumSet<Flags, std::uint32_t> flags;           // D4
 	};
-#ifndef SKYRIM_SUPPORT_AE
-	static_assert(sizeof(Hazard) == 0xD8);
-#else
 	static_assert(sizeof(Hazard) == 0xE0);
-#endif
 }

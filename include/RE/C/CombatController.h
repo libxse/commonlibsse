@@ -48,9 +48,7 @@ namespace RE
 		AITimer                        unk44;                 // 44
 		float                          lowMovementDelta;      // 4C
 		BSTArray<CombatAimController*> aimControllers;        // 50
-#ifdef SKYRIM_SUPPORT_AE
 		mutable BSSpinLock aimControllerLock;  // 68
-#endif
 		CombatAimController*                    currentAimController;    // 68
 		CombatAimController*                    previousAimController;   // 70
 		BSTArray<CombatAreaStandard*>           areas;                   // 78
@@ -63,9 +61,5 @@ namespace RE
 		NiPointer<Actor>                        cachedAttacker;          // C8 - attackerHandle
 		NiPointer<Actor>                        cachedTarget;            // D0 - targetHandle
 	};
-#ifndef SKYRIM_SUPPORT_AE
-	static_assert(sizeof(CombatController) == 0xD8);
-#else
 	static_assert(sizeof(CombatController) == 0xE0);
-#endif
 }

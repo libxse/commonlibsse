@@ -20,21 +20,6 @@
 
 namespace RE
 {
-#ifndef SKYRIM_SUPPORT_AE
-	BaseExtraList::~BaseExtraList()
-	{
-		while (data) {
-			auto xData = data;
-			data = xData->next;
-			delete xData;
-		}
-		data = nullptr;
-
-		free(presence);
-		presence = nullptr;
-	}
-#endif
-
 	bool BaseExtraList::PresenceBitfield::HasType(std::uint32_t a_type) const
 	{
 		const std::uint32_t index = (a_type >> 3);

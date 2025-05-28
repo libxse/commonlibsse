@@ -711,9 +711,5 @@ namespace RE
 		float       CalcEquippedWeight();
 		TESFaction* GetCrimeFactionImpl() const;
 	};
-#ifndef SKYRIM_SUPPORT_AE
-	static_assert(sizeof(Actor) == 0x2B0);
-#else
 	static_assert(sizeof(Actor) == 0x2B8);
-#endif
 }

@@ -1,8 +1,6 @@
 local PLUGIN_FILE = [[
 #include <SKSE/SKSE.h>
-#ifdef SKYRIM_SUPPORT_AE
-extern "C" __declspec(dllexport)
-constinit auto SKSEPlugin_Version = []() {
+SKSE_EXPORT constinit auto SKSEPlugin_Version = []() {
     SKSE::PluginVersionData v;
     v.PluginVersion({ ${PLUGIN_VERSION_MAJOR}, ${PLUGIN_VERSION_MINOR}, ${PLUGIN_VERSION_PATCH}, 0 });
     v.PluginName("${PLUGIN_NAME}");
@@ -13,28 +11,6 @@ constinit auto SKSEPlugin_Version = []() {
     v.CompatibleVersions({ SKSE::RUNTIME_LATEST });
     return v;
 }();
-#else
-extern "C" __declspec(dllexport)
-bool SKSEPlugin_Query(const SKSE::QueryInterface* a_skse, SKSE::PluginInfo* a_info)
-{
-    a_info->infoVersion = SKSE::PluginInfo::kVersion;
-    a_info->name = "${PLUGIN_NAME}";
-    a_info->version = REL::Version{ ${PLUGIN_VERSION_MAJOR}, ${PLUGIN_VERSION_MINOR}, ${PLUGIN_VERSION_PATCH}, 0 }.pack();
-
-    if (a_skse->IsEditor()) {
-        SKSE::log::critical("Loaded in editor, marking as incompatible");
-        return false;
-    }
-
-    const auto ver = a_skse->RuntimeVersion();
-    if (ver < SKSE::RUNTIME_1_5_39) {
-        SKSE::log::critical("Unsupported runtime version {}", ver.string());
-        return false;
-    }
-
-    return true;
-}
-#endif
 ]]
 
 local PLUGIN_RC_FILE = [[

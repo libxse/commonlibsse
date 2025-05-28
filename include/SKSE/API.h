@@ -17,7 +17,6 @@ namespace SKSE
 		const char* logPattern{ nullptr };
 		bool        trampoline{ false };
 		std::size_t trampolineSize{ 0 };
-		bool        trampolineSKSE{ true };
 		bool        hook{ true };
 	};
 
@@ -52,7 +51,8 @@ namespace SKSE
 
 namespace SKSE
 {
+	// DEPRECATED
 	void Init(const LoadInterface* a_intfc, bool a_log) noexcept;
-
+	// DEPRECATED
 	void AllocTrampoline(std::size_t a_size, bool a_trySKSEReserve = true) noexcept;
 }

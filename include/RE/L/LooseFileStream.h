@@ -31,24 +31,12 @@ namespace RE
 			ErrorCode DoSetEndOfStream() override;                                                                      // 09
 			bool      DoGetName(BSFixedString& a_dst) const override;                                                   // 0A
 			ErrorCode DoCreateAsync(BSTSmartPointer<AsyncStream>& a_streamOut) const override;                          // 0B
-#ifndef SKYRIM_SUPPORT_AE
-			static LooseFileStream* Create(BSFixedString a_prefix, BSFixedString a_dirName, BSFixedString a_fileName, std::uint32_t a_fileSize, bool a_readOnly, Location* a_location);
-#endif
 
 			// members
 			Location*     location;  // 38
 			std::uint64_t filePos;   // 40
 			void*         buffer;    // 48
-
-		private:
-#ifndef SKYRIM_SUPPORT_AE
-			LooseFileStream* Ctor(const BSFixedString& a_prefix, const BSFixedString& a_dirName, const BSFixedString& a_fileName, std::uint32_t a_fileSize, bool a_readOnly, Location* a_location);
-#endif
 		};
-#ifdef SKYRIM_SUPPORT_AE
 		static_assert(sizeof(LooseFileStream) == 0x58);
-#else
-		static_assert(sizeof(LooseFileStream) == 0x50);
-#endif
 	}
 }
