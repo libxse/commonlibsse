@@ -606,8 +606,10 @@ namespace RE
 		bool                         IsPlayerTeammate() const;
 		bool                         IsPowerAttacking() const;
 		bool                         IsProtected() const;
+		bool                         IsRotationAllowed() const;
 		bool                         IsRunning() const;
 		bool                         IsSneaking() const;
+		bool                         IsStaggering() const;
 		[[nodiscard]] bool           IsSummoned() const noexcept;
 		bool                         IsTrespassing() const;
 		void                         KillImmediate();
