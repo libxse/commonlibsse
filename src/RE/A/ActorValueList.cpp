@@ -21,4 +21,10 @@ namespace RE
 		}
 		return ActorValue::kNone;
 	}
+
+	std::string_view ActorValueToString(ActorValue a_actorValue) noexcept
+	{
+		auto info = RE::ActorValueList::GetSingleton()->GetActorValue(a_actorValue);
+		return info ? info->enumName : "None";
+	}
 }

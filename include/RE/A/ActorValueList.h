@@ -22,6 +22,8 @@ namespace RE
 		std::uint32_t   pad04;                                                // 04
 		ActorValueInfo* actorValues[std::to_underlying(ActorValue::kTotal)];  // 08
 	};
+
+	[[nodiscard]] std::string_view ActorValueToString(ActorValue a_actorValue) noexcept;
 }
 
 #ifdef FMT_VERSION
@@ -39,8 +41,7 @@ namespace fmt
 		template <class FormatContext>
 		auto format(const RE::ActorValue& a_actorValue, FormatContext& a_ctx) const
 		{
-			auto* info = RE::ActorValueList::GetSingleton()->GetActorValue(a_actorValue);
-			return fmt::format_to(a_ctx.out(), "{}", info ? info->enumName : "None");
+			return fmt::format_to(a_ctx.out(), "{}", ActorValueToString(a_actorValue));
 		}
 	};
 }
@@ -55,8 +56,7 @@ namespace std
 		template <class FormatContext>
 		auto format(RE::ActorValue a_actorValue, FormatContext& a_ctx)
 		{
-			auto* info = RE::ActorValueList::GetSingleton()->GetActorValue(a_actorValue);
-			return formatter<std::string_view, CharT>::format(info ? info->enumName : "None", a_ctx);
+			return fmt::format_to(a_ctx.out(), "{}", ActorValueToString(a_actorValue));
 		}
 	};
 }
