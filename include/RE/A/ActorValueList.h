@@ -37,7 +37,7 @@ namespace fmt
 		}
 
 		template <class FormatContext>
-		auto format(const RE::ActorValue& a_actorValue, FormatContext& a_ctx)
+		auto format(const RE::ActorValue& a_actorValue, FormatContext& a_ctx) const
 		{
 			auto* info = RE::ActorValueList::GetSingleton()->GetActorValue(a_actorValue);
 			return fmt::format_to(a_ctx.out(), "{}", info ? info->enumName : "None");
