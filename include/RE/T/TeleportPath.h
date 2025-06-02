@@ -33,8 +33,8 @@ namespace RE
 		static_assert(sizeof(Unk18Data) == 0x18);
 
 		// members
-		BSTArray<Unk00Data> pathCells;  // 00 - each cell in sequence between the current player cell and the target cell
-		BSTArray<Unk18Data> pathRefs;   // 18 - each teleport ref in sequence between the current player cell and the target cell
+		BSTArray<Unk00Data> pathCells;  // 00 - each cell in sequence between the current cell and the target cell
+		BSTArray<Unk18Data> pathRefs;   // 18 - each teleport ref in sequence between the current cell and the target cell
 		std::uint64_t       unk30;      // 30
 		std::uint64_t       unk38;      // 38
 		std::uint64_t       unk40;      // 40

@@ -19,7 +19,6 @@ namespace RE
 {
 	class BGSBaseAlias;
 	class QueuedPromoteQuestTask;
-	class BSTempEffect;
 
 	enum class QuestFlag
 	{
