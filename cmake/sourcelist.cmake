@@ -1220,6 +1220,7 @@ set(SOURCES
 	include/RE/M/MapMenuMarker.h
 	include/RE/M/MapMoveHandler.h
 	include/RE/M/MapZoomHandler.h
+	include/RE/M/MARKER_TYPE.h
 	include/RE/M/MarkerUsedData.h
 	include/RE/M/MaterialIDs.h
 	include/RE/M/MemoryHeap.h
@@ -1630,6 +1631,7 @@ set(SOURCES
 	include/RE/T/TaskQueueInterface.h
 	include/RE/T/TelekinesisEffect.h
 	include/RE/T/TempEffectTraits.h
+	include/RE/T/TeleportPath.h
 	include/RE/T/TextureAddressModes.h
 	include/RE/T/TextureFileFormat.h
 	include/RE/T/TextureFilterModes.h

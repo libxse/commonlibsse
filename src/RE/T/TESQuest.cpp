@@ -10,6 +10,13 @@ namespace RE
 		return *reinterpret_cast<const std::uintptr_t*>(this) != 0;
 	}
 
+	RefHandle& TESQuestTarget::GetTargetReference(RefHandle& a_out, bool a_useExtraList, TESQuest* a_quest)
+	{
+		using func_t = decltype(&TESQuestTarget::GetTargetReference);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(24815, 25284) };
+		return func(this, a_out, a_useExtraList, a_quest);
+	}
+
 	ObjectRefHandle& TESQuest::CreateRefHandleByAliasID(ObjectRefHandle& a_handle, std::uint32_t a_aliasID)
 	{
 		using func_t = decltype(&TESQuest::CreateRefHandleByAliasID);
