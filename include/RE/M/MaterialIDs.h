@@ -119,7 +119,7 @@ namespace fmt
 		}
 
 		template <class FormatContext>
-		auto format(const RE::MATERIAL_ID& a_materialID, FormatContext& a_ctx)
+		auto format(const RE::MATERIAL_ID& a_materialID, FormatContext& a_ctx) const
 		{
 			return fmt::format_to(a_ctx.out(), "{}", RE::MaterialIDToString(a_materialID));
 		}
