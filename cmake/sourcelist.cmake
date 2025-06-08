@@ -1849,6 +1849,7 @@ set(SOURCES
 	src/RE/E/ExtraHotkey.cpp
 	src/RE/E/ExtraLevCreaModifier.cpp
 	src/RE/E/ExtraLightData.cpp
+	src/RE/E/ExtraLinkedRef.cpp
 	src/RE/E/ExtraLock.cpp
 	src/RE/E/ExtraMissingLinkedRefIDs.cpp
 	src/RE/E/ExtraNorthRotation.cpp
