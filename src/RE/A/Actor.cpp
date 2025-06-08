@@ -231,6 +231,13 @@ namespace RE
 		return func(this, a_updateWeight);
 	}
 
+	bool Actor::DoDamage(float a_healthDamage, Actor* a_source, bool a_dontAdjustDifficulty)
+	{
+		using func_t = decltype(&Actor::DoDamage);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(36345, 37335) };
+		return func(this, a_healthDamage, a_source, a_dontAdjustDifficulty);
+	}
+
 	void Actor::EnableAI(bool a_enable)
 	{
 		if (a_enable) {

@@ -514,6 +514,7 @@ namespace RE
 		void                         DispelAlteredStates(RE::EffectArchetype a_exception);
 		void                         DispelWornItemEnchantments();
 		void                         DoReset3D(bool a_updateWeight);
+		bool                         DoDamage(float a_healthDamage, Actor* a_source, bool a_dontAdjustDifficulty);
 		void                         EnableAI(bool a_enable);
 		void                         EndInterruptPackage(bool a_skipDialogue);
 		void                         EvaluatePackage(bool a_immediate = false, bool a_resetAI = false);
