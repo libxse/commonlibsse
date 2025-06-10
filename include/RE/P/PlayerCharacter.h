@@ -166,7 +166,8 @@ namespace RE
 		{
 			kNone = 0,
 			kDisableSaving = 1 << 0,
-			kHandsBound = 1 << 2
+			kDisableWaiting = 1 << 1,
+			kShowControlsDisabledMessage = 1 << 2
 		};
 
 		struct PlayerFlags
