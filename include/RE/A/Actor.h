@@ -514,6 +514,7 @@ namespace RE
 		void                         DispelAlteredStates(RE::EffectArchetype a_exception);
 		void                         DispelWornItemEnchantments();
 		void                         DoReset3D(bool a_updateWeight);
+		bool                         DoDamage(float a_healthDamage, Actor* a_source, bool a_dontAdjustDifficulty);
 		void                         EnableAI(bool a_enable);
 		void                         EndInterruptPackage(bool a_skipDialogue);
 		void                         EvaluatePackage(bool a_immediate = false, bool a_resetAI = false);
@@ -606,8 +607,10 @@ namespace RE
 		bool                         IsPlayerTeammate() const;
 		bool                         IsPowerAttacking() const;
 		bool                         IsProtected() const;
+		bool                         IsRotationAllowed() const;
 		bool                         IsRunning() const;
 		bool                         IsSneaking() const;
+		bool                         IsStaggering() const;
 		[[nodiscard]] bool           IsSummoned() const noexcept;
 		bool                         IsTrespassing() const;
 		void                         KillImmediate();

@@ -13,12 +13,12 @@
 #include "RE/Q/QuestObjectiveStates.h"
 #include "RE/T/TESCondition.h"
 #include "RE/T/TESFullName.h"
+#include "RE/T/TeleportPath.h"
 
 namespace RE
 {
 	class BGSBaseAlias;
 	class QueuedPromoteQuestTask;
-	class BSTempEffect;
 
 	enum class QuestFlag
 	{
@@ -148,17 +148,16 @@ namespace RE
 			kCompassMarkerIgnoresLocks = 1 << 0
 		};
 
+		RefHandle& GetTargetReference(RefHandle& a_out, bool a_useExtraList, TESQuest* a_quest);
+
 		// members
-		std::uint64_t unk00;       // 00
-		TESCondition  conditions;  // 08
-		std::uint32_t alias;       // 10
-		std::uint32_t unk14;       // 14 - padding?
-		// These two fields might be a structure of some sort - in ae, the function
-		// w/ id 30980 frees both of these fields, taking a pointer to the first.
-		BSTArray<BSTempEffect*> unk18;  // 18
-		BSTArray<BSTempEffect*> unk30;  // 30
+		std::uint64_t unk00;         // 00
+		TESCondition  conditions;    // 08
+		std::uint32_t alias;         // 10
+		std::uint32_t unk14;         // 14
+		TeleportPath  teleportPath;  // 18
 	};
-	static_assert(sizeof(TESQuestTarget) == 0x48);
+	static_assert(sizeof(TESQuestTarget) == 0x60);
 
 	class BGSQuestObjective
 	{
@@ -237,9 +236,9 @@ namespace RE
 		TESCondition*                            QConditions() override;                                         // 3D - { return &objConditions; }
 		BGSStoryManagerTreeVisitor::VisitControl AcceptVisitor(BGSStoryManagerTreeVisitor& a_visitor) override;  // 3E
 
-		ObjectRefHandle&                         CreateRefHandleByAliasID(ObjectRefHandle& a_handle, std::uint32_t a_aliasID);
-		void                                     SetReferenceByAliasID(std::uint32_t a_aliasID, TESObjectREFR* a_ref);
 		bool                                     EnsureQuestStarted(bool& a_result, bool a_startNow);
+		void                                     ForceRefIntoAlias(std::uint32_t a_aliasID, TESObjectREFR* a_ref);
+		ObjectRefHandle                          GetAliasedRef(std::uint32_t a_aliasID) const;
 		std::uint16_t                            GetCurrentStageID() const;
 		[[nodiscard]] constexpr QUEST_DATA::Type GetType() const noexcept { return data.questType.get(); }
 		bool                                     IsActive() const;
