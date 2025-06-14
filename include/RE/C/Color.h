@@ -278,3 +278,19 @@ namespace RE
 	};
 	static_assert(sizeof(Color) == 0x4);
 }
+
+template <>
+struct std::formatter<RE::Color>
+{
+	template <class ParseContext>
+	constexpr auto parse(ParseContext& a_ctx)
+	{
+		return a_ctx.begin();
+	}
+
+	template <class FormatContext>
+	constexpr auto format(const RE::Color& a_color, FormatContext& a_ctx) const
+	{
+		return format_to(a_ctx.out(), "R:{}, G:{}, B:{}, A:{})", a_color.red, a_color.green, a_color.blue, a_color.alpha);
+	}
+};
