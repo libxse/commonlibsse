@@ -14,7 +14,6 @@ add_rules("plugin.vsxmake.autoupdate")
 
 -- include subprojects
 includes("lib/commonlib-shared")
-includes("xmake-rules.lua")
 
 -- define targets
 target("commonlibsse", function()
@@ -42,33 +41,29 @@ target("commonlibsse", function()
 
     -- set precompiled header
     set_pcxxheader("include/SKSE/Impl/PCH.h")
+end)
 
-    -- add flags (cl: disable warnings)
-    add_cxxflags(
-        "cl::/wd4005", -- macro redefinition
-        "cl::/wd4061", -- enumerator `identifier` in switch of enum `enumeration` is not explicitly handled by a case label
-        "cl::/wd4068", -- unknown pragma 'clang'
-        "cl::/wd4264", -- 'virtual_function' : no override available for virtual member function from base 'class'; function is hidden
-        "cl::/wd4265", -- 'type': class has virtual functions, but its non-trivial destructor is not virtual; instances of this class may not be destructed correctly
-        "cl::/wd4266", -- 'function' : no override available for virtual member function from base 'type'; function is hidden
-        "cl::/wd4371", -- 'classname': layout of class may have changed from a previous version of the compiler due to better packing of member 'member'
-        "cl::/wd4514", -- 'function' : unreferenced inline function has been removed
-        "cl::/wd4582", -- 'type': constructor is not implicitly called
-        "cl::/wd4583", -- 'type': destructor is not implicitly called
-        "cl::/wd4623", -- 'derived class' : default constructor was implicitly defined as deleted because a base class default constructor is inaccessible or deleted
-        "cl::/wd4625", -- 'derived class' : copy constructor was implicitly defined as deleted because a base class copy constructor is inaccessible or deleted
-        "cl::/wd4626", -- 'derived class' : assignment operator was implicitly defined as deleted because a base class assignment operator is inaccessible or deleted
-        "cl::/wd4686", -- 'user-defined type' : possible change in behavior, change in UDT return calling convention
-        "cl::/wd4710", -- 'function' : function not inlined
-        "cl::/wd4711", -- function 'function' selected for inline expansion
-        "cl::/wd4820", -- 'bytes' bytes padding added after construct 'member_name'
-        "cl::/wd5082", -- second argument to 'va_start' is not the last named parameter
-        "cl::/wd5026", -- 'type': move constructor was implicitly defined as deleted
-        "cl::/wd5027", -- 'type': move assignment operator was implicitly defined as deleted
-        "cl::/wd5045", -- compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
-        "cl::/wd5053", -- support for 'explicit(<expr>)' in C++17 and earlier is a vendor extension
-        "cl::/wd5105", -- macro expansion producing 'defined' has undefined behavior (workaround for older msvc bug)
-        "cl::/wd5204", -- 'type-name': class has virtual functions, but its trivial destructor is not virtual; instances of objects derived from this class may not be destructed correctly
-        "cl::/wd5220"  -- 'member': a non-static data member with a volatile qualified type no longer implies that compiler generated copy / move constructors and copy / move assignment operators are not trivial
-    )
+rule("commonlibsse.plugin", function()
+    add_deps("commonlib.plugin")
+
+    on_load(function(target)
+        target:data_set("commonlib.plugin.config", target:extraconf("rules", "commonlibsse.plugin"))
+        target:data_set("commonlib.plugin.package", { prefixdir = "Data" })
+    end)
+
+    on_config(function(target)
+        target:add("deps", "commonlibsse")
+
+        target:add("configfiles", path.join(os.scriptdir(), "res/commonlibsse-plugin.cpp.in"))
+        target:add("files", path.join(target:configdir(), "commonlibsse-plugin.cpp"))
+
+        if os.getenv("XSE_TES5_MODS_PATH") then
+            target:set("installdir", path.join(os.getenv("XSE_TES5_MODS_PATH"), target:name()))
+        elseif os.getenv("XSE_TES5_GAME_PATH") then
+            target:set("installdir", path.join(os.getenv("XSE_TES5_GAME_PATH"), "Data"))
+        end
+
+        target:add("installfiles", target:targetfile(), { prefixdir = "SKSE/Plugins" })
+        target:add("installfiles", target:symbolfile(), { prefixdir = "SKSE/Plugins" })
+    end)
 end)
