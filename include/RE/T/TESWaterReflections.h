@@ -1,5 +1,7 @@
 #pragma once
 
+#include "RE/B/BSCubeMapCamera.h"
+#include "RE/B/BSShaderAccumulator.h"
 #include "RE/N/NiPlane.h"
 #include "RE/N/NiRefObject.h"
 #include "RE/N/NiSmartPointer.h"
@@ -7,8 +9,6 @@
 namespace RE
 {
 	class BSCullingProcess;
-	class BSCubeMapCamera;
-	class BSShaderAccumulator;
 	class BSWaterShaderMaterial;
 
 	class TESWaterReflections : public NiRefObject
@@ -24,10 +24,30 @@ namespace RE
 		};
 		static_assert(sizeof(CubeMapSide) == 0x8);
 
-		virtual ~TESWaterReflections();  // 00
+		// https://github.com/libxse/commonlibf4/blob/main/include/RE/T/TESWaterReflections.h
+		enum class Flags : std::uint16_t
+		{
+			kDirty = 1 << 0,
+			kStaticCubemap = 1 << 1,
+			kDynamicCubemap = 1 << 2,
+			kInterior = 1 << 3,
+			kSilhouette = 1 << 4,
+			kLODScene = 1 << 5,
+			kFullScene = 1 << 6,
+			kLand = 1 << 7,
+			kSky = 1 << 8,
+			kExplosions = 1 << 9,
+			kSelective = 1 << 10,
+			kDontUpdate = 1 << 11,
+			kWorldOrigin = 1 << 12
+		};
+
+		virtual ~TESWaterReflections() override { Dtor(); };  // 00
+
+		void Update();
 
 		// members
-		std::uint16_t                  flags;                  // 10
+		REX::TEnumSet<Flags>           flags;                  // 10
 		std::uint16_t                  pad12;                  // 12
 		NiPlane                        reflectPlane;           // 14
 		std::uint32_t                  pad24;                  // 24
@@ -42,6 +62,8 @@ namespace RE
 		std::uint8_t                   pad81;                  // 81
 		std::uint16_t                  pad82;                  // 82
 		std::uint32_t                  pad84;                  // 84
+	private:
+		void Dtor();
 	};
 	static_assert(sizeof(TESWaterReflections) == 0x88);
 }

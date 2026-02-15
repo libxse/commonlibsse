@@ -12,7 +12,6 @@ namespace RE
 	{
 		class IVirtualMachine;
 		class Object;
-		class Variable;
 		struct IVMObjectBindInterface;
 
 		class ObjectBindPolicy

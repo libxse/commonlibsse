@@ -25,13 +25,14 @@ namespace RE
 			NiRect<std::uint32_t>          shadowMapRect;      // D0
 			BSCullingProcess*              cullingProcess;     // E0
 			bool                           clearRenderTarget;  // E8
+			bool                           unkE9;              // E9
 		};
 		static_assert(sizeof(ShadowMapData) == 0xF0);
 
 		~BSShadowLight() override;  // 00
 
 		// add
-		virtual void          Unk_04();                                                                                                                           // 04
+		virtual bool          GetIsFrustumOrDirectionalLight() = 0;                                                                                               // 04
 		virtual bool          GetIsFrustumLight();                                                                                                                // 05
 		virtual void          GetIsDirectionalLight();                                                                                                            // 06
 		virtual bool          GetIsParabolicLight();                                                                                                              // 07

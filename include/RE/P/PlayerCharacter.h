@@ -148,13 +148,6 @@ namespace RE
 		inline static constexpr auto VTABLE = VTABLE_PlayerCharacter;
 		inline static constexpr auto FORMTYPE = FormType::ActorCharacter;
 
-		enum class EventType
-		{
-			kThief = 3,
-			kContainer = 5,
-			kDeadBody = 6
-		};
-
 		enum class GrabbingType
 		{
 			kNone = 0,
@@ -339,7 +332,6 @@ namespace RE
 		bool                     HasActorDoingCommand() const;
 		bool                     IsGrabbing() const;
 		void                     PlayMagicFailureSound(MagicSystem::SpellType a_spellType);
-		void                     PlayPickupEvent(TESForm* a_item, TESForm* a_containerOwner, TESObjectREFR* a_containerRef, EventType a_eventType);
 		void                     SetAIDriven(bool a_enable);
 		void                     SetEscaping(bool a_flag, bool a_escaped);
 		void                     StartGrabObject();

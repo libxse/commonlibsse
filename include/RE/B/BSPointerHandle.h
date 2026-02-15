@@ -159,6 +159,13 @@ namespace RE
 			return ptr;
 		}
 
+		[[nodiscard]] NiPointer<T> getsafe() const
+		{
+			NiPointer<T> ptr;
+			get_validated_smartptr(ptr);
+			return ptr;
+		}
+
 		[[nodiscard]] native_handle_type native_handle() const noexcept { return _handle.value(); }
 
 		[[nodiscard]] explicit operator bool() const noexcept { return _handle.has_value(); }
@@ -179,6 +186,7 @@ namespace RE
 
 		void get_handle(T* a_ptr);
 		bool get_smartptr(NiPointer<T>& a_smartPointerOut) const;
+		bool get_validated_smartptr(NiPointer<T>& a_smartPointerOut) const;
 
 		Handle _handle;
 	};
@@ -220,6 +228,13 @@ namespace RE
 			static REL::Relocation<func_t> func{ RELOCATION_ID(12204, 12332) };
 			return func(a_handle, a_smartPointerOut);
 		}
+
+		static bool GetHandleValidatedSmartPointer(const BSPointerHandle<T>& a_handle, NiPointer<T>& a_smartPointerOut)
+		{
+			using func_t = decltype(&BSPointerHandleManagerInterface<T, Manager>::GetHandleValidatedSmartPointer);
+			static REL::Relocation<func_t> func{ RELOCATION_ID(12785, 12922) };
+			return func(a_handle, a_smartPointerOut);
+		}
 	};
 
 	extern template class BSPointerHandleManagerInterface<Actor>;
@@ -236,5 +251,11 @@ namespace RE
 	bool BSPointerHandle<T, Handle>::get_smartptr(NiPointer<T>& a_smartPointerOut) const
 	{
 		return BSPointerHandleManagerInterface<T>::GetSmartPointer(*this, a_smartPointerOut);
+	}
+
+	template <class T, class Handle>
+	bool BSPointerHandle<T, Handle>::get_validated_smartptr(NiPointer<T>& a_smartPointerOut) const
+	{
+		return BSPointerHandleManagerInterface<T>::GetHandleValidatedSmartPointer(*this, a_smartPointerOut);
 	}
 }

@@ -169,13 +169,6 @@ namespace RE
 		return func(this, a_spellType);
 	}
 
-	void PlayerCharacter::PlayPickupEvent(TESForm* a_item, TESForm* a_containerOwner, TESObjectREFR* a_containerRef, EventType a_eventType)
-	{
-		using func_t = decltype(&PlayerCharacter::PlayPickupEvent);
-		static REL::Relocation<func_t> func{ RELOCATION_ID(39384, 40456) };
-		return func(this, a_item, a_containerOwner, a_containerRef, a_eventType);
-	}
-
 	void PlayerCharacter::SetAIDriven(bool a_enable)
 	{
 		using func_t = decltype(&PlayerCharacter::SetAIDriven);

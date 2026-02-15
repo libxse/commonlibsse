@@ -131,6 +131,7 @@ namespace RE
 				kItemExtraData = 1 << 10,
 				kAmmoExtra = 1 << 11,
 				kLockExtra = 1 << 12,
+				kTeleportExtra = 1 << 17,
 				kEmpty = 1 << 21,
 				kOpenDefaultState = 1 << 22,
 				kOpenState = 1 << 23,
@@ -445,7 +446,6 @@ namespace RE
 		bool                                    MoveToNode(TESObjectREFR* a_target, const BSFixedString& a_nodeName);
 		bool                                    MoveToNode(TESObjectREFR* a_target, NiAVObject* a_node);
 		bool                                    NameIncludes(std::string_view a_word) const;
-		void                                    OpenContainer(std::int32_t a_openType) const;
 		NiPointer<TESObjectREFR>                PlaceObjectAtMe(TESBoundObject* a_baseToPlace, bool a_forcePersist) const;
 		void                                    PlayAnimation(std::string_view a_from, std::string_view a_to);
 		void                                    PlayAnimation(NiControllerManager* a_manager, NiControllerSequence* a_toSeq, NiControllerSequence* a_fromSeq);
