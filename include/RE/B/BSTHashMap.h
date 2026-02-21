@@ -592,8 +592,8 @@ namespace RE
 		void set_entries(entry_type* a_entries) noexcept { _allocator.set_entries(a_entries); }
 
 		// members
-		allocator_type    _allocator;                                                                         // 20
 		const entry_type* _sentinel{ reinterpret_cast<const entry_type*>(detail::BSTScatterTableSentinel) };  // 18/10 - signals end of chain
+		allocator_type    _allocator;                                                                         // 20
 	};
 
 	template <class Key, class T>
