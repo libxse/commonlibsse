@@ -3,6 +3,7 @@
 #include "RE/B/BSLight.h"
 #include "RE/N/NiFrustumPlanes.h"
 #include "RE/N/NiRect.h"
+#include "REX/W32/D3D.h"
 
 namespace RE
 {
@@ -32,19 +33,19 @@ namespace RE
 		~BSShadowLight() override;  // 00
 
 		// add
-		virtual bool          GetIsFrustumOrDirectionalLight() = 0;                                                                                                      // 04
-		virtual bool          GetIsFrustumLight();                                                                                                                       // 05
-		virtual void          GetIsDirectionalLight();                                                                                                                   // 06
-		virtual bool          GetIsParabolicLight();                                                                                                                     // 07
-		virtual bool          GetIsOmniLight();                                                                                                                          // 08
-		virtual void          Accumulate(std::uint32_t& a_globalShadowLightCount, std::uint32_t& a_shadowMaskChannel, const NiPointer<NiAVObject>& a_cullingScene) = 0;  // 09
-		virtual void          Render() = 0;                                                                                                                              // 0A
-		virtual void          SetShadowMapCount(std::uint32_t a_count);                                                                                                  // 0B
-		virtual void          ClearShadowMapData();                                                                                                                      // 0C
-		virtual std::uint32_t GetPassExtraParam(std::uint32_t a_accumFlag);                                                                                              // 0D
-		virtual bool          GetNeedsClipPlanes();                                                                                                                      // 0E
-		virtual void          UpdateClipPlanes(void* a_unk1, void* a_unk2);                                                                                              // 0F
-		virtual bool          UpdateCamera(const NiCamera* a_viewCamera) = 0;                                                                                            // 10
+		virtual bool          GetIsFrustumOrDirectionalLight() = 0;                                                                                     // 04
+		virtual bool          GetIsFrustumLight();                                                                                                      // 05
+		virtual void          GetIsDirectionalLight();                                                                                                  // 06
+		virtual bool          GetIsParabolicLight();                                                                                                    // 07
+		virtual bool          GetIsOmniLight();                                                                                                         // 08
+		virtual void          Accumulate(std::uint32_t& a_globalShadowLightCount, std::uint32_t& a_shadowMaskChannel, NiAVObject* a_cullingScene) = 0;  // 09
+		virtual void          Render(std::uint32_t& a_index) = 0;                                                                                       // 0A
+		virtual void          SetShadowMapCount(std::uint32_t a_count);                                                                                 // 0B
+		virtual void          ReturnShadowmaps();                                                                                                       // 0C
+		virtual std::uint32_t GetPassExtraParam(std::uint32_t a_accumFlag);                                                                             // 0D
+		virtual bool          GetNeedsClipPlanes();                                                                                                     // 0E
+		virtual void          TransformClipSpacePlanes(REX::W32::D3DMATRIX* a_matrix1, REX::W32::D3DMATRIX* a_matrix2);                                 // 0F
+		virtual bool          UpdateCamera(const NiCamera* a_viewCamera) = 0;                                                                           // 10
 
 		// members
 		std::uint32_t                   shadowMapCount;        // 140

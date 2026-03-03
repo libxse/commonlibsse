@@ -1,5 +1,7 @@
 #include "RE/G/GFxValue.h"
 
+#include "RE/G/GColor.h"
+
 namespace RE
 {
 	GFxValue::DisplayInfo::DisplayInfo(double a_x, double a_y) :
@@ -990,6 +992,54 @@ namespace RE
 	{
 		assert(IsDisplayObject());
 		return _objectInterface->GotoAndPlay(_value.obj, a_frame, true);
+	}
+
+	bool GFxValue::SetColorTint(const GColor& a_tint)
+	{
+		assert(IsDisplayObject());
+
+		using Cxform = GRenderer::Cxform;
+
+		Cxform colorTransform;
+		if (!GetCxform(&colorTransform)) {
+			return false;
+		}
+
+		// Normalize color values from 0-255 to 0-1
+		float normalizedRed = a_tint.colorData.channels.red / 255.0f;
+		float normalizedGreen = a_tint.colorData.channels.green / 255.0f;
+		float normalizedBlue = a_tint.colorData.channels.blue / 255.0f;
+
+		// Use alpha channel as intensity (0-255 -> 0-1)
+		float intensity = a_tint.colorData.channels.alpha / 255.0f;
+
+		// Apply color transform
+		// Multiply: reduce the original color channels that aren't the tint color
+		colorTransform.matrix[Cxform::kR][Cxform::kMult] = 1.0f - (intensity * (1.0f - normalizedRed));
+		colorTransform.matrix[Cxform::kG][Cxform::kMult] = 1.0f - (intensity * (1.0f - normalizedGreen));
+		colorTransform.matrix[Cxform::kB][Cxform::kMult] = 1.0f - (intensity * (1.0f - normalizedBlue));
+		colorTransform.matrix[Cxform::kA][Cxform::kMult] = 1.0f;
+
+		// Add: boost the tint color channels
+		colorTransform.matrix[Cxform::kR][Cxform::kAdd] = intensity * normalizedRed * 0.5f;
+		colorTransform.matrix[Cxform::kG][Cxform::kAdd] = intensity * normalizedGreen * 0.5f;
+		colorTransform.matrix[Cxform::kB][Cxform::kAdd] = intensity * normalizedBlue * 0.5f;
+		colorTransform.matrix[Cxform::kA][Cxform::kAdd] = 0.0f;
+
+		return SetCxform(colorTransform);
+	}
+
+	bool GFxValue::RemoveColorTint()
+	{
+		assert(IsDisplayObject());
+
+		GRenderer::Cxform colorTransform;
+		if (!GetCxform(&colorTransform)) {
+			return false;
+		}
+		colorTransform.SetIdentity();
+
+		return SetCxform(colorTransform);
 	}
 
 	bool GFxValue::IsManagedValue() const

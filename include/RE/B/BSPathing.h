@@ -22,7 +22,6 @@ namespace RE
 		std::uint8_t                   flags;             // 2A
 		std::uint8_t                   clientData;        // 2B
 	};
-
 	static_assert(sizeof(BSPathingLocation) == 0x30);
 
 	struct BSVirtualPathingNode
