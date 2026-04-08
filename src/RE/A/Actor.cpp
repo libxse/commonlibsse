@@ -1045,6 +1045,13 @@ namespace RE
 		return func(this);
 	}
 
+	void Actor::ModFactionRank(TESFaction* a_faction, std::int8_t a_value, bool a_isPlayer)
+	{
+		using func_t = decltype(&Actor::ModFactionRank);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(0, 37678) };
+		func(this, a_faction, a_value, a_isPlayer);
+	}
+
 	void Actor::PlayASound(BSSoundHandle& a_result, FormID a_formID, bool a_arg3, std::uint32_t a_flags)
 	{
 		using func_t = decltype(&Actor::PlayASound);
@@ -1134,6 +1141,13 @@ namespace RE
 			AddWornOutfit(a_outfit, a_update3D);
 		}
 		return true;
+	}
+
+	void Actor::SetFactionRank(TESFaction* a_faction, std::int8_t a_rank)
+	{
+		using func_t = decltype(&Actor::SetFactionRank);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(0, 37677) };
+		func(this, a_faction, a_rank);
 	}
 
 	void Actor::SetHeading(float a_angle)
