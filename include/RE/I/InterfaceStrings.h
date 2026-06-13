@@ -89,9 +89,9 @@ namespace RE
 		BSFixedString closingAllMenus;          // 248 - "Closing All Menus"
 		BSFixedString refreshMenu;              // 250 - "RefreshMenu"
 		BSFixedString cancelLoading;            // 258 - "CancelLoading"
-		BSFixedString menuTextureDegradeEvent;  // 260 - "Menu Texture Degrade Event"
-		BSFixedString userSettingsLoaded;       // 268 - "UserSettingsLoaded"
-		BSFixedString activityStarted;          // 270 - "ActivityStarted"
+		BSFixedString userSettingsLoaded;       // 260 - "UserSettingsLoaded"
+		BSFixedString activityStarted;          // 268 - "ActivityStarted"
+		BSFixedString menuTextureDegradeEvent;  // 270 - "Menu Texture Degrade Event"
 		BSFixedString diamondMarker;            // 278 - "<img src='DiamondMarker' width='10' height='15' align='baseline' vspace='5'>"
 	};
 	static_assert(sizeof(InterfaceStrings) == 0x280);

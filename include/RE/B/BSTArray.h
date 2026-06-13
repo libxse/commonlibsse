@@ -43,6 +43,7 @@ namespace RE
 		{
 			_size = a_rhs.size();
 			a_rhs._size = 0;
+			return *this;
 		}
 
 		[[nodiscard]] constexpr bool      empty() const noexcept { return _size == 0; }
