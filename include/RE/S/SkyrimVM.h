@@ -35,6 +35,8 @@ namespace RE
 	struct TESActivateEvent;
 	struct TESActiveEffectApplyRemoveEvent;
 	struct TESActorLocationChangeEvent;
+	struct TESAmiiboTouchEvent;
+	struct TESAmiiboForcedStopDetectionEvent;
 	struct TESBookReadEvent;
 	struct TESCellAttachDetachEvent;
 	struct TESCellFullyLoadedEvent;
@@ -82,60 +84,62 @@ namespace RE
 	struct TESUniqueIDChangeEvent;
 
 	class SkyrimVM :
-		public BSTSingletonSDM<SkyrimVM>,                      // 01A0
-		public BSScript::IFreezeQuery,                         // 0000
-		public BSScript::IStackCallbackSaveInterface,          // 0008
-		public BSTEventSink<TESActivateEvent>,                 // 0010
-		public BSTEventSink<TESActiveEffectApplyRemoveEvent>,  // 0018
-		public BSTEventSink<TESActorLocationChangeEvent>,      // 0020
-		public BSTEventSink<TESBookReadEvent>,                 // 0028
-		public BSTEventSink<TESCellAttachDetachEvent>,         // 0030
-		public BSTEventSink<TESCellFullyLoadedEvent>,          // 0038
-		public BSTEventSink<TESCombatEvent>,                   // 0040
-		public BSTEventSink<TESContainerChangedEvent>,         // 0048
-		public BSTEventSink<TESDeathEvent>,                    // 0050
-		public BSTEventSink<TESDestructionStageChangedEvent>,  // 0058
-		public BSTEventSink<TESEnterBleedoutEvent>,            // 0060
-		public BSTEventSink<TESEquipEvent>,                    // 0068
-		public BSTEventSink<TESFormDeleteEvent>,               // 0070
-		public BSTEventSink<TESFurnitureEvent>,                // 0078
-		public BSTEventSink<TESGrabReleaseEvent>,              // 0080
-		public BSTEventSink<TESHitEvent>,                      // 0088
-		public BSTEventSink<TESInitScriptEvent>,               // 0090
-		public BSTEventSink<TESLoadGameEvent>,                 // 0098
-		public BSTEventSink<TESLockChangedEvent>,              // 00A0
-		public BSTEventSink<TESMagicEffectApplyEvent>,         // 00A8
-		public BSTEventSink<TESMagicWardHitEvent>,             // 00B0
-		public BSTEventSink<TESMoveAttachDetachEvent>,         // 00B8
-		public BSTEventSink<TESObjectLoadedEvent>,             // 00C0
-		public BSTEventSink<TESObjectREFRTranslationEvent>,    // 00C8
-		public BSTEventSink<TESOpenCloseEvent>,                // 00D0
-		public BSTEventSink<TESPackageEvent>,                  // 00D8
-		public BSTEventSink<TESPerkEntryRunEvent>,             // 00E0
-		public BSTEventSink<TESQuestInitEvent>,                // 00E8
-		public BSTEventSink<TESQuestStageEvent>,               // 00F0
-		public BSTEventSink<TESResetEvent>,                    // 00F8
-		public BSTEventSink<TESResolveNPCTemplatesEvent>,      // 0100
-		public BSTEventSink<TESSceneEvent>,                    // 0108
-		public BSTEventSink<TESSceneActionEvent>,              // 0110
-		public BSTEventSink<TESScenePhaseEvent>,               // 0118
-		public BSTEventSink<TESSellEvent>,                     // 0120
-		public BSTEventSink<TESSleepStartEvent>,               // 0128
-		public BSTEventSink<TESSleepStopEvent>,                // 0130
-		public BSTEventSink<TESSpellCastEvent>,                // 0138
-		public BSTEventSink<TESTopicInfoEvent>,                // 0140
-		public BSTEventSink<TESTrackedStatsEvent>,             // 0148
-		public BSTEventSink<TESTrapHitEvent>,                  // 0150
-		public BSTEventSink<TESTriggerEvent>,                  // 0158
-		public BSTEventSink<TESTriggerEnterEvent>,             // 0160
-		public BSTEventSink<TESTriggerLeaveEvent>,             // 0168
-		public BSTEventSink<TESUniqueIDChangeEvent>,           // 0170
-		public BSTEventSink<TESSwitchRaceCompleteEvent>,       // 0178
-		public BSTEventSink<TESPlayerBowShotEvent>,            // 0180
-		public BSTEventSink<TESFastTravelEndEvent>,            // 0188
-		public BSTEventSink<PositionPlayerEvent>,              // 0190
-		public BSTEventSink<BSScript::StatsEvent>,             // 0198
-		public BSTEventSource<BSScript::StatsEvent>            // 01A8
+		public BSTSingletonSDM<SkyrimVM>,                        // 01A0
+		public BSScript::IFreezeQuery,                           // 0000
+		public BSScript::IStackCallbackSaveInterface,            // 0008
+		public BSTEventSink<TESActivateEvent>,                   // 0010
+		public BSTEventSink<TESActiveEffectApplyRemoveEvent>,    // 0018
+		public BSTEventSink<TESActorLocationChangeEvent>,        // 0020
+		public BSTEventSink<TESBookReadEvent>,                   // 0028
+		public BSTEventSink<TESCellAttachDetachEvent>,           // 0030
+		public BSTEventSink<TESCellFullyLoadedEvent>,            // 0038
+		public BSTEventSink<TESCombatEvent>,                     // 0040
+		public BSTEventSink<TESContainerChangedEvent>,           // 0048
+		public BSTEventSink<TESDeathEvent>,                      // 0050
+		public BSTEventSink<TESDestructionStageChangedEvent>,    // 0058
+		public BSTEventSink<TESEnterBleedoutEvent>,              // 0060
+		public BSTEventSink<TESEquipEvent>,                      // 0068
+		public BSTEventSink<TESFormDeleteEvent>,                 // 0070
+		public BSTEventSink<TESFurnitureEvent>,                  // 0078
+		public BSTEventSink<TESGrabReleaseEvent>,                // 0080
+		public BSTEventSink<TESHitEvent>,                        // 0088
+		public BSTEventSink<TESInitScriptEvent>,                 // 0090
+		public BSTEventSink<TESLoadGameEvent>,                   // 0098
+		public BSTEventSink<TESLockChangedEvent>,                // 00A0
+		public BSTEventSink<TESMagicEffectApplyEvent>,           // 00A8
+		public BSTEventSink<TESMagicWardHitEvent>,               // 00B0
+		public BSTEventSink<TESMoveAttachDetachEvent>,           // 00B8
+		public BSTEventSink<TESObjectLoadedEvent>,               // 00C0
+		public BSTEventSink<TESObjectREFRTranslationEvent>,      // 00C8
+		public BSTEventSink<TESOpenCloseEvent>,                  // 00D0
+		public BSTEventSink<TESPackageEvent>,                    // 00D8
+		public BSTEventSink<TESPerkEntryRunEvent>,               // 00E0
+		public BSTEventSink<TESQuestInitEvent>,                  // 00E8
+		public BSTEventSink<TESQuestStageEvent>,                 // 00F0
+		public BSTEventSink<TESResetEvent>,                      // 00F8
+		public BSTEventSink<TESResolveNPCTemplatesEvent>,        // 0100
+		public BSTEventSink<TESSceneEvent>,                      // 0108
+		public BSTEventSink<TESSceneActionEvent>,                // 0110
+		public BSTEventSink<TESScenePhaseEvent>,                 // 0118
+		public BSTEventSink<TESSellEvent>,                       // 0120
+		public BSTEventSink<TESSleepStartEvent>,                 // 0128
+		public BSTEventSink<TESSleepStopEvent>,                  // 0130
+		public BSTEventSink<TESSpellCastEvent>,                  // 0138
+		public BSTEventSink<TESTopicInfoEvent>,                  // 0140
+		public BSTEventSink<TESTrackedStatsEvent>,               // 0148
+		public BSTEventSink<TESTrapHitEvent>,                    // 0150
+		public BSTEventSink<TESTriggerEvent>,                    // 0158
+		public BSTEventSink<TESTriggerEnterEvent>,               // 0160
+		public BSTEventSink<TESTriggerLeaveEvent>,               // 0168
+		public BSTEventSink<TESUniqueIDChangeEvent>,             // 0170
+		public BSTEventSink<TESSwitchRaceCompleteEvent>,         // 0178
+		public BSTEventSink<TESAmiiboTouchEvent>,                // 0180
+		public BSTEventSink<TESAmiiboForcedStopDetectionEvent>,  // 0188
+		public BSTEventSink<TESPlayerBowShotEvent>,              // 0190
+		public BSTEventSink<TESFastTravelEndEvent>,              // 0198
+		public BSTEventSink<PositionPlayerEvent>,                // 01A0
+		public BSTEventSink<BSScript::StatsEvent>,               // 01A8
+		public BSTEventSource<BSScript::StatsEvent>              // 01B0
 	{
 	public:
 		inline static constexpr auto RTTI = RTTI_SkyrimVM;
@@ -276,5 +280,5 @@ namespace RE
 		mutable BSSpinLock                                                    InventoryEventFilterMapLock;  // 8940
 		BSTHashMap<VMHandle, InventoryEventFilterLists*>                      InventoryEventFilterMap;      // 8948 - AddInventoryEventFilter()
 	};
-	static_assert(sizeof(SkyrimVM) == 0x8978);
+	static_assert(sizeof(SkyrimVM) == 0x8988);
 }

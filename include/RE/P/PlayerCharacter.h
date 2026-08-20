@@ -31,6 +31,7 @@ namespace RE
 	class BipedAnim;
 	class BSFadeNode;
 	class BSLight;
+	class BSSystemEvent;
 	class CombatGroup;
 	class ImageSpaceModifierInstanceDOF;
 	class InventoryEntryData;
@@ -43,6 +44,7 @@ namespace RE
 	class TESObjectREFR;
 	class TintMask;
 	class UserEventEnabledEvent;
+
 	struct BGSActorCellEvent;
 	struct BGSActorDeathEvent;
 	struct PerkRankData;
@@ -141,7 +143,8 @@ namespace RE
 		public BSTEventSink<MenuOpenCloseEvent>,     // 2B0
 		public BSTEventSink<MenuModeChangeEvent>,    // 2B8
 		public BSTEventSink<UserEventEnabledEvent>,  // 2C0
-		public BSTEventSink<TESTrackedStatsEvent>    // 2C8
+		public BSTEventSink<TESTrackedStatsEvent>,   // 2C8
+		public BSTEventSink<BSSystemEvent>           // 2D0
 	{
 	public:
 		inline static constexpr auto RTTI = RTTI_PlayerCharacter;
@@ -317,6 +320,7 @@ namespace RE
 		bool                     CenterOnCell(const char* a_cellName);
 		bool                     CenterOnCell(TESObjectCELL* a_cell);
 		bool                     CheckCast(MagicItem* a_spell, Effect* a_effect, MagicSystem::CannotCastReason& a_reason);
+		void                     CheckPoisonWeapon(AlchemyItem* a_poison);
 		void                     DestroyMouseSprings();
 		void                     EndGrabObject();
 		NiPointer<Actor>         GetActorDoingPlayerCommand() const;
@@ -514,5 +518,5 @@ namespace RE
 	private:
 		bool CenterOnCell_Impl(const char* a_cellName, RE::TESObjectCELL* a_cell);
 	};
-	static_assert(sizeof(PlayerCharacter) == 0xBE8);
+	static_assert(sizeof(PlayerCharacter) == 0xBF0);
 }
