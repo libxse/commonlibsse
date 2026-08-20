@@ -36,3 +36,15 @@ xmake project -k compile_commands
 ## Notes
 
 CommonLibSSE is intended to replace SKSE as a static dependency. However, the runtime component of SKSE is still required.
+
+## License
+
+[GPL-3.0-or-later](LICENSE) WITH [Modding Exception AND GPL-3.0 Linking Exception (with Corresponding Source)](EXCEPTIONS).
+
+Specifically, the **Modded Code** is Skyrim (and its variants) and **Modding Libraries** include [SKSE](https://skse.silverlock.org/) ([GitHub](https://github.com/ianpatt/skse64)).
+
+It is recommended to read the [FSF FAQ](https://www.gnu.org/licenses/gpl-faq.en.html) for a full explanation on what this license requires.
+
+The main requirement of this license is: if you link your mod against CommonLibSSE, and you distribute the binaries for that mod, you must also distribute the source code under the same license as CommonLibSSE along with the source code for any other libraries you link against, with the exception of the Modded Code and Modding Libraries defined above.
+
+Originally based on code under [MIT](res/license/MIT).
