@@ -13,9 +13,6 @@ namespace RE
 	{
 		class GiftMenuCallbackFunc : public IGiftMenuScriptCallback
 		{
-			inline static constexpr auto RTTI = RTTI_SkyrimScript__GiftMenuCallbackFunc;
-			inline static constexpr auto VTABLE = VTABLE_SkyrimScript__GiftMenuCallbackFunc;
-
 			virtual ~GiftMenuCallbackFunc();  // 00
 
 			// override (IGiftMenuScriptCallback)
