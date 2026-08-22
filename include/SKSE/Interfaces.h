@@ -159,6 +159,29 @@ namespace SKSE
 		[[nodiscard]] REL::Version  RuntimeVersion() const noexcept { return MakeVersion(GetProxy().runtimeVersion); }
 	};
 
+	class PreLoadInterface :
+		public QueryInterface
+	{
+	public:
+		enum : std::uint32_t
+		{
+			kInvalid = 0,
+			kTrampoline = 7
+		};
+
+		[[nodiscard]] void* QueryInterface(std::uint32_t a_id) const { return GetProxy().QueryInterface(a_id); }
+
+		template <class T>
+		T* QueryInterface(std::uint32_t a_id) const noexcept
+		{
+			auto result = static_cast<T*>(QueryInterface(a_id));
+			if (result && result->Version() > T::kVersion)
+				REX::ERROR("interface definition is out of date");
+
+			return result;
+		}
+	};
+
 	class LoadInterface :
 		public QueryInterface
 	{
@@ -166,13 +189,13 @@ namespace SKSE
 		enum : std::uint32_t
 		{
 			kInvalid = 0,
-			kScaleform,
-			kPapyrus,
-			kSerialization,
-			kTask,
-			kMessaging,
-			kObject,
-			kTrampoline,
+			kScaleform = 1,
+			kPapyrus = 2,
+			kSerialization = 3,
+			kTask = 4,
+			kMessaging = 5,
+			kObject = 6,
+			kTrampoline = 7,
 			kTotal
 		};
 
@@ -596,7 +619,11 @@ namespace SKSE
 }
 
 #define SKSE_EXPORT extern "C" [[maybe_unused]] __declspec(dllexport)
+#define SKSE_PLUGIN_PRELOAD(...) SKSE_EXPORT bool SKSEPlugin_Preload(__VA_ARGS__)
 #define SKSE_PLUGIN_LOAD(...) SKSE_EXPORT bool SKSEPlugin_Load(__VA_ARGS__)
 #define SKSE_PLUGIN_VERSION SKSE_EXPORT constinit SKSE::PluginVersionData SKSEPlugin_Version
+
+// DEPRECATED
 #define SKSEPluginLoad SKSE_PLUGIN_LOAD
+// DEPRECATED
 #define SKSEPluginVersion SKSE_PLUGIN_VERSION
