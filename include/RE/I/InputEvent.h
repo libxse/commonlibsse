@@ -12,7 +12,10 @@ namespace RE
 		kChar,
 		kThumbstick,
 		kDeviceConnect,
-		kKinect
+		kKinect,
+		kSixaxis,
+		kMotionGesture,
+		kAmiibo,
 	};
 
 	class ButtonEvent;

@@ -14,7 +14,7 @@ namespace RE
 
 		// override (PlayerInputHandler)
 		bool CanProcess(InputEvent* a_event) override;                                  // 01
-		void ProcessButton(ButtonEvent* a_event, PlayerControlsData* a_data) override;  // 04
+		void ProcessButton(ButtonEvent* a_event, PlayerControlsData* a_data) override;  // 06
 	};
 	static_assert(sizeof(SneakHandler) == 0x10);
 }
