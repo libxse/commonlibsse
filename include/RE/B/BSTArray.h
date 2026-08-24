@@ -130,7 +130,7 @@ namespace RE
 		{
 			const auto mem = malloc(a_size);
 			if (!mem)
-				REX::FAIL("out of memory");
+				REX::FAIL("out of memory"sv);
 
 			std::memset(mem, 0, a_size);
 			return mem;
@@ -207,7 +207,7 @@ namespace RE
 			if (a_size > N) {
 				const auto mem = malloc(a_size);
 				if (!mem)
-					REX::FAIL("out of memory");
+					REX::FAIL("out of memory"sv);
 
 				std::memset(mem, 0, a_size);
 				return mem;
