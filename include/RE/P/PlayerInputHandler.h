@@ -16,7 +16,7 @@ namespace RE
 
 		virtual ~PlayerInputHandler() = default;  // 00
 
-		virtual bool CanProcess(InputEvent* a_event) = 0;                                                                          // 01
+		virtual bool CanProcess(InputEvent* a_event) = 0;  // 01
 		// 2 - 5 may not be correct, 6 is confirmed 1.7.99 shifted functions by 2
 		virtual void ProcUnk1([[maybe_unused]] void* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}                      // 02
 		virtual void ProcUnk2([[maybe_unused]] void* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}                      // 03
