@@ -4,7 +4,6 @@
 
 namespace RE
 {
-#ifdef SKYRIM_SUPPORT_AE
 	class SixaxisEvent : public IDEvent
 	{
 	public:
@@ -17,5 +16,4 @@ namespace RE
 		std::uint8_t data[0x68];  // 28
 	};
 	static_assert(sizeof(SixaxisEvent) == 0x90);
-#endif
 }

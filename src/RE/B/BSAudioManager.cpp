@@ -111,20 +111,8 @@ namespace RE
 
 	void BSAudioManager::StopAllSounds()
 	{
-#ifdef SKYRIM_SUPPORT_AE
 		using func_t = void (*)(BSTHashMap<std::uint32_t, BSGameSound*>*);
 		static REL::Relocation<func_t> func{ REL::ID(67749) };
 		func(&activeSounds);
-
-#else
-		for (auto& entry : activeSounds) {
-			const auto sound = entry.second;
-			if (sound) {
-				sound->StopImpl();
-				sound->flags = static_cast<BSGameSound::Flags>(sound->flags.underlying() & ~0x200u);
-				sound->SetSoundFinished(true);
-			}
-		}
-#endif
 	}
 }

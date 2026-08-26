@@ -26,18 +26,11 @@ namespace RE
 			void SetCurrentDepthStencilTarget(RENDER_TARGET_DEPTHSTENCIL a_renderTarget, SetRenderTargetMode a_mode, std::uint32_t a_slice);
 
 			// members
-			RenderTargetProperties renderTargetData[RENDER_TARGET::kTOTAL];  // 000
-#ifdef SKYRIM_SUPPORT_AE
-			std::byte padC78[0x38];  // C78
-#endif
-			DepthStencilTargetProperties  depthStencilTargetData[RENDER_TARGETS_DEPTHSTENCIL::kTOTAL];  // C78, CB0
-			CubeMapRenderTargetProperties cubeMapRenderTargetData[RENDER_TARGETS_CUBEMAP::kTOTAL];      // D38, D70
+			RenderTargetProperties        renderTargetData[RENDER_TARGET::kTOTAL];                      // 000
+			std::byte                     padC78[0x38];                                                 // C78
+			DepthStencilTargetProperties  depthStencilTargetData[RENDER_TARGETS_DEPTHSTENCIL::kTOTAL];  // CB0
+			CubeMapRenderTargetProperties cubeMapRenderTargetData[RENDER_TARGETS_CUBEMAP::kTOTAL];      // D70
 		};
-
-#ifdef SKYRIM_SUPPORT_AE
 		static_assert(sizeof(RenderTargetManager) == 0xD7C);
-#else
-		static_assert(sizeof(RenderTargetManager) == 0xD44);
-#endif
 	}
 }

@@ -4,7 +4,6 @@
 
 namespace RE
 {
-#ifdef SKYRIM_SUPPORT_AE
 	class MotionGestureEvent : public IDEvent
 	{
 	public:
@@ -22,5 +21,4 @@ namespace RE
 		std::int32_t  unk34;  // 34
 	};
 	static_assert(sizeof(MotionGestureEvent) == 0x38);
-#endif
 }

@@ -5,11 +5,9 @@
 #include "RE/I/IDEvent.h"
 #include "RE/M/MouseMoveEvent.h"
 #include "RE/T/ThumbstickEvent.h"
-#ifdef SKYRIM_SUPPORT_AE
-#	include "RE/A/AmiiboEvent.h"
-#	include "RE/M/MotionGestureEvent.h"
-#	include "RE/S/SixaxisEvent.h"
-#endif
+#include "RE/A/AmiiboEvent.h"
+#include "RE/M/MotionGestureEvent.h"
+#include "RE/S/SixaxisEvent.h"
 
 namespace RE
 {
@@ -53,7 +51,6 @@ namespace RE
 		return GetEventType() == INPUT_EVENT_TYPE::kMouseMove ? static_cast<const MouseMoveEvent*>(this) : nullptr;
 	}
 
-#ifdef SKYRIM_SUPPORT_AE
 	AmiiboEvent* InputEvent::AsAmiiboEvent()
 	{
 		return GetEventType() == INPUT_EVENT_TYPE::kAmiibo ? static_cast<AmiiboEvent*>(this) : nullptr;
@@ -83,7 +80,6 @@ namespace RE
 	{
 		return GetEventType() == INPUT_EVENT_TYPE::kSixaxis ? static_cast<const SixaxisEvent*>(this) : nullptr;
 	}
-#endif
 
 	ThumbstickEvent* InputEvent::AsThumbstickEvent()
 	{
