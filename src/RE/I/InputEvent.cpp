@@ -1,13 +1,13 @@
 #include "RE/I/InputEvent.h"
 
+#include "RE/A/AmiiboEvent.h"
 #include "RE/B/ButtonEvent.h"
 #include "RE/C/CharEvent.h"
 #include "RE/I/IDEvent.h"
-#include "RE/M/MouseMoveEvent.h"
-#include "RE/T/ThumbstickEvent.h"
-#include "RE/A/AmiiboEvent.h"
 #include "RE/M/MotionGestureEvent.h"
+#include "RE/M/MouseMoveEvent.h"
 #include "RE/S/SixaxisEvent.h"
+#include "RE/T/ThumbstickEvent.h"
 
 namespace RE
 {

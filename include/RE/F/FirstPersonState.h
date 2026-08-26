@@ -44,13 +44,13 @@ namespace RE
 		float         unk70;                    // 70
 		float         currentPitchOffset;       // 74 - [-100, 100]
 		float         targetPitchOffset;        // 78 - [-100, 100]
-		std::uint32_t unk7C;                // 7C
-		float         unk80;                // 80
-		std::uint32_t unk84;                // 84
-		bool          cameraOverride;       // 88
-		bool          cameraPitchOverride;  // 89
-		std::uint16_t unk8A;                // 8A
-		std::uint64_t unk90;                // 90
+		std::uint32_t unk7C;                    // 7C
+		float         unk80;                    // 80
+		std::uint32_t unk84;                    // 84
+		bool          cameraOverride;           // 88
+		bool          cameraPitchOverride;      // 89
+		std::uint16_t unk8A;                    // 8A
+		std::uint64_t unk90;                    // 90
 	};
 	static_assert(sizeof(FirstPersonState) == 0x98);
 }
