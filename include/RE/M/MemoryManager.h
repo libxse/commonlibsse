@@ -206,7 +206,7 @@ namespace RE
 	{                                                                                                                   \
 		const auto mem = RE::malloc(a_count);                                                                           \
 		if (!mem)                                                                                                       \
-			REX::FAIL("out of memory"sv);                                                                               \
+			REX::FAIL("out of memory");                                                                                 \
                                                                                                                         \
 		return mem;                                                                                                     \
 	}                                                                                                                   \
@@ -215,7 +215,7 @@ namespace RE
 	{                                                                                                                   \
 		const auto mem = RE::malloc(a_count);                                                                           \
 		if (!mem)                                                                                                       \
-			REX::FAIL("out of memory"sv);                                                                               \
+			REX::FAIL("out of memory");                                                                                 \
                                                                                                                         \
 		return mem;                                                                                                     \
 	}                                                                                                                   \

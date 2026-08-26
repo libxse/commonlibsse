@@ -22,6 +22,9 @@ namespace RE
 	class CharEvent;
 	class IDEvent;
 	class MouseMoveEvent;
+	class AmiiboEvent;
+	class MotionGestureEvent;
+	class SixaxisEvent;
 	class ThumbstickEvent;
 
 	class InputEvent
@@ -49,6 +52,15 @@ namespace RE
 
 		[[nodiscard]] MouseMoveEvent*       AsMouseMoveEvent();
 		[[nodiscard]] const MouseMoveEvent* AsMouseMoveEvent() const;
+
+		[[nodiscard]] AmiiboEvent*       AsAmiiboEvent();
+		[[nodiscard]] const AmiiboEvent* AsAmiiboEvent() const;
+
+		[[nodiscard]] MotionGestureEvent*       AsMotionGestureEvent();
+		[[nodiscard]] const MotionGestureEvent* AsMotionGestureEvent() const;
+
+		[[nodiscard]] SixaxisEvent*       AsSixaxisEvent();
+		[[nodiscard]] const SixaxisEvent* AsSixaxisEvent() const;
 
 		[[nodiscard]] ThumbstickEvent*       AsThumbstickEvent();
 		[[nodiscard]] const ThumbstickEvent* AsThumbstickEvent() const;

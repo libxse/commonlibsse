@@ -45,7 +45,7 @@ namespace RE
 		inline static constexpr auto VTABLE = VTABLE_TESTopicInfo;
 		inline static constexpr auto FORMTYPE = FormType::Info;
 
-		enum class FavorLevel  // CNAM
+		enum class FavorLevel : std::uint8_t  // CNAM
 		{
 			kNone = 0,
 			kSmall = 1,
@@ -141,15 +141,17 @@ namespace RE
 		TESResponseList* GetResponseList(TESResponseList* a_list = nullptr);
 
 		// members
-		TESTopic*                               parentTopic;    // 20
-		TESTopicInfo*                           dataInfo;       // 28 - DNAM
-		TESCondition                            objConditions;  // 30 - CTDA
-		std::uint16_t                           infoIndex;      // 38 - index in infoTopics array of parent topic
-		bool                                    saidOnce;       // 3A
-		REX::TEnumSet<FavorLevel, std::uint8_t> favorLevel;     // 3B - CNAM
-		TOPIC_INFO_DATA                         data;           // 3C - ENAM
-		std::uint32_t                           fileOffset;     // 40
-		std::uint32_t                           pad44;          // 44
+		TESTopic*       parentTopic;    // 20
+		TESTopicInfo*   dataInfo;       // 28 - DNAM
+		TESCondition    objConditions;  // 30 - CTDA
+		std::uint16_t   infoIndex;      // 38 - index in infoTopics array of parent topic
+		bool            saidOnce;       // 3A
+		FavorLevel      favorLevel;     // 3B - CNAM
+		TOPIC_INFO_DATA data;           // 3C - ENAM
+		std::uint32_t   fileOffset;     // 40
+		std::uint32_t   unk44;          // 44
+		std::uint32_t   unk48;          // 48
+		std::uint32_t   pad4C;          // 4C
 	};
-	static_assert(sizeof(TESTopicInfo) == 0x48);
+	static_assert(sizeof(TESTopicInfo) == 0x50);
 }

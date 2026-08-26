@@ -5,7 +5,9 @@ namespace RE
 	class ButtonEvent;
 	class InputEvent;
 	class MouseMoveEvent;
+	class MotionGestureEvent;
 	class PlayerControlsData;
+	class SixaxisEvent;
 	class ThumbstickEvent;
 
 	class PlayerInputHandler
@@ -16,13 +18,12 @@ namespace RE
 
 		virtual ~PlayerInputHandler() = default;  // 00
 
-		virtual bool CanProcess(InputEvent* a_event) = 0;  // 01
-		// 2 - 5 may not be correct, 6 is confirmed 1.7.99 shifted functions by 2
-		virtual void ProcUnk1([[maybe_unused]] void* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}                      // 02
-		virtual void ProcUnk2([[maybe_unused]] void* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}                      // 03
-		virtual void ProcessThumbstick([[maybe_unused]] ThumbstickEvent* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}  // 04
-		virtual void ProcessMouseMove([[maybe_unused]] MouseMoveEvent* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}    // 05
-		virtual void ProcessButton([[maybe_unused]] ButtonEvent* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}          // 06
+		virtual bool CanProcess(InputEvent* a_event) = 0;                                                                                // 01
+		virtual void ProcessMotionGesture([[maybe_unused]] MotionGestureEvent* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}  // 02
+		virtual void ProcessSixaxis([[maybe_unused]] SixaxisEvent* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}              // 03
+		virtual void ProcessThumbstick([[maybe_unused]] ThumbstickEvent* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}        // 02
+		virtual void ProcessMouseMove([[maybe_unused]] MouseMoveEvent* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}          // 03
+		virtual void ProcessButton([[maybe_unused]] ButtonEvent* a_event, [[maybe_unused]] PlayerControlsData* a_data) {}                // 04
 
 		[[nodiscard]] bool IsInputEventHandlingEnabled() const;
 		void               SetInputEventHandlingEnabled(bool a_enabled);
