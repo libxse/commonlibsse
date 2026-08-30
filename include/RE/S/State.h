@@ -27,52 +27,39 @@ namespace RE
 			}
 
 			// members
-			NiPointer<NiSourceTexture> defaultTextureProjNoiseMap;                  // 000
-			NiPointer<NiSourceTexture> defaultTextureProjDiffuseMap;                // 008
-			NiPointer<NiSourceTexture> defaultTextureProjNormalMap;                 // 010
-			NiPointer<NiSourceTexture> defaultTextureProjNormalDetailMap;           // 018
-			std::uint32_t              unk020;                                      // 020
-			std::uint32_t              screenWidth;                                 // 024
-			std::uint32_t              screenHeight;                                // 028
-			std::uint32_t              frameBufferViewport[2];                      // 02C
-			std::uint32_t              unk034;                                      // 034
-			std::uint32_t              unk038;                                      // 038
-			std::uint32_t              unk03C;                                      // 03C
-			std::uint32_t              unk040;                                      // 040
-			float                      unk044;                                      // 044
-			float                      unk048;                                      // 048
-			std::uint32_t              frameCount;                                  // 04C
-			bool                       insideFrame;                                 // 050
-			bool                       letterbox;                                   // 051
-			bool                       unk052;                                      // 052
-			bool                       compiledShaderThisFrame;                     // 053
-			bool                       useEarlyZ;                                   // 054
-			bool                       unk055;                                      // 055
-			bool                       unk56;                                       // 056
-			bool                       doubleDynamicResolutionAdjustmentFrequency;  // 057
-			bool                       unk58;                                       // 058
-			NiPointer<NiSourceTexture> defaultTextureBlack;                         // 060
-			NiPointer<NiSourceTexture> defaultTextureWhite;                         // 068
-			NiPointer<NiSourceTexture> defaultTextureGrey;                          // 070
-			NiPointer<NiSourceTexture> defaultHeightMap;                            // 078
-			NiPointer<NiSourceTexture> defaultReflectionCubeMap;                    // 080
-			NiPointer<NiSourceTexture> defaultFaceDetailMap;                        // 088
-			NiPointer<NiSourceTexture> defaultTexEffectMap;                         // 090
-			NiPointer<NiSourceTexture> defaultTextureNormalMap;                     // 098
-			NiPointer<NiSourceTexture> defaultTextureDitherNoiseMap;                // 0A0
-			BSTArray<void*>            cameraDataCache;                             // 0A8
-			std::uint32_t              unk0C0;                                      // 0C0
-			float                      haltonSequence[2][8];                        // 0C4
-			float                      dynamicResolutionWidthRatio;                 // 104
-			float                      dynamicResolutionHeightRatio;                // 108
-			float                      dynamicResolutionPreviousWidthRatio;         // 10C
-			float                      dynamicResolutionPreviousHeightRatio;        // 110
-			std::uint32_t              dynamicResolutionIncreaseFrameWaited;        // 114
-			volatile std::int32_t      dynamicResolutionLock;                       // 118
-			bool                       canIncreaseDynamicResolution;                // 11C
-			bool                       canDecreaseDynamicResolution;                // 11D
-			bool                       canChangeDynamicResolution;                  // 11E
+			NiPointer<NiSourceTexture> defaultTextureProjNoiseMap;         // 000
+			NiPointer<NiSourceTexture> defaultTextureProjDiffuseMap;       // 008
+			NiPointer<NiSourceTexture> defaultTextureProjNormalMap;        // 010
+			NiPointer<NiSourceTexture> defaultTextureProjNormalDetailMap;  // 018
+			std::uint32_t              unk020;                             // 020
+			std::uint32_t              screenWidth;                        // 024
+			std::uint32_t              screenHeight;                       // 028
+			std::uint32_t              frameBufferViewport[2];             // 030
+			std::byte                  unk038[0x54 - 0x38];                // 038
+			std::uint32_t              frameCount;                         // 054
+			std::byte                  unk058[0x60 - 0x58];                // 058
+			bool                       insideFrame;                        // 060
+			bool                       letterbox;                          // 061
+			std::byte                  unk062[0x70 - 0x62];                // 062
+			NiPointer<NiSourceTexture> defaultTextureBlack;                // 070
+			NiPointer<NiSourceTexture> defaultTextureWhite;                // 078
+			NiPointer<NiSourceTexture> defaultTextureGrey;                 // 080
+			NiPointer<NiSourceTexture> defaultHeightMap;                   // 088
+			NiPointer<NiSourceTexture> defaultReflectionCubeMap;           // 090
+			NiPointer<NiSourceTexture> defaultFaceDetailMap;               // 098
+			NiPointer<NiSourceTexture> defaultTexEffectMap;                // 0A0
+			NiPointer<NiSourceTexture> defaultTextureNormalMap;            // 0A8
+			NiPointer<NiSourceTexture> defaultTextureDitherNoiseMap;       // 0B0
+			std::byte                  unk0B8[0x128 - 0xB8];               // 0B8
+			volatile std::int32_t      dynamicResolutionLock;              // 128
+			bool                       canIncreaseDynamicResolution;       // 12C
+			bool                       canDecreaseDynamicResolution;       // 12D
+			bool                       canChangeDynamicResolution;         // 12E
 		};
-		static_assert(sizeof(State) == 0x120);
+		static_assert(sizeof(State) == 0x130);
+		static_assert(offsetof(State, screenWidth) == 0x24);
+		static_assert(offsetof(State, screenHeight) == 0x28);
+		static_assert(offsetof(State, defaultTextureBlack) == 0x70);
+		static_assert(offsetof(State, dynamicResolutionLock) == 0x128);
 	}
 }
