@@ -67,3 +67,13 @@ rule("commonlibsse.plugin", function()
         target:add("installfiles", target:symbolfile(), { prefixdir = "SKSE/Plugins" })
     end)
 end)
+
+rule("commonlibsse.archive", function()
+    add_deps("commonlib.archive")
+
+    on_load(function(target)
+        target:data_set("commonlib.archive.config", target:extraconf("rules", "commonlibsse.archive"))
+        target:data_set("commonlib.archive.format", "-sse" )
+        target:data_set("commonlib.archive.extension", ".bsa")
+    end)
+end)
