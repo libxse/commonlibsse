@@ -568,6 +568,7 @@ namespace RE
 		MiddleHighProcessData*       GetMiddleHighProcess() const;
 		bool                         GetMount(NiPointer<Actor>& a_outMount);
 		bool                         GetMountedBy(NiPointer<Actor>& a_outRider);
+		bool                         GetActorOrMount(NiPointer<Actor>& a_out);
 		double                       GetMoveDirectionRelativeToFacing();
 		ObjectRefHandle              GetOccupiedFurniture() const;
 		bool                         GetPlayerControls() const;
