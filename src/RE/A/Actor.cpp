@@ -592,6 +592,13 @@ namespace RE
 		return func(this, a_outRider);
 	}
 
+	bool Actor::GetActorOrMount(NiPointer<Actor>& a_out)
+	{
+		using func_t = decltype(&Actor::GetActorOrMount);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(0, 38707) };
+		return func(this, a_out);
+	}
+
 	double Actor::GetMoveDirectionRelativeToFacing()
 	{
 		using func_t = decltype(&Actor::GetMoveDirectionRelativeToFacing);
