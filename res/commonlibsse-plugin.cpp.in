@@ -9,5 +9,6 @@ SKSE_EXPORT constinit auto SKSEPlugin_Version = []() {
     v.UsesAddressLibrary();
     v.UsesUpdatedStructs();
     v.CompatibleVersions({ SKSE::RUNTIME_LATEST });
+    v.MinimumRequiredXSEVersion({ ${COMMONLIB_PLUGIN_XSE_VERSION_MAJOR}, ${COMMONLIB_PLUGIN_XSE_VERSION_MINOR}, ${COMMONLIB_PLUGIN_XSE_VERSION_PATCH}, 0 });
     return v;
 }();
