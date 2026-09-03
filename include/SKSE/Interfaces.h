@@ -533,7 +533,7 @@ namespace SKSE
 	struct PluginVersionData
 	{
 	public:
-		enum
+		enum Version : std::uint32_t
 		{
 			kVersion = 1,
 		};
@@ -567,23 +567,24 @@ namespace SKSE
 
 		[[nodiscard]] constexpr std::string_view GetAuthorEmail() const noexcept { return std::string_view{ supportEmail }; }
 
-		constexpr void UsesAddressLibrary() noexcept { versionIndependence |= kVersionIndependent_AddressLibraryPostAE; }
-		constexpr void UsesSigScanning() noexcept { versionIndependence |= kVersionIndependent_Signatures; }
-		constexpr void UsesUpdatedStructs() noexcept { versionIndependence |= kVersionIndependent_StructsPost629; }
+		constexpr void UsesSigScanning(const bool a_value) noexcept { SetOrClearBit(versionIndependence, kAddressIndependence_Signatures, a_value); }
 
-		constexpr void UsesNoStructs() noexcept { versionIndependenceEx |= kVersionIndependentEx_NoStructUse; }
+		constexpr void UsesAddressLibrary(const bool a_value) noexcept { SetOrClearBit(versionIndependence, kVersionIndependent_AddressLibraryPostAE, a_value); }
 
-		constexpr void MinimumRequiredXSEVersion(REL::Version a_version) noexcept { xseMinimum = a_version.pack(); }
+		constexpr void HasNoStructUse(const bool a_value) noexcept { SetOrClearBit(versionIndependenceEx, kVersionIndependentEx_NoStructUse, a_value); }
+
+		constexpr void IsLayoutDependent(const bool a_value) noexcept { SetOrClearBit(versionIndependence, kVersionIndependent_StructsPost629, a_value); }
 
 		constexpr void CompatibleVersions(std::initializer_list<REL::Version> a_versions) noexcept
 		{
+			// must be zero-terminated
 			assert(a_versions.size() < std::size(compatibleVersions) - 1);
-			std::transform(
-				a_versions.begin(),
-				a_versions.end(),
-				std::begin(compatibleVersions),
-				[](const REL::Version& a_version) noexcept { return a_version.pack(); });
+			std::ranges::transform(a_versions, std::begin(compatibleVersions), [](const REL::Version& a_version) noexcept {
+				return a_version.pack();
+			});
 		}
+
+		constexpr void MinimumRequiredXSEVersion(REL::Version a_version) noexcept { xseMinimum = a_version.pack(); }
 
 		[[nodiscard]] static const PluginVersionData* GetSingleton() noexcept;
 
@@ -598,13 +599,19 @@ namespace SKSE
 		std::uint32_t       xseMinimum = 0;
 
 	private:
-		static constexpr void SetCharBuffer(
-			std::string_view a_src,
-			std::span<char>  a_dst) noexcept
+		static constexpr void SetCharBuffer(std::string_view a_src, std::span<char> a_dst) noexcept
 		{
 			assert(a_src.size() < a_dst.size());
-			std::fill(a_dst.begin(), a_dst.end(), '\0');
-			std::copy(a_src.begin(), a_src.end(), a_dst.begin());
+			std::ranges::fill(a_dst, '\0');
+			std::ranges::copy(a_src, a_dst.begin());
+		}
+
+		static constexpr void SetOrClearBit(std::uint32_t& a_data, const std::uint32_t a_bit, const bool a_set) noexcept
+		{
+			if (a_set)
+				a_data |= a_bit;
+			else
+				a_data &= ~a_bit;
 		}
 	};
 	static_assert(offsetof(PluginVersionData, dataVersion) == 0x000);

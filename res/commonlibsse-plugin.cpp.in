@@ -6,8 +6,10 @@ SKSE_EXPORT constinit auto SKSEPlugin_Version = []() {
     v.PluginName("${COMMONLIB_PLUGIN_NAME}");
     v.AuthorName("${COMMONLIB_PLUGIN_AUTHOR}");
     v.AuthorEmail("${COMMONLIB_PLUGIN_CONTACT}");
-    v.UsesAddressLibrary();
-    v.UsesUpdatedStructs();
+    v.UsesSigScanning(${COMMONLIBSSE_OPTION_SIG_SCANNING});
+    v.UsesAddressLibrary(${COMMONLIBSSE_OPTION_ADDRESS_LIBRARY});
+    v.HasNoStructUse(${COMMONLIBSSE_OPTION_NO_STRUCT_USE});
+    v.IsLayoutDependent(${COMMONLIBSSE_OPTION_LAYOUT_DEPENDENT});
     v.CompatibleVersions({ SKSE::RUNTIME_LATEST });
     v.MinimumRequiredXSEVersion({ ${COMMONLIB_PLUGIN_XSE_VERSION_MAJOR}, ${COMMONLIB_PLUGIN_XSE_VERSION_MINOR}, ${COMMONLIB_PLUGIN_XSE_VERSION_PATCH}, 0 });
     return v;
